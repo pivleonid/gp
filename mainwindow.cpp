@@ -28,39 +28,48 @@ MainWindow::~MainWindow()
 void MainWindow::openFile(){
 
   QString fileName_DATA = QFileDialog::getOpenFileName(this, tr("Open Excel File"),"", tr("(*.xlsx *.xls)"));
-ActiveExcel excel;
-QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
-QVariant name = excel.sheetName();
-QAxObject* sheet = excel.documentSheetActive(name);
+  ActiveExcel excel;
+  QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
+  QVariant name = excel.sheetName();
+  QAxObject* sheet = excel.documentSheetActive(name);
 
 
 
-QStringList var1, var2, var3, var4, var5;
-for(int i = 2; i < 149; i++){
-    var1 << excel.sheetCellInsert(sheet, i, 2).toString();
-    var1 << excel.sheetCellInsert(sheet, i, 3).toString();
-    var1 << excel.sheetCellInsert(sheet, i, 4).toString();
-    var1 << excel.sheetCellInsert(sheet, i, 5).toString();
-    var1 << excel.sheetCellInsert(sheet, i, 6).toString();
-  }
-QList<QStringList> varList;
-for(int i = 0; i < 148; i++)
-  for(int j=0; j < 4; j++){
-      if(j==0)
-        varList[j] << var1[i];
-      if(j==1)
-        varList[j] << var1[i];
-      if(j==2)
-        varList[j] << var1[i];
-      if(j==3)
-        varList[j] << var1[i];
+  QStringList var, var1;
+  // 20 секунд на чтение
+  for(int i = 2; i < 20; i++){
+      var << excel.sheetCellInsert(sheet, i, 2).toString();
+      var << excel.sheetCellInsert(sheet, i, 3).toString();
+      var << excel.sheetCellInsert(sheet, i, 4).toString();
+      var << excel.sheetCellInsert(sheet, i, 5).toString();
+      var << excel.sheetCellInsert(sheet, i, 6).toString();
+      int g = var.count();
+      if(var[g-1] == "" && var[g-2] == "" && var[g-3] == "")
+       break;
     }
 
-ActiveWord word;
-QAxObject* doc1 = word.documentOpen("D:/projects/gp/скрипт.docx");
-QStringList listLabel = word.tableGetLabels(1, 1);
+  QList<QStringList> varList;
+  int count = 0;
+  for(int j = 0; j < var.count(); j++){
+      if(count < 5){
+          var1.append(var.at(j));
+          count++;
+          continue;
+        }
+      varList.append(var1);
+      var1.clear();
+      count = 0;
+      j--;
+    }
+var.clear();
 
-word.tableFill(varList,listLabel,1,1);
+
+
+ActiveWord word;
+QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
+QStringList listLabel = word.tableGetLabels(1, 2);
+
+word.tableFill(varList,listLabel,1,2);
 
 
 int i;

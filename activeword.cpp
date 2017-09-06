@@ -4,11 +4,11 @@
 //----------------------------------------------------------
 ActiveWord::ActiveWord(){
   wordApplication_ =  new QAxObject("Word.Application");
-// Sleep(1000);
+ Sleep(1000);
   wordApplication_->setProperty("DisplayAlerts", false);
-// Sleep(1000);
+ Sleep(1000);
   wordApplication_->setProperty("Visible", true);
-  //Sleep(1000);
+ Sleep(1000);
   documents_ = wordApplication_->querySubObject("Documents");
 
 }

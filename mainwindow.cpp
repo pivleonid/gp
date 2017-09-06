@@ -49,15 +49,39 @@ void MainWindow::openFile(){
     }
 
   QList<QStringList> varList;
+   QString prem;
   int count = 0;
+  //формирую QList, где [0] - это refdez, а [1] part number + description + value + manufactur
   for(int j = 0; j < var.count(); j++){
       if(count < 5){
-          var1.append(var.at(j));
-          count++;
-          continue;
+          if(count == 4){
+              prem += var.at(j);
+              var1.append(prem);
+              count++;
+              continue;
+            }
+          //2 3
+          if(count != 0 && count < 5){
+              prem += var.at(j);
+              count++;
+              continue;
+
+            }
+          //первый влет
+          if(count == 0){
+              var1.append(var.at(j));
+              count++;
+              continue;
+            }
+
+
+//          var1.append(var.at(j));
+//          count++;
+//          continue;
         }
       varList.append(var1);
       var1.clear();
+      prem.clear();
       count = 0;
       j--;
     }

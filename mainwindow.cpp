@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->pushButton_2,SIGNAL(clicked(bool)), this, SLOT(generate()));
 
 
+
 }
 
 
@@ -55,13 +56,26 @@ void MainWindow::openFile(){
   for(int j = 0; j < var.count(); j++){
       if(count < 5){
           if(count == 4){
-              prem += var.at(j);
+              prem = prem +" "+ var.at(j);
+              prem.replace(",","");
               var1.append(prem);
               count++;
               continue;
             }
           //2 3
-          if(count != 0 && count < 5){
+          if(count ==3 ){
+              prem = prem + " " + var.at(j);
+              count++;
+              continue;
+
+            }
+          if(count == 2){
+              prem = prem + " " + var.at(j);
+              count++;
+              continue;
+
+            }
+          if(count == 1){
               prem += var.at(j);
               count++;
               continue;
@@ -86,7 +100,15 @@ void MainWindow::openFile(){
       j--;
     }
 var.clear();
+prem.clear();
 
+//foreach (auto w, varList) {
+//    qDebug() << w;
+//    foreach (auto k, w) {
+//        qDebug() << k;
+//      }
+
+//  }
 
 
 ActiveWord word;

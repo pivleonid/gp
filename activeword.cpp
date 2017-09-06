@@ -279,6 +279,8 @@ QStringList ActiveWord::tableGetLabels(int tableIndex, int tabRow ){
        QString str = str_v.toString();
        int index = str.indexOf("]", 0 );
        str = str.mid(0, index+1);
+       if(str.isEmpty())
+         continue;
        lable << str;
      }
    delete cell;
@@ -319,7 +321,11 @@ void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabe
         }
       for(int j = 1; j <= tabColumns; j++){
 
-          if(containerIndex[j-1] == -1) continue;
+          if(containerIndex[j-1] == -1)
+            continue;
+          if( tableDat_in[j].count() < j)
+            continue;
+          //b = tableDat_in[i].count();
           cell = table->querySubObject("Cell(const QVariant& , const QVariant&)",i + start-1 , j);
           cell->querySubObject("Range")->dynamicCall("Select()");
           wordApplication_->querySubObject("Selection")->dynamicCall("TypeText(Text)", tableDat_in[i-1][containerIndex[j-1]]);

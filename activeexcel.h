@@ -47,6 +47,7 @@ class ActiveExcel
 public:
   ActiveExcel();
   ~ActiveExcel();
+
   /*==================================================================*/
   /*!  \brief
    Открыть документ

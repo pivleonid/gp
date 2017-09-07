@@ -11,13 +11,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(openFile()));
-  connect(ui->pushButton_2,SIGNAL(clicked(bool)), this, SLOT(generate()));
+  connect(ui->openFile,SIGNAL(clicked(bool)),this,SLOT(openFile()));
+  connect(ui->docGen,SIGNAL(clicked(bool)), this, SLOT(generate()));
+
+  connect(ui->saveButn, SIGNAL(clicked(bool)),this, SLOT(saveBut()));
 
 
 
 }
+void MainWindow::saveBut(){
+ // ui->docGen->setEnabled(true);
 
+}
 
 MainWindow::~MainWindow()
 {
@@ -38,7 +43,7 @@ void MainWindow::openFile(){
 
   QStringList var, var1;
   // 20 секунд на чтение
-  for(int i = 2; i < 10; i++){
+  for(int i = 2; i < 50; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -189,11 +194,7 @@ for ( w = varList.begin();w < varList.end(); w++) {
   }
 
 
-ActiveWord word;
-QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
-QStringList listLabel = word.tableGetLabels(1, 2);
 
-word.tableFill(varList,listLabel,1,2);
 
 
 int i;
@@ -206,5 +207,18 @@ i++;
 
 
 void MainWindow::generate(){
+  ActiveWord word;
+  QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
+  word.setVisible();
+ // QStringList listLabel = word.tableGetLabels(1, 2);
 
+bool a = word.findReplaseLabel("[5]", ui->lineEdit_6->text(), true);
+a  =word.findReplaseLabel("[6]", ui->lineEdit_7->text(), false);
+a = word.findReplaseLabel("[7]", ui->lineEdit_9->text(), false);
+
+//  word.tableFill(varList,listLabel,1,2);
+
+
+  int j;
+  j++;
 }

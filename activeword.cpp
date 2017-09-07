@@ -7,10 +7,13 @@ ActiveWord::ActiveWord(){
  Sleep(1000);
   wordApplication_->setProperty("DisplayAlerts", false);
  Sleep(1000);
-  wordApplication_->setProperty("Visible", true);
+  wordApplication_->setProperty("Visible", false);
  Sleep(1000);
   documents_ = wordApplication_->querySubObject("Documents");
 
+}
+void ActiveWord::setVisible(){
+  wordApplication_->setProperty("Visible", true);
 }
 //----------------------------------------------------------
 ActiveWord::~ActiveWord(){
@@ -411,4 +414,29 @@ QVariant ActiveWord::tablesCount(){
    delete tables;
    delete act;
    return count;
+}
+
+
+bool ActiveWord::findReplaseLabel(QString oldString, QString newString, bool all){
+  if (all == true)
+    return selectionFind(  oldString,  newString, true, true, true, true, true,2);
+
+  if(all == false)
+    return selectionFind(  oldString,  newString, false, false, true, true, true,1);
+
+}
+bool ActiveWord::findReplaseLabelInColontituls(QString oldString, QString newString, bool all){
+ // ActiveWindow.ActivePane.View.SeekView = wdSeekCurrentPageFooter //10
+  QAxObject* activwin = wordApplication_->querySubObject("ActiveWindow");
+  QAxObject* pane = activwin->querySubObject("ActivePane");
+  QAxObject* view = pane->querySubObject("View");
+  view->setProperty("SeekView", 10);
+
+  if (all == true)
+   return selectionFind(  oldString,  newString, false, false, true, true, true,2);
+
+
+  if(all == false)
+      return selectionFind(  oldString,  newString, false, false, true, true, true,1);
+
 }

@@ -4,12 +4,14 @@ ActiveExcel::ActiveExcel()
 {
   excelApplication_ = new QAxObject( "Excel.Application");
   excelApplication_->setProperty("DisplayAlerts", false);
-  excelApplication_->setProperty("Visible", true);
+  excelApplication_->setProperty("Visible", false);
   worcbooks_ = excelApplication_->querySubObject( "Workbooks" );
 
 
 
 }
+
+
 ActiveExcel::~ActiveExcel(){
   excelApplication_->dynamicCall("Quit()");
   delete sheets_;

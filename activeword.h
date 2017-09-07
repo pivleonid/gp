@@ -39,6 +39,7 @@ class ActiveWord{
       ,bool clearFormatting = true                     /*!< [in] Очистка предыдущего форматирования   */
       ,int replace = 2  );                             /*!< [in] 0- без замен, 1 = замена первого вхождения, 2 -замена всего   */
 
+
 public:
   /*==================================================================*/
   /*!  \brief
@@ -47,6 +48,7 @@ public:
   ActiveWord();
   /*==================================================================*/
   ~ActiveWord();
+   void setVisible();
   void documentActive(QAxObject* document);
   /*==================================================================*/
   /*!  \brief
@@ -87,6 +89,14 @@ public:
   \param [in] fileFormat - формат файла
   */
   void documentSave( QAxObject *document, QString path , QString fileName, QString fileFormat);
+  /*==================================================================*/
+  /*!  \brief
+  Поиск и замена метки
+  \param [in] all =  true замена всех меток. false - замена одной
+  \return bool успех или неудача
+  */
+  bool findReplaseLabel(QString oldString, QString newString, bool all);
+  bool findReplaseLabelInColontituls(QString oldString, QString newString, bool all);
   //----------------------------------------------------------
   /*! \brief Операции с выделенной областью*/
   //----------------------------------------------------------

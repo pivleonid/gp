@@ -43,10 +43,28 @@ bool ActiveWord::selectionFind( QString oldString , QString newString
                          ,bool searchReg, bool searchAllWord, bool searchForward
                          , bool searchFormat, bool clearFormatting, int replace ){
 
-    QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
-    QAxObject* findString =  wordSelection->querySubObject("Find");
-    if(clearFormatting)
-      findString->dynamicCall("ClearFormatting()");
+  // QAxObject* activwin = wordApplication_->querySubObject("ActiveWindow");
+   //QAxObject* wordSelection = activwin->querySubObject("Selection");
+    //
+  //2 попытка//
+//  QAxObject* wordSelection = wordApplication_->querySubObject("ActiveDocument ");
+//  QAxObject* range = wordSelection->querySubObject("Range");
+//  QAxObject* range = range->querySubObject("Sections");
+//  QAxObject* findString =  range->querySubObject("Find");
+  //
+  //3//
+  QAxObject* docActive = wordApplication_->querySubObject("ActiveDocument");
+   QAxObject* section = docActive->querySubObject("Sections(1)");
+   //QAxObject* first = docActive->querySubObject("First");
+   QAxObject* headers = section->querySubObject("Headers(1)");
+   QAxObject* range = headers->querySubObject("Range");
+  QAxObject* findString =  range->querySubObject("Find");
+
+  //
+   //QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
+   //QAxObject* findString =  wordSelection->querySubObject("Find");
+ //   if(clearFormatting)
+   //   findString->dynamicCall("ClearFormatting()");
     QList<QVariant> params;//Все параметры не обязательные!
     params.operator << (QVariant(oldString)); //не обязательный параметр- можно использовать ""
     params.operator << (QVariant(searchReg)); //учитывать регистр
@@ -73,7 +91,7 @@ bool ActiveWord::selectionFind( QString oldString , QString newString
                       "const QVariant&,const QVariant&,const QVariant&)",
                       params);
     delete findString;
-    delete wordSelection;
+    //delete wordSelection;
     return param.toBool();
 }
 //----------------------------------------------------------
@@ -426,11 +444,12 @@ bool ActiveWord::findReplaseLabel(QString oldString, QString newString, bool all
 
 }
 bool ActiveWord::findReplaseLabelInColontituls(QString oldString, QString newString, bool all){
- // ActiveWindow.ActivePane.View.SeekView = wdSeekCurrentPageFooter //10
+  //ActiveWindow.ActivePane.View.SeekView = wdSeekCurrentPageFooter //10
   QAxObject* activwin = wordApplication_->querySubObject("ActiveWindow");
   QAxObject* pane = activwin->querySubObject("ActivePane");
   QAxObject* view = pane->querySubObject("View");
   view->setProperty("SeekView", 10);
+  view->setProperty("SeekView", 9);
 
   if (all == true)
    return selectionFind(  oldString,  newString, false, false, true, true, true,2);

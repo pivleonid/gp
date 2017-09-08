@@ -179,7 +179,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit_6"/>
+             <widget class="QLineEdit" name="lineEdit_6">
+              <property name="text">
+               <string>sdfsdfsdfsdf</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -196,7 +200,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit_7"/>
+             <widget class="QLineEdit" name="lineEdit_7">
+              <property name="text">
+               <string>sdfsdfsdfsdfs</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -216,7 +224,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit_9"/>
+             <widget class="QLineEdit" name="lineEdit_9">
+              <property name="text">
+               <string>sfsdfwrwwerwer</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -313,19 +325,8 @@
      </layout>
     </item>
    </layout>
-   <zorder>settings</zorder>
    <zorder></zorder>
    <zorder></zorder>
-   <zorder></zorder>
-   <zorder></zorder>
-   <zorder></zorder>
-   <zorder></zorder>
-   <zorder></zorder>
-   <zorder>saveButn</zorder>
-   <zorder>label_4</zorder>
-   <zorder>horizontalSpacer</zorder>
-   <zorder>verticalSpacer</zorder>
-   <zorder>verticalSpacer_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

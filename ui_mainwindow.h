@@ -333,8 +333,6 @@ public:
         gridLayout_18->addLayout(gridLayout_17, 0, 1, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
-        saveButn->raise();
-        label_4->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 746, 22));
@@ -363,8 +361,11 @@ public:
         label_5->setText(QApplication::translate("MainWindow", "\320\235.\320\272\320\276\320\275\321\202\321\200.", Q_NULLPTR));
         label_6->setText(QApplication::translate("MainWindow", "\320\243\321\202\320\262.", Q_NULLPTR));
         label_7->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\206\320\270\320\274\320\260\320\273\321\214\320\275\321\213\320\271 \320\275\320\276\320\274\320\265\321\200 \320\270\320\267\320\264\320\265\320\273\320\270\321\217", Q_NULLPTR));
+        lineEdit_6->setText(QApplication::translate("MainWindow", "sdfsdfsdfsdf", Q_NULLPTR));
         label_8->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265 ", Q_NULLPTR));
+        lineEdit_7->setText(QApplication::translate("MainWindow", "sdfsdfsdfsdfs", Q_NULLPTR));
         label_10->setText(QApplication::translate("MainWindow", "\320\244\320\270\321\200\320\274\320\260-\320\270\320\267\320\263\320\276\321\202\320\276\320\262\320\270\321\202\320\265\320\273\321\214", Q_NULLPTR));
+        lineEdit_9->setText(QApplication::translate("MainWindow", "sfsdfwrwwerwer", Q_NULLPTR));
         comboBox->clear();
         comboBox->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "word", Q_NULLPTR)

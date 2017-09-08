@@ -317,7 +317,7 @@ void ActiveWord::tableAddLine(QAxObject* table){
   rows->dynamicCall("Add()");
   delete rows;
 }
-
+//tableLabel метки могут не совпадать с метками в шаблонном документе
 void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabel, int tableIndex, int start){
 
   QAxObject* act = wordApplication_->querySubObject("ActiveDocument");
@@ -332,7 +332,8 @@ void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabe
     //containerIndex.append(templateTableLabel.indexOf(tableLabel[i]));
     containerIndex.append(tableLabel.indexOf(templateTableLabel[i]));
   QAxObject* table = tables->querySubObject("Item(const QVariant&)", tableIndex);
-  const int count = tableDat_in.count(); //строчки
+  //количество добаввленных строк
+  const int count = tableDat_in.count();
   QAxObject* cell;
   for(int i = 1; i <= count; i++){
       if(i != 1 + start){
@@ -341,7 +342,7 @@ void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabe
           tableAddLine(table);//добавляю строчку
         }
       for(int j = 1; j <= tabColumns; j++){
-
+          //ежели элемент не найден в таблице меток
           if(containerIndex[j-1] == -1)
             continue;
           if( tableDat_in[j].count() < j)
@@ -349,6 +350,7 @@ void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabe
           //b = tableDat_in[i].count();
           cell = table->querySubObject("Cell(const QVariant& , const QVariant&)",i + start-1 , j);
           cell->querySubObject("Range")->dynamicCall("Select()");
+          //если метка стоит, а замещающая строка пустая - то метка останется!
           wordApplication_->querySubObject("Selection")->dynamicCall("TypeText(Text)", tableDat_in[i-1][containerIndex[j-1]]);
 
         }

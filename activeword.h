@@ -222,6 +222,8 @@ void selectionCopyAllText(bool buffer);
   QVariant tablesCount();
 
 
+  void shapes( QAxObject*);
+
 };
 
 /*==================================================================*/

@@ -44,7 +44,7 @@ void MainWindow::openFile(){
 
   QStringList var, var1;
   // 20 секунд на чтение
-  for(int i = 2;  ; i++){
+  for(int i = 2; i < 500 ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -187,12 +187,12 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
                     if(vS == vectorString.end()-1)
                       continue;
                     if( ( (*vS) != "-")  && ( (*(vS+1) ) != "-")  )
-                        vS = vectorString.insert(vS+1, ",");
+                        vS = vectorString.insert(vS+1, ", \n");
                 }
                 //поставить  префикс
                 for(vS = vectorString.begin(); vS < vectorString.end(); vS++){
                     QString vss1 = *vS;
-                    if( ((*vS) != "-")&& ((*vS) != ",")){
+                    if( ((*vS) != "-")&& ((*vS) != ", \n")){
                         (*vS).prepend(prefix);
                         vss1 = *vS;
                         int i= 0;
@@ -217,7 +217,7 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
     }
     //ежели хранится два элемента
     if(sttt.toInt() == 2){
-        (*var2).insert(1,",");
+        (*var2).insert(1,", ");
         int count = (*var2).count();
         QString vec;
         for( int i = 0; i < count - 2; i++){
@@ -234,9 +234,14 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
 DeviceandSpace(desValue);
 
 
+ActiveWord word;
+QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
 
+ QStringList listLabel = word.tableGetLabels(1, 2);
 
+  word.tableFill(desValue,listLabel,1,2);
 
+word.setVisible();
 
 
 int i;
@@ -252,13 +257,8 @@ void MainWindow::generate(){
   ActiveWord word;
   QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
   word.setVisible();
- // QStringList listLabel = word.tableGetLabels(1, 2);
 
-bool a = word.findReplaseLabelInColontituls("[5]", ui->lineEdit_6->text(), true);
-a  =word.findReplaseLabelInColontituls("[6]", ui->lineEdit_7->text(), false);
-a = word.findReplaseLabelInColontituls("[7]", ui->lineEdit_9->text(), false);
-
-//  word.tableFill(varList,listLabel,1,2);
+  word.shapes(doc1);
 
 
   int j;

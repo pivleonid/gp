@@ -44,7 +44,7 @@ void MainWindow::openFile(){
 
   QStringList var, var1;
   // 20 секунд на чтение
-  for(int i = 2; ; i++){
+  for(int i = 2;  ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -136,7 +136,6 @@ for ( des = desValue.begin(); des < desValue.end(); des++) {
     int cont = (*des).count();
     (*des).append(QString::number(cont - 1));
   }
-QString gg;
 //desValue [0] перечисление c1 c2 ... [1] описание компонента [3] количество одинаковых элементов
 QList<QString> vectorString;
 QList<QString>::iterator vS;
@@ -219,13 +218,20 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
     //ежели хранится два элемента
     if(sttt.toInt() == 2){
         (*var2).insert(1,",");
-        int i;
-        i++;
+        int count = (*var2).count();
+        QString vec;
+        for( int i = 0; i < count - 2; i++){
+          vec +=(*var2)[i];
+        }
+        (*var2).removeFirst();
+        (*var2).removeFirst();
+        (*var2).removeFirst();
+        (*var2).prepend(vec);
+        vec.clear();
+
     }
-    int i;
-    i++;
 }
-//DeviceandSpace(desValue);
+DeviceandSpace(desValue);
 
 
 
@@ -274,30 +280,33 @@ void DeviceandSpace(QList<QStringList>& varList){
   bool flag_x = false;
   bool flag_z = false;
   bool flag_zq = false;
+  bool flag_f = false;
 int flag_spaceFirst = 0;
   bool flag_space = false; //для пропуска строки
   QStringList var;
+  QStringList var_space;
+  var_space << "" << "" << "";
   QList<QStringList>::iterator w;
   for ( w = varList.begin();w < varList.end(); w++) {
       //foreach (auto k, *w) {
 
       //для пропуска строки
-      if(flag_space == true){
+//      if(flag_space == true){
 
-          var << "" << "" << "";
-          w = varList.insert(w ,var);
-          if(flag_spaceFirst == 1){
-              varList.prepend(var);
-              var.clear();
-              flag_spaceFirst++;
-              continue;
-            }
-          w+2;
-          w = varList.insert(w ,var);
-          var.clear();
-          flag_space = false;
-          w--;
-        }
+//          var << "" << "" << "";
+//          w = varList.insert(w ,var);
+//          if(flag_spaceFirst == 1){
+//              varList.prepend(var);
+//              var.clear();
+//              flag_spaceFirst++;
+//              continue;
+//            }
+//          w+2;
+//          w = varList.insert(w ,var);
+//          var.clear();
+//          flag_space = false;
+//          w--;
+//        }
       //конденсаторы, резисторы и т.д.
       if((*w)[0][0] == 'A' && flag_a == false){
           pasteStr = "Устройства";
@@ -308,7 +317,7 @@ int flag_spaceFirst = 0;
           flag_c = true;
         }
       if((*w)[0][0] == 'D' && flag_d == false){
-          pasteStr = "Схемы интегральные";
+          pasteStr = "Микросхемы";
           flag_d = true;
         }
       if((*w)[0][0] == 'H' && (*w)[0][1] == 'L'&& flag_hl == false){
@@ -316,7 +325,7 @@ int flag_spaceFirst = 0;
           flag_hl = true;
         }
       if((*w)[0][0] == 'L'&& flag_l == false){
-          pasteStr = "Катушки индуктивности";
+          pasteStr = "Дроссели";
           flag_l = true;
         }
       if((*w)[0][0] == 'R'&& flag_r == false){
@@ -347,14 +356,20 @@ int flag_spaceFirst = 0;
           pasteStr = "Кварцевый резонатор";
           flag_zq = true;
         }
+      if((*w)[0][0] == 'F' && flag_f == false){
+          pasteStr = "Предохранители";
+          flag_f = true;
+        }
       //строка не пуста
       if(pasteStr.isEmpty() == false){
+
+          w = varList.insert(w ,var_space);
           var << "" << pasteStr << "";
-          w = varList.insert(w ,var);
+          w = varList.insert(++w ,var);
           pasteStr.clear();
           var.clear();
-          flag_space = true;
-          flag_spaceFirst++;
+         // flag_space = true;
+          //flag_spaceFirst++;
         }
 
 

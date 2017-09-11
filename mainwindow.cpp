@@ -44,7 +44,7 @@ void MainWindow::openFile(){
 
   QStringList var, var1;
   // 20 секунд на чтение
-  for(int i = 2; i < 25; i++){
+  for(int i = 2; ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -109,6 +109,7 @@ prem.clear();
 QList<QStringList>::iterator w, z;
 QStringList desValue1;
 QList<QStringList> desValue;
+desValue.clear();
 //for ( w = varList.begin();w < varList.end();  w++) {
 foreach (auto var, varList) {
 
@@ -133,39 +134,102 @@ QList<QStringList>::iterator des;
 for ( des = desValue.begin(); des < desValue.end(); des++) {
 
     int cont = (*des).count();
-    QString str;
-    if(cont == 2){
-      (*des).append(QString::number(cont - 1));
-      continue;
-      }
-    for(int i = 0; i < cont-1; i++)
-      if(i == 0)
-      str += (*des).at(i);
-      else str += " " + (*des).at(i);
-    for(int i = 0; i < cont -1; i++)
-      (*des).removeFirst();
-    (*des).prepend(str);
-    (*des) << QString::number(cont -1);
-    str.clear();
+    (*des).append(QString::number(cont - 1));
   }
-
+QString gg;
 //desValue [0] перечисление c1 c2 ... [1] описание компонента [3] количество одинаковых элементов
+QList<QString> vectorString;
+QList<QString>::iterator vS;
+QList<QStringList>::iterator var2;
+for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
+    int jk = (*var2).count();
+    //в этой ячейке храниться количество элементов
+    QString sttt = (*var2).at(jk-1);
+
+    if(sttt.toInt() > 2){
+        //Сохраняю первый символ!
+        QString prefix = (*var2).at(0);
+        prefix.remove(QRegExp("[^A-Za-zА-Яа-я]"));
+        //j = кол-во эл-тов, j-1 - описание элементов
+        //убираю префиксы
+        for(int i = 0; i < sttt.toInt(); i++){
+            QString perem =  (*var2).at(i);
+            QString symbol = perem.remove(QRegExp("[A-Za-zА-Яа-я]"));
+            vectorString << symbol;
+            //Расстановка "-" символов межи последующими числами
+            if(i > 0){
+                vS = vectorString.end()-1;
+                int aEnd = (*vS).toInt();
+                vS--;
+                int aPrepend = (*vS).toInt();
+                //если предыдущее значение равно текущему- вставить между ними "-"
+                if( aEnd - 1 == aPrepend ){
+                    vS = vectorString.insert(vectorString.end()-1, "-");
+
+                }
+            }
+            //vectorString заполнен!
+            if( i == sttt.toInt() - 1){
+                //Убрать числа, слева и справа от которых стоит "-"
+                for(vS = vectorString.begin(); vS < vectorString.end(); vS++){
+                    if(vS == vectorString.end()-2)
+                      continue;
+                    if( (*vS == "-") &&( *(vS+2) == "-") ){
+                        //удаляю два элемента, возвращаюсь на предыдущий
+                        vS=vectorString.erase(vS);
+                        vS=vectorString.erase(vS);
+                        vS = vS-1;
+                    }
+                }
+                //поставить  запятую
+                for(vS = vectorString.begin(); vS < vectorString.end(); vS++){
+                    QString vss = *(vectorString.end()-1); //на 5 эл-те badalloc //3 прогон
+                    QString vss1 = *vS;
+                    if(vS == vectorString.end()-1)
+                      continue;
+                    if( ( (*vS) != "-")  && ( (*(vS+1) ) != "-")  )
+                        vS = vectorString.insert(vS+1, ",");
+                }
+                //поставить  префикс
+                for(vS = vectorString.begin(); vS < vectorString.end(); vS++){
+                    QString vss1 = *vS;
+                    if( ((*vS) != "-")&& ((*vS) != ",")){
+                        (*vS).prepend(prefix);
+                        vss1 = *vS;
+                        int i= 0;
+                        i++;
+                      }
+
+                }
+                //тут надо удалить лишние элементы, вставив значение vectorString
+                qDebug() << vectorString;
+                int varDel = sttt.toInt() - 1;
+                for(int i = 0; i < varDel+1; i++)
+                    (*var2).removeFirst();
+                QString vec;
+                foreach (auto ver, vectorString) {
+                    vec += ver;
+                }
+                (*var2).prepend(vec);
+                vectorString.clear();
+                vec.clear();
+            }
+        }
+    }
+    //ежели хранится два элемента
+    if(sttt.toInt() == 2){
+        (*var2).insert(1,",");
+        int i;
+        i++;
+    }
+    int i;
+    i++;
+}
+//DeviceandSpace(desValue);
 
 
-DeviceandSpace(desValue);
-
-ActiveWord word;
-QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
-
-QStringList listLabel = word.tableGetLabels(1, 2);
 
 
-word.setVisible();
- word.tableFill(desValue,listLabel,1,2);
-
-
-int j;
-j++;
 
 
 

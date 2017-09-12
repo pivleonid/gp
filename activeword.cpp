@@ -363,6 +363,7 @@ void ActiveWord::tableAddLine(QAxObject* table){
   rows->dynamicCall("Add()");
   delete rows;
 }
+
 //tableLabel метки могут не совпадать с метками в шаблонном документе
 void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabel, int tableIndex, int start){
 
@@ -397,7 +398,8 @@ void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabe
           cell = table->querySubObject("Cell(const QVariant& , const QVariant&)",i + start-1 , j);
           cell->querySubObject("Range")->dynamicCall("Select()");
           //если метка стоит, а замещающая строка пустая - то метка останется!
-          wordApplication_->querySubObject("Selection")->dynamicCall("TypeText(Text)", tableDat_in[i-1][containerIndex[j-1]]);
+          wordApplication_->querySubObject("Selection")->dynamicCall("Cut()");
+           wordApplication_->querySubObject("Selection")->dynamicCall("TypeText(Text)", tableDat_in[i-1][containerIndex[j-1]]);
 
         }
     }

@@ -3,6 +3,7 @@
 #include "QFileDialog"
 #include <activeexcel.h>
 #include "activeword.h"
+#include "qprocess.h"
 
 void DeviceandSpace(QList<QStringList>& varList);
 
@@ -14,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(ui->openFile,SIGNAL(clicked(bool)),this,SLOT(openFile()));
   connect(ui->docGen,SIGNAL(clicked(bool)), this, SLOT(generate()));
-
+  connect(ui->gost,SIGNAL(clicked(bool)), this, SLOT(gost()));
 
 
 
@@ -26,6 +27,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 }
+
+void MainWindow::gost(){
+//  path += "Шрифт Гост'а.ttf";
+  QString path = "D://projects//gp//debug//шрифт.bat";
+  proc = new QProcess(this);
+  proc->start(path);
+}
+
 void MainWindow::saveBut(){
  // ui->docGen->setEnabled(true);
 
@@ -33,6 +42,7 @@ void MainWindow::saveBut(){
 
 MainWindow::~MainWindow()
 {
+  delete proc;
   delete ui;
 }
 
@@ -40,6 +50,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::openFile(){
 
+  ui->openFile->setEnabled(false);
   QString fileName_DATA = QFileDialog::getOpenFileName(this, tr("Open Excel File"),"", tr("(*.xlsx *.xls)"));
   ActiveExcel excel;
   QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
@@ -53,6 +64,8 @@ void MainWindow::openFile(){
 
   int proc = 0;
   bool procUp = true;
+  ui->progressBar->setValue(0);
+  ui->progressBar_2->setValue(0);
   for(int i = 2;  ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
@@ -263,6 +276,7 @@ ui->progressBar_2->setValue(60);
 ActiveWord word;
 QAxObject* doc1 = word.documentOpen("D:/projects/gp/PEZ.docx");
 
+//заполнение таблицы
 QStringList listLabel = word.tableGetLabels(1, 2);
 ui->progressBar_2->setValue(80);
 word.tableFill(desValue,listLabel,1,2);
@@ -283,7 +297,7 @@ foreach (auto var, strListNamelabel) {
     s1.clear();
   }
 
-//Вбивка ФИО
+//Подписей
 
 word.colontitulReplaseLabel(doc1, "[Разраб]", ui->lineEdit->text(), true);
 word.colontitulReplaseLabel(doc1, "[пров]", ui->lineEdit_2->text(), true);
@@ -297,23 +311,16 @@ word.colontitulReplaseLabel(doc1, "[7]", ui->lineEdit_9->text(), true);
 
 word.setVisible();
 ui->progressBar_2->setValue(100);
+ui->openFile->setEnabled(true);
 }
 
 
 
 
 
-
+//функция будет генерить файлы в excel/ word
 void MainWindow::generate(){
-  ActiveWord word;
-  QAxObject* doc1 = word.documentOpen("D:/projects/gp/111.docx");
-  word.setVisible();
 
-  //word.shapes(doc1);
-
-
-  int j;
-  j++;
 }
 
 //дополняет в QList пропуски и названия элементов

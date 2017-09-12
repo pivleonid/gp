@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->openFile,SIGNAL(clicked(bool)),this,SLOT(openFile()));
   connect(ui->docGen,SIGNAL(clicked(bool)), this, SLOT(generate()));
 
-  connect(ui->saveButn, SIGNAL(clicked(bool)),this, SLOT(saveBut()));
+
 
 
   strListNamelabel << "[Устройства]" << "[Конденсаторы]"<<"[Микросхемы]"<<"[Светодиоды]"<<"[Дроссели]"<<"[Резисторы]"<<"[Коммутация]"<<"[Диоды]"<<"[Транзисторы]"<<"[Контактные соединения]"<<"[Фильтры]"<<"[Кварцевый резонатор]"<<"[Предохранители]";
@@ -50,7 +50,10 @@ void MainWindow::openFile(){
 
   QStringList var, var1;
   // 20 секунд на чтение
-  for(int i = 2; i < 50 ; i++){
+
+  int proc = 0;
+  bool procUp = true;
+  for(int i = 2;  ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -59,8 +62,26 @@ void MainWindow::openFile(){
       int g = var.count();
       if(var[g-1] == "" && var[g-2] == "" && var[g-3] == "")
        break;
+
+      if(i == 500)
+        ui->progressBar_2->setValue(25);
+
+      if(i == 1000)
+        ui->progressBar_2->setValue(50);
+
+      ui->progressBar->setValue(proc);
+
+      if(proc == 100)
+        procUp = false;
+      if(proc == 0)
+        procUp = true;
+      if(procUp)
+        proc++;
+      else
+        proc--;
     }
 
+  ui->progressBar->setValue(100);
   QList<QStringList> varList;
    QString prem;
   int count = 0;
@@ -237,15 +258,15 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
     }
 }
 DeviceandSpace(desValue);
-
+ui->progressBar_2->setValue(60);
 
 ActiveWord word;
 QAxObject* doc1 = word.documentOpen("D:/projects/gp/PEZ.docx");
 
- QStringList listLabel = word.tableGetLabels(1, 2);
-
+QStringList listLabel = word.tableGetLabels(1, 2);
+ui->progressBar_2->setValue(80);
 word.tableFill(desValue,listLabel,1,2);
-
+ui->progressBar_2->setValue(90);
 // поиск элементов, добавка курсива и расположение по центру
 foreach (auto var, strListNamelabel) {
     //подчеркивание
@@ -272,11 +293,10 @@ word.colontitulReplaseLabel(doc1, "[утв]", ui->lineEdit_5->text(), true);
 word.colontitulReplaseLabel(doc1, "[5]", ui->lineEdit_6->text(), true);
 word.colontitulReplaseLabel(doc1, "[5]", ui->lineEdit_6->text(), false);
 word.colontitulReplaseLabel(doc1, "[6]", ui->lineEdit_7->text(), true);
-word.colontitulReplaseLabel(doc1, "C44", ui->lineEdit_9->text(), true);
+word.colontitulReplaseLabel(doc1, "[7]", ui->lineEdit_9->text(), true);
 
 word.setVisible();
-int i;
-i++;
+ui->progressBar_2->setValue(100);
 }
 
 

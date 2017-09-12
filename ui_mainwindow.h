@@ -20,6 +20,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
@@ -67,14 +68,12 @@ public:
     QLabel *label_10;
     QLineEdit *lineEdit_9;
     QGridLayout *gridLayout_15;
-    QGridLayout *gridLayout_2;
-    QComboBox *comboBox;
-    QLabel *label;
-    QSpacerItem *verticalSpacer_3;
-    QSpacerItem *horizontalSpacer;
     QGridLayout *gridLayout_14;
-    QSpacerItem *verticalSpacer_2;
-    QPushButton *saveButn;
+    QProgressBar *progressBar;
+    QProgressBar *progressBar_2;
+    QGridLayout *gridLayout_2;
+    QLabel *label;
+    QComboBox *comboBox;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -286,45 +285,40 @@ public:
         gridLayout_15 = new QGridLayout();
         gridLayout_15->setSpacing(6);
         gridLayout_15->setObjectName(QStringLiteral("gridLayout_15"));
+        gridLayout_14 = new QGridLayout();
+        gridLayout_14->setSpacing(6);
+        gridLayout_14->setObjectName(QStringLiteral("gridLayout_14"));
+        progressBar = new QProgressBar(centralWidget);
+        progressBar->setObjectName(QStringLiteral("progressBar"));
+        progressBar->setValue(0);
+
+        gridLayout_14->addWidget(progressBar, 0, 0, 1, 1);
+
+        progressBar_2 = new QProgressBar(centralWidget);
+        progressBar_2->setObjectName(QStringLiteral("progressBar_2"));
+        progressBar_2->setValue(0);
+
+        gridLayout_14->addWidget(progressBar_2, 1, 0, 1, 1);
+
+
+        gridLayout_15->addLayout(gridLayout_14, 0, 1, 1, 1);
+
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setSpacing(6);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        comboBox = new QComboBox(centralWidget);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
-
-        gridLayout_2->addWidget(comboBox, 2, 0, 1, 1);
-
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setAlignment(Qt::AlignCenter);
 
-        gridLayout_2->addWidget(label, 1, 0, 1, 1);
+        gridLayout_2->addWidget(label, 0, 0, 1, 1);
 
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        comboBox = new QComboBox(centralWidget);
+        comboBox->setObjectName(QStringLiteral("comboBox"));
 
-        gridLayout_2->addItem(verticalSpacer_3, 0, 0, 1, 1);
+        gridLayout_2->addWidget(comboBox, 1, 0, 1, 1);
 
 
         gridLayout_15->addLayout(gridLayout_2, 0, 0, 1, 1);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_15->addItem(horizontalSpacer, 0, 1, 1, 1);
-
-        gridLayout_14 = new QGridLayout();
-        gridLayout_14->setSpacing(6);
-        gridLayout_14->setObjectName(QStringLiteral("gridLayout_14"));
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
-
-        gridLayout_14->addItem(verticalSpacer_2, 0, 0, 1, 1);
-
-        saveButn = new QPushButton(centralWidget);
-        saveButn->setObjectName(QStringLiteral("saveButn"));
-
-        gridLayout_14->addWidget(saveButn, 1, 0, 1, 1);
-
-
-        gridLayout_15->addLayout(gridLayout_14, 0, 2, 1, 1);
 
 
         gridLayout_17->addLayout(gridLayout_15, 1, 0, 1, 1);
@@ -371,14 +365,13 @@ public:
         lineEdit_7->setText(QApplication::translate("MainWindow", "\320\237\320\273\320\260\321\202\320\260 \321\202\321\200\320\260\320\272\321\202\320\276\320\262\320\276\320\263\320\276 \321\203\321\201\320\270\320\273\320\270\321\202\320\265\320\273\321\217", Q_NULLPTR));
         label_10->setText(QApplication::translate("MainWindow", "\320\244\320\270\321\200\320\274\320\260-\320\270\320\267\320\263\320\276\321\202\320\276\320\262\320\270\321\202\320\265\320\273\321\214", Q_NULLPTR));
         lineEdit_9->setText(QApplication::translate("MainWindow", "\320\244\320\223\320\243\320\237 \320\235\320\237\320\237 \302\253\320\223\320\260\320\274\320\274\320\260\302\273", Q_NULLPTR));
+        label->setText(QApplication::translate("MainWindow", "\320\250\320\260\320\261\320\273\320\276\320\275 \320\262\321\213\321\205\320\276\320\264\320\275\320\276\320\263\320\276\n"
+" \321\204\320\260\320\271\320\273\320\260", Q_NULLPTR));
         comboBox->clear();
         comboBox->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "word", Q_NULLPTR)
          << QApplication::translate("MainWindow", "excel", Q_NULLPTR)
         );
-        label->setText(QApplication::translate("MainWindow", "\320\250\320\260\320\261\320\273\320\276\320\275 \320\262\321\213\321\205\320\276\320\264\320\275\320\276\320\263\320\276\n"
-" \321\204\320\260\320\271\320\273\320\260", Q_NULLPTR));
-        saveButn->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", Q_NULLPTR));
     } // retranslateUi
 
 };

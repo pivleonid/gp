@@ -256,14 +256,24 @@ foreach (auto var, strListNamelabel) {
     s.remove(0,1);
     s.remove(s.count()-1,1);
     QString s1 = var;
-    // замена меток
+    // замена меток/
     word.findReplaseLabel(s1, s, true);
     s.clear();
     s1.clear();
   }
+word.setVisible();
+QString bb = ui->lineEdit->text();
+//Вбивка ФИО
+word.findReplaseLabel("[Разраб]", ui->lineEdit->text(), true);
+word.findReplaseLabel("[пров]", ui->lineEdit_2->text(), true);
+word.findReplaseLabel("[тконт]", ui->lineEdit_3->text(), true); //
+word.findReplaseLabel("[конт]", ui->lineEdit_4->text(), true);
+word.findReplaseLabel("[утв]", ui->lineEdit_5->text(), true);
+word.findReplaseLabel("[5]", ui->lineEdit_6->text(), true);
+word.findReplaseLabel("[6]", ui->lineEdit_7->text(), true);
+word.findReplaseLabel("[7]", ui->lineEdit_9->text(), true);
 
-
-
+word.setVisible();
 
 int i;
 i++;

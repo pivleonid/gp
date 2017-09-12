@@ -508,62 +508,51 @@ bool ActiveWord::findReplaseLabelInColontituls(QString oldString, QString newStr
 
 }
 
-void ActiveWord::shapes( QAxObject* doc){
-
-  QAxObject* activwin = wordApplication_->querySubObject("ActiveWindow");
-  QAxObject* pane = activwin->querySubObject("ActivePane");
-  QAxObject* view = pane->querySubObject("View");
-  view->setProperty("SeekView", 10);
-  view->setProperty("SeekView", 9);
-
-  QAxObject* shapes = doc->querySubObject("Shapes");
-  int count1 = shapes->dynamicCall("Count").toInt();
-  QAxObject* shape = shapes->querySubObject("Item(const QVariant&)", 1); //может попробовать get
-  QAxObject* groupShapes = shape->querySubObject("GroupItems");
-  int count = groupShapes->dynamicCall("Count").toInt();
-  for(int i = 1; i < count; i++){
-            QAxObject* range = groupShapes->querySubObject("Range(const QVarian&)" , i);
-            QVariant name = range->dynamicCall("Name");
-            //ActiveDocument.Shapes.Range(Array("Text Box 251")).Select
-            QAxObject* select = groupShapes->querySubObject("Select");
+QVariant ActiveWord::colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage){
 
 
-            QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
-            QAxObject* findString =  wordSelection->querySubObject("Find");
+  QAxObject* stor = doc->querySubObject("StoryRanges");
+  QAxObject*  range;
+  if(firstPage == true)
+    range = stor->querySubObject("Item( wdFirstPageFooterStory )" ); // последующие стр wdPrimaryFooterStory
+  if(firstPage == false)
+    range = stor->querySubObject("Item( wdPrimaryFooterStory )" ); // последующие стр wdPrimaryFooterStory
+  QAxObject*  findString =  range->querySubObject("Find");
+  QList<QVariant> params;//Все параметры не обязательные!
+  params.operator << (QVariant(oldString)); //не обязательный параметр- можно использовать ""
+  params.operator << (QVariant(false)); //учитывать регистр
+  params.operator << (QVariant(true));//Найти целые слова
+  params.operator << (QVariant(false));// использовать подстанровочные знаки (?)
+  params.operator << (QVariant(false));//звуки
+  params.operator << (QVariant(false));//все словоформы
+  params.operator << (QVariant(true));// вперед (поиск)
+  params.operator << (QVariant("1"));// 0 =  операция поиска заканчивается, 1 = операция поиска продолжается ,
+  //если достигнут начало или конец диапазона поиска
+  params.operator << (QVariant(true)); //(Для применения форматирования необходимо TRUE)
+  params.operator << (QVariant(newString));//Текст для замены
+  params.operator << (QVariant(2)); //2 = Замена всех; 1 = Замена первого; 0 = без замен.
+  params.operator << (QVariant(true)); //облако пафоса
+  params.operator << (QVariant(true)); //облако пафоса
+  params.operator << (QVariant(true)); //облако пафоса
+  params.operator << (QVariant(true)); //облако пафоса
+  QVariant param =    findString->dynamicCall("Execute(const QVariant&,const QVariant&,"
+                                              "const QVariant&,const QVariant&,"
+                                              "const QVariant&,const QVariant&,"
+                                              "const QVariant&,const QVariant&,"
+                                              "const QVariant&,const QVariant&,"
+                                              "const QVariant&,const QVariant&,"
+                                              "const QVariant&,const QVariant&,const QVariant&)",
+                                              params);
 
-               findString->dynamicCall("ClearFormatting()");
-             QList<QVariant> params;//Все параметры не обязательные!
-             params.operator << (QVariant("[5]")); //не обязательный параметр- можно использовать ""
-             params.operator << (QVariant(false)); //учитывать регистр
-             params.operator << (QVariant(true));//Найти целые слова
-             params.operator << (QVariant(false));// использовать подстанровочные знаки (?)
-             params.operator << (QVariant(false));//звуки
-             params.operator << (QVariant(false));//все словоформы
-             params.operator << (QVariant(true));// вперед (поиск)
-             params.operator << (QVariant("1"));// 0 =  операция поиска заканчивается, 1 = операция поиска продолжается ,
-             //если достигнут начало или конец диапазона поиска
-             params.operator << (QVariant(true)); //(Для применения форматирования необходимо TRUE)
-             params.operator << (QVariant("word"));//Текст для замены
-             params.operator << (QVariant(2)); //2 = Замена всех; 1 = Замена первого; 0 = без замен.
-             params.operator << (QVariant(true)); //облако пафоса
-             params.operator << (QVariant(true)); //облако пафоса
-             params.operator << (QVariant(true)); //облако пафоса
-             params.operator << (QVariant(true)); //облако пафоса
-             QVariant param =    findString->dynamicCall("Execute(const QVariant&,const QVariant&,"
-                               "const QVariant&,const QVariant&,"
-                               "const QVariant&,const QVariant&,"
-                               "const QVariant&,const QVariant&,"
-                               "const QVariant&,const QVariant&,"
-                               "const QVariant&,const QVariant&,"
-                               "const QVariant&,const QVariant&,const QVariant&)",
-                               params);
-  int k;
-  k++;
+  delete range;
+  delete stor;
+  return param;
+
+
     }
 
 
 
-}
 
 
 

@@ -224,7 +224,7 @@ void selectionCopyAllText(bool buffer);
   QVariant tablesCount();
 
 
-  void shapes( QAxObject*);
+  QVariant colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage);
 
 };
 

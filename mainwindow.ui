@@ -90,7 +90,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit"/>
+             <widget class="QLineEdit" name="lineEdit">
+              <property name="text">
+               <string>Иванов И.А.</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -107,7 +111,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit_2"/>
+             <widget class="QLineEdit" name="lineEdit_2">
+              <property name="text">
+               <string>Емцев И.Л.</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -124,7 +132,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit_3"/>
+             <widget class="QLineEdit" name="lineEdit_3">
+              <property name="text">
+               <string>Петров З.С.</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -141,7 +153,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit_4"/>
+             <widget class="QLineEdit" name="lineEdit_4">
+              <property name="text">
+               <string>Паскаль В.И.</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -158,7 +174,11 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLineEdit" name="lineEdit_5"/>
+             <widget class="QLineEdit" name="lineEdit_5">
+              <property name="text">
+               <string>Аладин В.С.</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -181,7 +201,7 @@
             <item row="1" column="0">
              <widget class="QLineEdit" name="lineEdit_6">
               <property name="text">
-               <string>sdfsdfsdfsdf</string>
+               <string>БЮЛИ.468714.005 ПЭ3</string>
               </property>
              </widget>
             </item>
@@ -202,7 +222,7 @@
             <item row="1" column="0">
              <widget class="QLineEdit" name="lineEdit_7">
               <property name="text">
-               <string>sdfsdfsdfsdfs</string>
+               <string>Плата трактового усилителя</string>
               </property>
              </widget>
             </item>
@@ -226,7 +246,7 @@
             <item row="1" column="0">
              <widget class="QLineEdit" name="lineEdit_9">
               <property name="text">
-               <string>sfsdfwrwwerwer</string>
+               <string>ФГУП НПП «Гамма»</string>
               </property>
              </widget>
             </item>

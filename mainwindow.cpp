@@ -18,6 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->saveButn, SIGNAL(clicked(bool)),this, SLOT(saveBut()));
 
 
+  strListNamelabel << "[Устройства]" << "[Конденсаторы]"<<"[Микросхемы]"<<"[Светодиоды]"<<"[Дроссели]"<<"[Резисторы]"<<"[Коммутация]"<<"[Диоды]"<<"[Транзисторы]"<<"[Контактные соединения]"<<"[Фильтры]"<<"[Кварцевый резонатор]"<<"[Предохранители]";
+
+
+
+
+
 
 }
 void MainWindow::saveBut(){
@@ -44,7 +50,7 @@ void MainWindow::openFile(){
 
   QStringList var, var1;
   // 20 секунд на чтение
-  for(int i = 2; i < 500 ; i++){
+  for(int i = 2; i < 50 ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -201,7 +207,6 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
 
                 }
                 //тут надо удалить лишние элементы, вставив значение vectorString
-                qDebug() << vectorString;
                 int varDel = sttt.toInt() - 1;
                 for(int i = 0; i < varDel+1; i++)
                     (*var2).removeFirst();
@@ -235,13 +240,29 @@ DeviceandSpace(desValue);
 
 
 ActiveWord word;
-QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
+QAxObject* doc1 = word.documentOpen("D:/projects/gp/PEZ.docx");
 
  QStringList listLabel = word.tableGetLabels(1, 2);
 
-  word.tableFill(desValue,listLabel,1,2);
+word.tableFill(desValue,listLabel,1,2);
 
-word.setVisible();
+// поиск элементов, добавка курсива и расположение по центру
+foreach (auto var, strListNamelabel) {
+    //подчеркивание
+    word.selectionFindFontname(var, true, false, true, true, "GOST type B");
+    //центрирование
+    word.selectionAlign(var , false, false, true);
+    QString s = var;
+    s.remove(0,1);
+    s.remove(s.count()-1,1);
+    QString s1 = var;
+    // замена меток
+    word.findReplaseLabel(s1, s, true);
+    s.clear();
+    s1.clear();
+  }
+
+
 
 
 int i;
@@ -255,7 +276,7 @@ i++;
 
 void MainWindow::generate(){
   ActiveWord word;
-  QAxObject* doc1 = word.documentOpen("D:/projects/gp/ПЭЗ.docx");
+  QAxObject* doc1 = word.documentOpen("D:/projects/gp/111.docx");
   word.setVisible();
 
   word.shapes(doc1);
@@ -281,83 +302,65 @@ void DeviceandSpace(QList<QStringList>& varList){
   bool flag_z = false;
   bool flag_zq = false;
   bool flag_f = false;
-int flag_spaceFirst = 0;
+  int flag_spaceFirst = 0;
   bool flag_space = false; //для пропуска строки
   QStringList var;
   QStringList var_space;
   var_space << "" << "" << "";
   QList<QStringList>::iterator w;
   for ( w = varList.begin();w < varList.end(); w++) {
-      //foreach (auto k, *w) {
 
-      //для пропуска строки
-//      if(flag_space == true){
-
-//          var << "" << "" << "";
-//          w = varList.insert(w ,var);
-//          if(flag_spaceFirst == 1){
-//              varList.prepend(var);
-//              var.clear();
-//              flag_spaceFirst++;
-//              continue;
-//            }
-//          w+2;
-//          w = varList.insert(w ,var);
-//          var.clear();
-//          flag_space = false;
-//          w--;
-//        }
       //конденсаторы, резисторы и т.д.
       if((*w)[0][0] == 'A' && flag_a == false){
-          pasteStr = "Устройства";
+          pasteStr = "[Устройства]";
           flag_a = true;
         }
       if((*w)[0][0] == 'C' && flag_c == false){
-          pasteStr = "Конденсаторы";
+          pasteStr = "[Конденсаторы]";
           flag_c = true;
         }
       if((*w)[0][0] == 'D' && flag_d == false){
-          pasteStr = "Микросхемы";
+          pasteStr = "[Микросхемы]";
           flag_d = true;
         }
       if((*w)[0][0] == 'H' && (*w)[0][1] == 'L'&& flag_hl == false){
-          pasteStr = "Светодиоды";
+          pasteStr = "[Светодиоды]";
           flag_hl = true;
         }
       if((*w)[0][0] == 'L'&& flag_l == false){
-          pasteStr = "Дроссели";
+          pasteStr = "[Дроссели]";
           flag_l = true;
         }
       if((*w)[0][0] == 'R'&& flag_r == false){
-          pasteStr = "Резисторы";
+          pasteStr = "[Резисторы]";
           flag_r = true;
         }
       if((*w)[0][0] == 'S'&& flag_s == false){
-          pasteStr = "Коммутация";
+          pasteStr = "[Коммутация]";
           flag_s = true;
         }
       if((*w)[0][0] == 'V' && (*w)[0][1] == 'D'&& flag_vd == false){
-          pasteStr = "Диоды";
+          pasteStr = "[Диоды]";
           flag_vd = true;
         }
       if((*w)[0][0] == 'V' && (*w)[0][1] == 'T'&& flag_vt == false){
-          pasteStr = "Транзисторы";
+          pasteStr = "[Транзисторы]";
           flag_vt = true;
         }
       if((*w)[0][0] == 'X'&& flag_x== false){
-          pasteStr = "Контактные соединения";
+          pasteStr = "[Контактные соединения]";
           flag_x = true;
         }
       if((*w)[0][0] == 'Z'&& flag_z == false){
-          pasteStr = "Фильтры";
+          pasteStr = "[Фильтры]";
           flag_z = true;
         }
       if((*w)[0][0] == 'Z' && (*w)[0][1] == 'Q'&& flag_zq == false){
-          pasteStr = "Кварцевый резонатор";
+          pasteStr = "[Кварцевый резонатор]";
           flag_zq = true;
         }
       if((*w)[0][0] == 'F' && flag_f == false){
-          pasteStr = "Предохранители";
+          pasteStr = "[Предохранители]";
           flag_f = true;
         }
       //строка не пуста
@@ -368,13 +371,9 @@ int flag_spaceFirst = 0;
           w = varList.insert(++w ,var);
           pasteStr.clear();
           var.clear();
-         // flag_space = true;
-          //flag_spaceFirst++;
         }
 
 
-      int j;
-      j++;
 
 
     }

@@ -17,6 +17,7 @@ public:
 
 private:
   Ui::MainWindow *ui;
+  QStringList strListNamelabel;
 private slots:
   void openFile();
   void generate();

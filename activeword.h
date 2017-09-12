@@ -160,7 +160,9 @@ QVariant selectionFindSize(QString string, QVariant fontSize, bool allText);
   \return тип selection
   */
 QVariant selectionFindFontname(QString string,  bool allText,bool bold = false,
-                                   bool italic = false, bool underline = false, QString FontName = "Times New Roman");
+                               bool italic = false, bool underline = false, QString fontName = "Arial" );
+
+QVariant selectionAlign( QString string, bool left, bool right, bool center );
   /*==================================================================*/
   /*!  \brief
   Выделение всего текста с возмождностью копирования в буфер

@@ -356,16 +356,21 @@ public:
         docGen->setText(QApplication::translate("MainWindow", "\320\223\320\265\320\275\320\265\321\200\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265\n"
 " \320\264\320\276\320\272\321\203\320\274\320\265\320\275\321\202\320\260\321\206\320\270\320\270", Q_NULLPTR));
         label_2->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\267\321\200\320\260\320\261\320\276\321\202\320\260\320\273", Q_NULLPTR));
+        lineEdit->setText(QApplication::translate("MainWindow", "\320\230\320\262\320\260\320\275\320\276\320\262 \320\230.\320\220.", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\262\320\265\321\200\320\270\320\273", Q_NULLPTR));
+        lineEdit_2->setText(QApplication::translate("MainWindow", "\320\225\320\274\321\206\320\265\320\262 \320\230.\320\233.", Q_NULLPTR));
         label_4->setText(QApplication::translate("MainWindow", "\320\242.\320\272\320\276\320\275\321\202\321\200", Q_NULLPTR));
+        lineEdit_3->setText(QApplication::translate("MainWindow", "\320\237\320\265\321\202\321\200\320\276\320\262 \320\227.\320\241.", Q_NULLPTR));
         label_5->setText(QApplication::translate("MainWindow", "\320\235.\320\272\320\276\320\275\321\202\321\200.", Q_NULLPTR));
+        lineEdit_4->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\201\320\272\320\260\320\273\321\214 \320\222.\320\230.", Q_NULLPTR));
         label_6->setText(QApplication::translate("MainWindow", "\320\243\321\202\320\262.", Q_NULLPTR));
+        lineEdit_5->setText(QApplication::translate("MainWindow", "\320\220\320\273\320\260\320\264\320\270\320\275 \320\222.\320\241.", Q_NULLPTR));
         label_7->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\206\320\270\320\274\320\260\320\273\321\214\320\275\321\213\320\271 \320\275\320\276\320\274\320\265\321\200 \320\270\320\267\320\264\320\265\320\273\320\270\321\217", Q_NULLPTR));
-        lineEdit_6->setText(QApplication::translate("MainWindow", "sdfsdfsdfsdf", Q_NULLPTR));
+        lineEdit_6->setText(QApplication::translate("MainWindow", "\320\221\320\256\320\233\320\230.468714.005 \320\237\320\2553", Q_NULLPTR));
         label_8->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265 ", Q_NULLPTR));
-        lineEdit_7->setText(QApplication::translate("MainWindow", "sdfsdfsdfsdfs", Q_NULLPTR));
+        lineEdit_7->setText(QApplication::translate("MainWindow", "\320\237\320\273\320\260\321\202\320\260 \321\202\321\200\320\260\320\272\321\202\320\276\320\262\320\276\320\263\320\276 \321\203\321\201\320\270\320\273\320\270\321\202\320\265\320\273\321\217", Q_NULLPTR));
         label_10->setText(QApplication::translate("MainWindow", "\320\244\320\270\321\200\320\274\320\260-\320\270\320\267\320\263\320\276\321\202\320\276\320\262\320\270\321\202\320\265\320\273\321\214", Q_NULLPTR));
-        lineEdit_9->setText(QApplication::translate("MainWindow", "sfsdfwrwwerwer", Q_NULLPTR));
+        lineEdit_9->setText(QApplication::translate("MainWindow", "\320\244\320\223\320\243\320\237 \320\235\320\237\320\237 \302\253\320\223\320\260\320\274\320\274\320\260\302\273", Q_NULLPTR));
         comboBox->clear();
         comboBox->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "word", Q_NULLPTR)

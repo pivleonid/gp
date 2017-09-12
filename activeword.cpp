@@ -43,28 +43,13 @@ bool ActiveWord::selectionFind( QString oldString , QString newString
                          ,bool searchReg, bool searchAllWord, bool searchForward
                          , bool searchFormat, bool clearFormatting, int replace ){
 
-  // QAxObject* activwin = wordApplication_->querySubObject("ActiveWindow");
-   //QAxObject* wordSelection = activwin->querySubObject("Selection");
-    //
-  //2 попытка//
-//  QAxObject* wordSelection = wordApplication_->querySubObject("ActiveDocument ");
-//  QAxObject* range = wordSelection->querySubObject("Range");
-//  QAxObject* range = range->querySubObject("Sections");
-//  QAxObject* findString =  range->querySubObject("Find");
-  //
-  //3//
-  QAxObject* docActive = wordApplication_->querySubObject("ActiveDocument");
-   QAxObject* section = docActive->querySubObject("Sections(1)");
-   //QAxObject* first = docActive->querySubObject("First");
-   QAxObject* headers = section->querySubObject("Headers(1)");
-   QAxObject* range = headers->querySubObject("Range");
-  QAxObject* findString =  range->querySubObject("Find");
+
 
   //
-   //QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
-   //QAxObject* findString =  wordSelection->querySubObject("Find");
- //   if(clearFormatting)
-   //   findString->dynamicCall("ClearFormatting()");
+   QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
+   QAxObject* findString =  wordSelection->querySubObject("Find");
+    if(clearFormatting)
+      findString->dynamicCall("ClearFormatting()");
     QList<QVariant> params;//Все параметры не обязательные!
     params.operator << (QVariant(oldString)); //не обязательный параметр- можно использовать ""
     params.operator << (QVariant(searchReg)); //учитывать регистр
@@ -91,7 +76,7 @@ bool ActiveWord::selectionFind( QString oldString , QString newString
                       "const QVariant&,const QVariant&,const QVariant&)",
                       params);
     delete findString;
-    //delete wordSelection;
+    delete wordSelection;
     return param.toBool();
 }
 //----------------------------------------------------------
@@ -180,6 +165,67 @@ QVariant ActiveWord:: selectionFindFontname(QString string,  bool allText, bool 
     return selectionFind( string, string,false,false,true,true, true, 2 );
   return  selectionFind( string, string,false,false,true,true, true, 1 );
 }
+//----------------------------------------------------------
+QVariant ActiveWord::selectionAlign(QString string, bool left, bool right, bool center){
+
+
+QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
+QAxObject* paragraph;
+if (left == true){
+    paragraph = wordSelection->querySubObject("ParagraphFormat");
+    paragraph->setProperty("Alignment","wdAlignParagraphLeft" );
+    //delete paragraph;
+
+  }
+if (right == true){
+    paragraph = wordSelection->querySubObject("ParagraphFormat");
+    paragraph->setProperty("Alignment","wdAlignParagraphRight" );
+    //delete paragraph;
+  }
+if (center == true){
+    paragraph = wordSelection->querySubObject("ParagraphFormat");
+    paragraph->setProperty("Alignment","wdAlignParagraphCenter" );
+    //delete paragraph;
+  }
+
+
+QAxObject* findString =  wordSelection->querySubObject("Find");
+ findString->dynamicCall("ClearFormatting()");
+ QList<QVariant> params;//Все параметры не обязательные!
+ params.operator << (QVariant(string)); //не обязательный параметр- можно использовать ""
+ params.operator << (QVariant(true)); //учитывать регистр
+ params.operator << (QVariant(true));//Найти целые слова
+ params.operator << (QVariant(false));// использовать подстанровочные знаки (?)
+ params.operator << (QVariant(false));//звуки
+ params.operator << (QVariant(false));//все словоформы
+ params.operator << (QVariant(true));// вперед (поиск)
+ params.operator << (QVariant("1"));// 0 =  операция поиска заканчивается, 1 = операция поиска продолжается ,
+ //если достигнут начало или конец диапазона поиска
+ params.operator << (QVariant(true)); //(Для применения форматирования необходимо TRUE)
+ params.operator << (QVariant(string));//Текст для замены
+ params.operator << (QVariant(0)); //2 = Замена всех; 1 = Замена первого; 0 = без замен.
+ params.operator << (QVariant(true)); //облако пафоса
+ params.operator << (QVariant(true)); //облако пафоса
+ params.operator << (QVariant(true)); //облако пафоса
+ params.operator << (QVariant(true)); //облако пафоса
+ QVariant param =    findString->dynamicCall("Execute(const QVariant&,const QVariant&,"
+                   "const QVariant&,const QVariant&,"
+                   "const QVariant&,const QVariant&,"
+                   "const QVariant&,const QVariant&,"
+                   "const QVariant&,const QVariant&,"
+                   "const QVariant&,const QVariant&,"
+                   "const QVariant&,const QVariant&,const QVariant&)",
+                   params);
+
+
+ delete findString;
+ delete paragraph;
+ delete wordSelection;
+
+
+
+}
+
 //-----------------Возвращает указатель на объект типа selection
 void ActiveWord:: selectionCopyAllText( bool buffer){
     QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
@@ -497,7 +543,7 @@ void ActiveWord::shapes( QAxObject* doc){
              params.operator << (QVariant("1"));// 0 =  операция поиска заканчивается, 1 = операция поиска продолжается ,
              //если достигнут начало или конец диапазона поиска
              params.operator << (QVariant(true)); //(Для применения форматирования необходимо TRUE)
-             params.operator << (QVariant(word));//Текст для замены
+             params.operator << (QVariant("word"));//Текст для замены
              params.operator << (QVariant(2)); //2 = Замена всех; 1 = Замена первого; 0 = без замен.
              params.operator << (QVariant(true)); //облако пафоса
              params.operator << (QVariant(true)); //облако пафоса
@@ -518,3 +564,6 @@ void ActiveWord::shapes( QAxObject* doc){
 
 
 }
+
+
+

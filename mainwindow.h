@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "QProcess"
 
 namespace Ui {
   class MainWindow;
@@ -19,12 +18,9 @@ public:
 private:
   Ui::MainWindow *ui;
   QStringList strListNamelabel;
-  QProcess* proc;
 private slots:
   void openFile();
   void generate();
-  void saveBut();
-  void gost();
 
 };
 

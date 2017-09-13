@@ -38,7 +38,6 @@ public:
     QPushButton *openFile;
     QSpacerItem *verticalSpacer;
     QPushButton *docGen;
-    QPushButton *gost;
     QGridLayout *gridLayout_17;
     QGridLayout *gridLayout_13;
     QGridLayout *gridLayout_7;
@@ -107,7 +106,7 @@ public:
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        gridLayout_16->addItem(verticalSpacer, 2, 0, 1, 1);
+        gridLayout_16->addItem(verticalSpacer, 1, 0, 1, 1);
 
         docGen = new QPushButton(centralWidget);
         docGen->setObjectName(QStringLiteral("docGen"));
@@ -115,12 +114,7 @@ public:
         sizePolicy.setHeightForWidth(docGen->sizePolicy().hasHeightForWidth());
         docGen->setSizePolicy(sizePolicy);
 
-        gridLayout_16->addWidget(docGen, 3, 0, 1, 1);
-
-        gost = new QPushButton(centralWidget);
-        gost->setObjectName(QStringLiteral("gost"));
-
-        gridLayout_16->addWidget(gost, 1, 0, 1, 1);
+        gridLayout_16->addWidget(docGen, 2, 0, 1, 1);
 
 
         gridLayout_18->addLayout(gridLayout_16, 0, 0, 1, 1);
@@ -358,8 +352,6 @@ public:
         openFile->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273", Q_NULLPTR));
         docGen->setText(QApplication::translate("MainWindow", "\320\223\320\265\320\275\320\265\321\200\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265\n"
 " \320\264\320\276\320\272\321\203\320\274\320\265\320\275\321\202\320\260\321\206\320\270\320\270", Q_NULLPTR));
-        gost->setText(QApplication::translate("MainWindow", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214\n"
-" \320\223\320\276\321\201\321\202\320\276\320\262\321\201\320\272\320\270\320\271 \321\210\321\200\320\270\321\204\321\202", Q_NULLPTR));
         label_2->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\267\321\200\320\260\320\261\320\276\321\202\320\260\320\273", Q_NULLPTR));
         lineEdit->setText(QApplication::translate("MainWindow", "\320\230\320\262\320\260\320\275\320\276\320\262 \320\230.\320\220.", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\262\320\265\321\200\320\270\320\273", Q_NULLPTR));

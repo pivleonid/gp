@@ -219,6 +219,8 @@ release/moc_mainwindow.cpp: C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QMain
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtGui/qtouchdevice.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtGui/qicon.h \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/QProcess \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/qprocess.h \
 		mainwindow.h \
 		release/moc_predefs.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/bin/moc.exe
@@ -351,6 +353,8 @@ release/main.o: main.cpp mainwindow.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtGui/qtouchdevice.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtGui/qicon.h \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/QProcess \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/qprocess.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QApplication \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qapplication.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/qcoreapplication.h \
@@ -464,6 +468,8 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtGui/qtouchdevice.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtGui/qicon.h \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/QProcess \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/qprocess.h \
 		ui_mainwindow.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/QVariant \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QAction \

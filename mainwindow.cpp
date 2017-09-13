@@ -3,7 +3,6 @@
 #include "QFileDialog"
 #include <activeexcel.h>
 #include "activeword.h"
-#include "qprocess.h"
 
 void DeviceandSpace(QList<QStringList>& varList);
 
@@ -15,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(ui->openFile,SIGNAL(clicked(bool)),this,SLOT(openFile()));
   connect(ui->docGen,SIGNAL(clicked(bool)), this, SLOT(generate()));
-  connect(ui->gost,SIGNAL(clicked(bool)), this, SLOT(gost()));
 
 
 
@@ -28,21 +26,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
-void MainWindow::gost(){
-//  path += "Шрифт Гост'а.ttf";
-  QString path = "D://projects//gp//debug//шрифт.bat";
-  proc = new QProcess(this);
-  proc->start(path);
-}
 
-void MainWindow::saveBut(){
- // ui->docGen->setEnabled(true);
 
-}
 
 MainWindow::~MainWindow()
 {
-  delete proc;
+
   delete ui;
 }
 
@@ -278,7 +267,7 @@ QAxObject* doc1 = word.documentOpen("D:/projects/gp/PEZ.docx");
 
 //заполнение таблицы
 QStringList listLabel = word.tableGetLabels(1, 2);
-ui->progressBar_2->setValue(80);
+ui->progressBar_2->setValue(70);
 word.tableFill(desValue,listLabel,1,2);
 ui->progressBar_2->setValue(90);
 // поиск элементов, добавка курсива и расположение по центру

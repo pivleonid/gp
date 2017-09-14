@@ -521,9 +521,6 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QSpacerItem \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QStatusBar \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qstatusbar.h \
-		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QTextEdit \
-		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qtextedit.h \
-		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtGui/qtextdocument.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QToolBar \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qtoolbar.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/QWidget \
@@ -535,7 +532,8 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		activeexcel.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/ActiveQt/qaxobject.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/ActiveQt/qaxbase.h \
-		activeword.h
+		activeword.h \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o mainwindow.cpp
 
 debug/activeexcel.o: activeexcel.cpp activeexcel.h \

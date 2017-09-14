@@ -45,8 +45,18 @@ class ActiveExcel
   QAxObject* workSheet_;
   QAxObject* workSheets_;
   bool flagClose;
+  bool flagConnect;
+  bool flagWorkBooks;
 public:
   ActiveExcel();
+  /*==================================================================*/
+  /*!  \brief
+   Проверка работы ворда
+  */
+  bool excelConnect(){
+    return (flagConnect & flagWorkBooks);
+  }
+
   ~ActiveExcel();
 
   /*==================================================================*/
@@ -71,14 +81,14 @@ public:
   Закрытие документа без сохранения.
   Указатель на документ будет удален внутри функции
   */
-  void documentClose(QAxObject* document);   /*!< [in] указатель на созданный документ  */
+  bool documentClose(QAxObject* document);   /*!< [in] указатель на созданный документ  */
   /*==================================================================*/
   /*!  \brief
    * указатель на документ будет удален внутри функции
    \param [in] path   путь для сохранения
   \return  указатель листа
   */
-  void documentCloseAndSave(QAxObject *document, QVariant path);
+  bool documentCloseAndSave(QAxObject *document, QVariant path);
   /*==================================================================*/
   /*!  \brief
    Установка значения в ячейку
@@ -90,31 +100,33 @@ public:
   /*==================================================================*/
   /*!  \brief
    Получение значения из ячейки
+   \return  bool true- успех
   */
-  QVariant sheetCellInsert(QAxObject* sheet,/*!< [in] указатель листа  */
-                           QVariant row, QVariant col /*!< [in] строка и столбец ячейки  */
-                           );
+  bool sheetCellInsert(QAxObject* sheet,/*!< [in] указатель листа  */
+                       QVariant& data,   /*!< [in] Данные для съёма  */
+                       QVariant row, QVariant col /*!< [in] строка и столбец ячейки  */
+                       );
   /*==================================================================*/
   /*!  \brief
   копирование ячеек в буфер
   диспазон ячейки записывается как A1:B13
   */
 
-  void sheetCopyToBuf(QAxObject* sheet,/*!< [in] указатель листа  */
+  bool sheetCopyToBuf(QAxObject* sheet,/*!< [in] указатель листа  */
                       QVariant rowCol  /*!< [in] Диапазон  */
                       );
   /*==================================================================*/
   /*!  \brief
   вставка из буфера
   */
-  void sheetPastFromBuf(QAxObject* sheet,/*!< [in] указатель листа  */
+  bool sheetPastFromBuf(QAxObject* sheet,/*!< [in] указатель листа  */
                         QVariant rowCol  /*!< [in] Диапазон  */
                         );
   /*==================================================================*/
   /*!  \brief
   Объединение ячеек
   */
-   void sheetCellMerge(QAxObject* sheet,/*!< [in] указатель листа  */
+   bool sheetCellMerge(QAxObject* sheet,/*!< [in] указатель листа  */
                        QVariant rowCol  /*!< [in] Диапазон  */
                        );
 

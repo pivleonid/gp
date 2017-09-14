@@ -3,6 +3,7 @@
 #include "QFileDialog"
 #include <activeexcel.h>
 #include "activeword.h"
+#include <qmessagebox.h>
 
 void deviceandSpace(QList<QStringList>& varList);
 QList<QStringList> transform(QStringList var);
@@ -16,12 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->openFile,SIGNAL(clicked(bool)),this,SLOT(openFile()));
   connect(ui->docGen,SIGNAL(clicked(bool)), this, SLOT(generate()));
 
-
-
   strListNamelabel << "[Устройства]" << "[Конденсаторы]"<<"[Микросхемы]"<<"[Светодиоды]"<<"[Дроссели]"<<"[Резисторы]"<<"[Коммутация]"<<"[Диоды]"<<"[Транзисторы]"<<"[Контактные соединения]"<<"[Фильтры]"<<"[Кварцевый резонатор]"<<"[Предохранители]";
-
-
-
 
 
 
@@ -41,74 +37,140 @@ MainWindow::~MainWindow()
 void MainWindow::openFile(){
 
   ui->openFile->setEnabled(false);
-  QString fileName_DATA = QFileDialog::getOpenFileName(this, tr("Open Excel File"),"", tr("(*.xlsx *.xls)"));
-  ui->debug->insertPlainText("Запуск Excel");
-  ActiveExcel excel;
-  QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
-  if(ex1 == NULL){
-      ui->debug->setTextColor(Qt::red);
-      ui->debug->insertPlainText("\nОшибка открытия Excel\nВыход");
-      ui->debug->setTextColor(Qt::black);
+  ActiveWord word;
+  if(!word.wordConnect()){
+      ui->openFile->setEnabled(true);
+      QMessageBox msgBox;
+      msgBox.setText("Word не установлен");
+      msgBox.exec();
+      return;
+    }
+  QString path = QApplication::applicationDirPath() + "/PEZ.docx";
+
+  QAxObject* doc1 = word.documentOpen(path);
+  if(doc1 == NULL){
+      QMessageBox msgBox;
+        msgBox.setText("Не найден шаблон");
+        msgBox.exec();
+        ui->openFile->setEnabled(true);
     return;
     }
+
+  QString fileName_DATA = QFileDialog::getOpenFileName(this, tr("Open Excel File"),"", tr("(*.xlsx *.xls)"));
+  if(fileName_DATA == ""){
+      //если в диалоговом окне нажали на "отмена"
+      ui->openFile->setEnabled(true);
+      return;
+    }
+
+  ActiveExcel excel;
+  if(!excel.excelConnect()){
+      QMessageBox msgBox;
+        msgBox.setText("Не установлен Excel");
+        msgBox.exec();
+      ui->openFile->setEnabled(true);
+      return;
+    }
+
+  QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
+
+  if(ex1 == NULL){
+      QMessageBox msgBox;
+        msgBox.setText("Невозможно открыть книгу");
+        msgBox.exec();
+      ui->openFile->setEnabled(true);
+    return;
+    }
+
+  QCoreApplication::processEvents(); // обновление GUI
+
   QVariant name = excel.sheetName();
   QAxObject* sheet = excel.documentSheetActive(name);
 
 
 
   QStringList var;
+  QVariant data;
   // 20 секунд на чтение
 
-  ui->debug->insertPlainText("\nЧтение таблицы");
   ui->progressBar_2->setValue(0);
   for(int i = 2;  ; i++){
-      var << excel.sheetCellInsert(sheet, i, 2).toString();
-      var << excel.sheetCellInsert(sheet, i, 3).toString();
-      var << excel.sheetCellInsert(sheet, i, 4).toString();
-      var << excel.sheetCellInsert(sheet, i, 5).toString();
-      var << excel.sheetCellInsert(sheet, i, 6).toString();
+      if (excel.sheetCellInsert(sheet, data, i, 2))
+        var << data.toString();
+      else{
+          QMessageBox msgBox;
+          msgBox.setText("Ошибка обработки данных!");
+          msgBox.exec();
+          ui->openFile->setEnabled(true);
+          return;
+        }
+      if (excel.sheetCellInsert(sheet, data, i, 3))
+        var << data.toString();
+      else{
+          QMessageBox msgBox;
+          msgBox.setText("Ошибка обработки данных!");
+          msgBox.exec();
+          ui->openFile->setEnabled(true);
+          return;
+        }
+      if (excel.sheetCellInsert(sheet, data, i, 4))
+        var << data.toString();
+      else{
+          QMessageBox msgBox;
+          msgBox.setText("Ошибка обработки данных!");
+          msgBox.exec();
+          ui->openFile->setEnabled(true);
+          return;
+        }
+      if (excel.sheetCellInsert(sheet, data, i, 5))
+        var << data.toString();
+      else{
+          QMessageBox msgBox;
+          msgBox.setText("Ошибка обработки данных!");
+          msgBox.exec();
+          ui->openFile->setEnabled(true);
+          return;
+        }
+      if (excel.sheetCellInsert(sheet, data, i, 6))
+        var << data.toString();
+      else{
+          QMessageBox msgBox;
+          msgBox.setText("Ошибка обработки данных!");
+          msgBox.exec();
+          ui->openFile->setEnabled(true);
+          return;
+        }
       int g = var.count();
       if(var[g-1] == "" && var[g-2] == "" && var[g-3] == "")
        break;
 
-      if(i == 500)
-        ui->progressBar_2->setValue(10);
+      if(i == 500){
+          ui->progressBar_2->setValue(20);
+          QCoreApplication::processEvents();
+        }
 
-      if(i == 1000)
-        ui->progressBar_2->setValue(30);
+      if(i == 1000){
+          ui->progressBar_2->setValue(40);
+          QCoreApplication::processEvents();
+        }
     }
-  ui->debug->insertPlainText("\nЗакрытие Excel");
   excel.documentClose(ex1);
 
 QList<QStringList> desValue;
 desValue.clear();
 desValue = transform( var);
 deviceandSpace(desValue);
-ui->progressBar_2->setValue(40);
-ui->debug->insertPlainText("\nЗапуск Word");
-ActiveWord word;
-//QString path = "D:/projects/gp/PEZ.docx";
-//вернуть в релизной версии
-QString path = QApplication::applicationDirPath() + "/PEZ.docx";
-ui->debug->insertPlainText("\n" + path);
+ui->progressBar_2->setValue(50);
 
-QAxObject* doc1 = word.documentOpen(path);
-if(doc1 == NULL){
-    ui->debug->setTextColor(Qt::red);
-     ui->debug->insertPlainText("\n Такого документа не существует");
-    ui->debug->setTextColor(Qt::black);
-  return;
-  }
 
 //заполнение таблицы
 QStringList listLabel = word.tableGetLabels(1, 2);
 ui->progressBar_2->setValue(70);
-ui->debug->insertPlainText("\nЗаполнение таблицы word");
+QCoreApplication::processEvents();
 word.tableFill(desValue,listLabel,1,2);
 ui->progressBar_2->setValue(90);
+QCoreApplication::processEvents();
 
-
-ui->debug->insertPlainText("\nЗавершение работы");
 // поиск элементов, добавка курсива и расположение по центру
 foreach (QString var, strListNamelabel) {
     //подчеркивание
@@ -127,15 +189,15 @@ foreach (QString var, strListNamelabel) {
 
 //Подписей
 
-word.colontitulReplaseLabel(doc1, "[Разраб]", ui->lineEdit->text(), true);
-word.colontitulReplaseLabel(doc1, "[пров]", ui->lineEdit_2->text(), true);
-word.colontitulReplaseLabel(doc1, "[тконт]", ui->lineEdit_3->text(), true);
-word.colontitulReplaseLabel(doc1, "[конт]", ui->lineEdit_4->text(), true);
-word.colontitulReplaseLabel(doc1, "[утв]", ui->lineEdit_5->text(), true);
-word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->lineEdit_6->text(), true);
-word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->lineEdit_6->text(), false);
-word.colontitulReplaseLabel(doc1, "[Наим.]", ui->lineEdit_7->text(), true);
-word.colontitulReplaseLabel(doc1, "[Фирма]", ui->lineEdit_9->text(), true);
+word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true);
+word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true);
+word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true);
+word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true);
+word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true);
+word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true);
+word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false);
+word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true);
+word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true);
 
 word.setVisible();
 ui->progressBar_2->setValue(100);
@@ -379,12 +441,48 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
                     if(vS == vectorString.end()-1)
                       continue;
                     if( ( (*vS) != "-")  && ( (*(vS+1) ) != "-")  )
-                        vS = vectorString.insert(vS+1, ", \n");
+                        vS = vectorString.insert(vS+1, ",");
+
                 }
+                //добавляю \n
+                for(vS = vectorString.begin(); vS < vectorString.end() - 5; vS++){
+                    if( ( (*vS) == "," )  && ( (*(vS+2) ) == "," )  ){
+
+                        vS = vectorString.insert(vS+1," ");
+                        vS = vectorString.insert(vS+3,"\n");
+                        vS = vS + 1;
+                        continue;
+                      }
+                    if( ( (*vS) == "-" )  && ( (*(vS+2) ) == "-" ) ){
+
+
+                        vS = vectorString.insert(vS+1,"\n");
+
+                        vS = vS+1;
+                        continue;
+                      }
+                    if( ( (*vS) == "," )  && ( (*(vS+2) ) == "-" )  ){
+
+
+                        vS = vectorString.insert(vS+1,"\n");
+
+                        vS = vS + 1;
+                        continue;
+                      }
+                    if( ( (*vS) == "-" )  && ( (*(vS+2) ) == "," )  ){
+
+                        vS = vectorString.insert(vS+3,"\n");
+
+                        vS = vS + 1;
+                        continue;
+                      }
+
+                  }
+
                 //поставить  префикс
                 for(vS = vectorString.begin(); vS < vectorString.end(); vS++){
                     QString vss1 = *vS;
-                    if( ((*vS) != "-")&& ((*vS) != ", \n")){
+                    if( ((*vS) != "-")&& ((*vS) != ",") && ((*vS) != "\n") && ((*vS) != " ")){
                         (*vS).prepend(prefix);
                         vss1 = *vS;
                         int i= 0;

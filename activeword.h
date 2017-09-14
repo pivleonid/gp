@@ -30,6 +30,8 @@ class ActiveWord{
 
   QAxObject* wordApplication_; ///< файл ворда
   QAxObject* documents_;       ///< Коллекция документов
+  bool flagWordApp;
+  bool flagdoc;
   //Внутренняя функция.
   bool selectionFind( QString oldString = "", QString newString = ""   /*!< [in] Старая строкаи строка для замены   */
       ,bool searchReg     = false                      /*!< [in] Учитывать регистр   */
@@ -46,10 +48,14 @@ public:
   Открывает Word, делает его видимым.
   */
   ActiveWord();
+  bool wordConnect(){
+    return (flagdoc & flagWordApp);
+  }
+
   /*==================================================================*/
   ~ActiveWord();
    void setVisible();
-  void documentActive(QAxObject* document);
+  bool documentActive(QAxObject* document);
   /*==================================================================*/
   /*!  \brief
    Открыть документ
@@ -64,7 +70,7 @@ public:
    Закрытие документа без возможности его сохранения
   \param [in] document - открытый документ
   */
-  void documentClose(QAxObject* document);
+  bool documentClose(QAxObject* document);
   /*==================================================================*/
   /*!  \brief
   документ должен быть создан или сохранен функцией documentSave(...);
@@ -88,7 +94,7 @@ public:
   \param [in] fileName - имя файла
   \param [in] fileFormat - формат файла
   */
-  void documentSave( QAxObject *document, QString path , QString fileName, QString fileFormat);
+  bool documentSave( QAxObject *document, QString path , QString fileName, QString fileFormat);
   /*==================================================================*/
   /*!  \brief
   Поиск и замена метки
@@ -124,7 +130,7 @@ public:
   \return true- метка есть и замена произведена, false метка в исходном
   документе не обнаружена
   */
-  void selectionPasteText(QVariant string);
+  bool selectionPasteText(QVariant string);
   /*==================================================================*/
   /*!  \brief
    Вставка всего текста из первого документа в метку второго документа
@@ -194,7 +200,7 @@ void selectionCopyAllText(bool buffer);
   \param [in] wordSelection - выделенный текст
   \return тип selection
   */
-  void selectionPasteTextFromBuffer(void);// выделенный текст
+  bool selectionPasteTextFromBuffer(void);// выделенный текст
   void selectionPasteTextFromBuffer(QString findLabel);// вставка в метку
 //----------------------------------------------------------
 /*! \brief Операции c таблицами*/

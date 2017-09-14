@@ -3,13 +3,17 @@
 #include <windows.h>
 //----------------------------------------------------------
 ActiveWord::ActiveWord(){
+  flagWordApp = false;
+  flagdoc = false;
   wordApplication_ =  new QAxObject("Word.Application");
- Sleep(1000);
+  if(wordApplication_ != NULL)
+    flagWordApp = true;
   wordApplication_->setProperty("DisplayAlerts", false);
- Sleep(1000);
   wordApplication_->setProperty("Visible", false);
- Sleep(1000);
+// Sleep(1000);
   documents_ = wordApplication_->querySubObject("Documents");
+  if(documents_ != NULL)
+    flagdoc = true;
 
 }
 void ActiveWord::setVisible(){
@@ -22,8 +26,8 @@ ActiveWord::~ActiveWord(){
   delete wordApplication_;
 }
 //----------------------------------------------------------
-void ActiveWord::documentActive(QAxObject *document){
-  document->dynamicCall("Activate()");
+bool ActiveWord::documentActive(QAxObject *document){
+  return (document->dynamicCall("Activate()").toBool());
 }
 
 //----------------------------------------------------------
@@ -33,10 +37,11 @@ QAxObject* ActiveWord::documentOpen(QVariant path){
   return  documents_->querySubObject("Add(const QVariant &)", path);
 }
 //----------------------------------------------------------
-void ActiveWord::selectionPasteText(QVariant string){
+bool ActiveWord::selectionPasteText(QVariant string){
   QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
-  wordSelection->dynamicCall("TypeText(const QVariant&)", string);
+  bool ret = wordSelection->dynamicCall("TypeText(const QVariant&)", string).toBool();
   delete wordSelection;
+  return ret;
 }
 //----------------------------------------------------------
 bool ActiveWord::selectionFind( QString oldString , QString newString
@@ -239,10 +244,11 @@ void ActiveWord:: selectionCopyAllText( bool buffer){
 }
 
 //------------------Вставка текста из буфера
-void ActiveWord:: selectionPasteTextFromBuffer(){
+bool ActiveWord:: selectionPasteTextFromBuffer(){
   QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
-  wordSelection->dynamicCall("Paste()");
+  bool ret = wordSelection->dynamicCall("Paste()").toBool();
   delete wordSelection;
+  return ret;
 }
 //------------------Вставка текста из буфера в метку
 void ActiveWord:: selectionPasteTextFromBuffer(QString findLabel){
@@ -251,8 +257,8 @@ void ActiveWord:: selectionPasteTextFromBuffer(QString findLabel){
   selectionPasteTextFromBuffer();
 }
 //----------------------------------------------------------
-void ActiveWord::documentClose(QAxObject* document){
-        document->dynamicCall("Close(wdDoNotSaveChanges)");
+bool ActiveWord::documentClose(QAxObject* document){
+        return( document->dynamicCall("Close(wdDoNotSaveChanges)").toBool());
 }
 //----------------------------------------------------------
 void ActiveWord::documentIndexClose(QAxObject* index, bool save){
@@ -280,11 +286,11 @@ bool ActiveWord::documentCheckAndClose( QString docName, bool save){
 }
 
 //----------------------------------------------------------
-void ActiveWord::documentSave(QAxObject *document, QString path, QString fileName, QString fileFormat)
+bool ActiveWord::documentSave(QAxObject *document, QString path, QString fileName, QString fileFormat)
 {
     QString all = path + fileName + "." +fileFormat;
     QVariant param(all);
-    document -> dynamicCall("SaveAs2(const QVariant&)", param);
+    return(document -> dynamicCall("SaveAs2(const QVariant&)", param).toBool());
 }
 //----------------------------------------------------------
 //----------------------------------------------------------

@@ -24,7 +24,6 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -34,47 +33,35 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QGridLayout *gridLayout_18;
+    QGridLayout *gridLayout_3;
     QGridLayout *gridLayout_16;
     QPushButton *openFile;
     QSpacerItem *verticalSpacer;
     QPushButton *docGen;
-    QGridLayout *gridLayout_17;
-    QGridLayout *gridLayout_13;
-    QGridLayout *gridLayout_7;
-    QGridLayout *gridLayout_6;
-    QLabel *label_2;
-    QLineEdit *lineEdit;
-    QGridLayout *gridLayout_5;
-    QLabel *label_3;
-    QLineEdit *lineEdit_2;
-    QGridLayout *gridLayout_4;
-    QLabel *label_4;
-    QLineEdit *lineEdit_3;
-    QGridLayout *gridLayout_3;
-    QLabel *label_5;
-    QLineEdit *lineEdit_4;
     QGridLayout *gridLayout;
+    QLabel *label_2;
+    QLabel *label_3;
+    QLabel *label_5;
     QLabel *label_6;
-    QLineEdit *lineEdit_5;
-    QGridLayout *gridLayout_12;
-    QGridLayout *gridLayout_8;
-    QLabel *label_7;
-    QLineEdit *lineEdit_6;
-    QGridLayout *gridLayout_9;
-    QLabel *label_8;
-    QLineEdit *lineEdit_7;
-    QGridLayout *gridLayout_10;
-    QGridLayout *gridLayout_11;
     QLabel *label_10;
-    QLineEdit *lineEdit_9;
-    QGridLayout *gridLayout_15;
-    QGridLayout *gridLayout_14;
-    QProgressBar *progressBar_2;
-    QTextEdit *debug;
+    QLineEdit *razrab;
+    QLineEdit *prov;
+    QLineEdit *kontr;
+    QLineEdit *ytb;
+    QLineEdit *Firma;
     QGridLayout *gridLayout_2;
-    QLabel *label;
+    QLabel *label_7;
+    QLabel *label_8;
+    QLabel *label_4;
+    QLineEdit *nymerIzd;
+    QLineEdit *naim1;
+    QLineEdit *naim2;
+    QGridLayout *gridLayout_4;
+    QProgressBar *progressBar_2;
     QComboBox *comboBox;
+    QLabel *label;
+    QSpacerItem *verticalSpacer_3;
+    QLabel *label_9;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -83,14 +70,14 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(746, 277);
+        MainWindow->resize(800, 277);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
         MainWindow->setMinimumSize(QSize(746, 277));
-        MainWindow->setMaximumSize(QSize(746, 277));
+        MainWindow->setMaximumSize(QSize(800, 277));
         QFont font;
         font.setStyleStrategy(QFont::PreferAntialias);
         MainWindow->setFont(font);
@@ -98,10 +85,10 @@ public:
         MainWindow->setContextMenuPolicy(Qt::CustomContextMenu);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        gridLayout_18 = new QGridLayout(centralWidget);
-        gridLayout_18->setSpacing(6);
-        gridLayout_18->setContentsMargins(11, 11, 11, 11);
-        gridLayout_18->setObjectName(QStringLiteral("gridLayout_18"));
+        gridLayout_3 = new QGridLayout(centralWidget);
+        gridLayout_3->setSpacing(6);
+        gridLayout_3->setContentsMargins(11, 11, 11, 11);
+        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         gridLayout_16 = new QGridLayout();
         gridLayout_16->setSpacing(6);
         gridLayout_16->setObjectName(QStringLiteral("gridLayout_16"));
@@ -128,219 +115,146 @@ public:
         gridLayout_16->addWidget(docGen, 2, 0, 1, 1);
 
 
-        gridLayout_18->addLayout(gridLayout_16, 0, 0, 1, 1);
-
-        gridLayout_17 = new QGridLayout();
-        gridLayout_17->setSpacing(6);
-        gridLayout_17->setObjectName(QStringLiteral("gridLayout_17"));
-        gridLayout_13 = new QGridLayout();
-        gridLayout_13->setSpacing(6);
-        gridLayout_13->setObjectName(QStringLiteral("gridLayout_13"));
-        gridLayout_7 = new QGridLayout();
-        gridLayout_7->setSpacing(6);
-        gridLayout_7->setObjectName(QStringLiteral("gridLayout_7"));
-        gridLayout_6 = new QGridLayout();
-        gridLayout_6->setSpacing(6);
-        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
-        label_2 = new QLabel(centralWidget);
-        label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setAlignment(Qt::AlignCenter);
-
-        gridLayout_6->addWidget(label_2, 0, 0, 1, 1);
-
-        lineEdit = new QLineEdit(centralWidget);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
-
-        gridLayout_6->addWidget(lineEdit, 1, 0, 1, 1);
-
-
-        gridLayout_7->addLayout(gridLayout_6, 0, 0, 1, 1);
-
-        gridLayout_5 = new QGridLayout();
-        gridLayout_5->setSpacing(6);
-        gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
-        label_3 = new QLabel(centralWidget);
-        label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setAlignment(Qt::AlignCenter);
-
-        gridLayout_5->addWidget(label_3, 0, 0, 1, 1);
-
-        lineEdit_2 = new QLineEdit(centralWidget);
-        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-
-        gridLayout_5->addWidget(lineEdit_2, 1, 0, 1, 1);
-
-
-        gridLayout_7->addLayout(gridLayout_5, 0, 1, 1, 1);
-
-        gridLayout_4 = new QGridLayout();
-        gridLayout_4->setSpacing(6);
-        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
-        label_4 = new QLabel(centralWidget);
-        label_4->setObjectName(QStringLiteral("label_4"));
-        label_4->setAlignment(Qt::AlignCenter);
-
-        gridLayout_4->addWidget(label_4, 0, 0, 1, 1);
-
-        lineEdit_3 = new QLineEdit(centralWidget);
-        lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
-
-        gridLayout_4->addWidget(lineEdit_3, 1, 0, 1, 1);
-
-
-        gridLayout_7->addLayout(gridLayout_4, 0, 2, 1, 1);
-
-        gridLayout_3 = new QGridLayout();
-        gridLayout_3->setSpacing(6);
-        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        label_5 = new QLabel(centralWidget);
-        label_5->setObjectName(QStringLiteral("label_5"));
-        label_5->setAlignment(Qt::AlignCenter);
-
-        gridLayout_3->addWidget(label_5, 0, 0, 1, 1);
-
-        lineEdit_4 = new QLineEdit(centralWidget);
-        lineEdit_4->setObjectName(QStringLiteral("lineEdit_4"));
-
-        gridLayout_3->addWidget(lineEdit_4, 1, 0, 1, 1);
-
-
-        gridLayout_7->addLayout(gridLayout_3, 0, 3, 1, 1);
+        gridLayout_3->addLayout(gridLayout_16, 0, 0, 3, 1);
 
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(label_2, 0, 0, 1, 1);
+
+        label_3 = new QLabel(centralWidget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(label_3, 0, 1, 1, 1);
+
+        label_5 = new QLabel(centralWidget);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(label_5, 0, 2, 1, 1);
+
         label_6 = new QLabel(centralWidget);
         label_6->setObjectName(QStringLiteral("label_6"));
         label_6->setAlignment(Qt::AlignCenter);
 
-        gridLayout->addWidget(label_6, 0, 0, 1, 1);
+        gridLayout->addWidget(label_6, 0, 3, 1, 1);
 
-        lineEdit_5 = new QLineEdit(centralWidget);
-        lineEdit_5->setObjectName(QStringLiteral("lineEdit_5"));
-
-        gridLayout->addWidget(lineEdit_5, 1, 0, 1, 1);
-
-
-        gridLayout_7->addLayout(gridLayout, 0, 4, 1, 1);
-
-
-        gridLayout_13->addLayout(gridLayout_7, 0, 0, 1, 1);
-
-        gridLayout_12 = new QGridLayout();
-        gridLayout_12->setSpacing(6);
-        gridLayout_12->setObjectName(QStringLiteral("gridLayout_12"));
-        gridLayout_8 = new QGridLayout();
-        gridLayout_8->setSpacing(6);
-        gridLayout_8->setObjectName(QStringLiteral("gridLayout_8"));
-        label_7 = new QLabel(centralWidget);
-        label_7->setObjectName(QStringLiteral("label_7"));
-        label_7->setAlignment(Qt::AlignCenter);
-
-        gridLayout_8->addWidget(label_7, 0, 0, 1, 1);
-
-        lineEdit_6 = new QLineEdit(centralWidget);
-        lineEdit_6->setObjectName(QStringLiteral("lineEdit_6"));
-
-        gridLayout_8->addWidget(lineEdit_6, 1, 0, 1, 1);
-
-
-        gridLayout_12->addLayout(gridLayout_8, 0, 0, 1, 1);
-
-        gridLayout_9 = new QGridLayout();
-        gridLayout_9->setSpacing(6);
-        gridLayout_9->setObjectName(QStringLiteral("gridLayout_9"));
-        label_8 = new QLabel(centralWidget);
-        label_8->setObjectName(QStringLiteral("label_8"));
-        label_8->setAlignment(Qt::AlignCenter);
-
-        gridLayout_9->addWidget(label_8, 0, 0, 1, 1);
-
-        lineEdit_7 = new QLineEdit(centralWidget);
-        lineEdit_7->setObjectName(QStringLiteral("lineEdit_7"));
-
-        gridLayout_9->addWidget(lineEdit_7, 1, 0, 1, 1);
-
-
-        gridLayout_12->addLayout(gridLayout_9, 0, 1, 1, 1);
-
-        gridLayout_10 = new QGridLayout();
-        gridLayout_10->setSpacing(6);
-        gridLayout_10->setObjectName(QStringLiteral("gridLayout_10"));
-
-        gridLayout_12->addLayout(gridLayout_10, 0, 2, 1, 1);
-
-        gridLayout_11 = new QGridLayout();
-        gridLayout_11->setSpacing(6);
-        gridLayout_11->setObjectName(QStringLiteral("gridLayout_11"));
         label_10 = new QLabel(centralWidget);
         label_10->setObjectName(QStringLiteral("label_10"));
         label_10->setAlignment(Qt::AlignCenter);
 
-        gridLayout_11->addWidget(label_10, 0, 0, 1, 1);
+        gridLayout->addWidget(label_10, 0, 4, 1, 1);
 
-        lineEdit_9 = new QLineEdit(centralWidget);
-        lineEdit_9->setObjectName(QStringLiteral("lineEdit_9"));
+        razrab = new QLineEdit(centralWidget);
+        razrab->setObjectName(QStringLiteral("razrab"));
 
-        gridLayout_11->addWidget(lineEdit_9, 1, 0, 1, 1);
+        gridLayout->addWidget(razrab, 1, 0, 1, 1);
 
+        prov = new QLineEdit(centralWidget);
+        prov->setObjectName(QStringLiteral("prov"));
 
-        gridLayout_12->addLayout(gridLayout_11, 0, 3, 1, 1);
+        gridLayout->addWidget(prov, 1, 1, 1, 1);
 
+        kontr = new QLineEdit(centralWidget);
+        kontr->setObjectName(QStringLiteral("kontr"));
 
-        gridLayout_13->addLayout(gridLayout_12, 1, 0, 1, 1);
+        gridLayout->addWidget(kontr, 1, 2, 1, 1);
 
+        ytb = new QLineEdit(centralWidget);
+        ytb->setObjectName(QStringLiteral("ytb"));
 
-        gridLayout_17->addLayout(gridLayout_13, 0, 0, 1, 1);
+        gridLayout->addWidget(ytb, 1, 3, 1, 1);
 
-        gridLayout_15 = new QGridLayout();
-        gridLayout_15->setSpacing(6);
-        gridLayout_15->setObjectName(QStringLiteral("gridLayout_15"));
-        gridLayout_14 = new QGridLayout();
-        gridLayout_14->setSpacing(6);
-        gridLayout_14->setObjectName(QStringLiteral("gridLayout_14"));
-        progressBar_2 = new QProgressBar(centralWidget);
-        progressBar_2->setObjectName(QStringLiteral("progressBar_2"));
-        progressBar_2->setValue(0);
+        Firma = new QLineEdit(centralWidget);
+        Firma->setObjectName(QStringLiteral("Firma"));
 
-        gridLayout_14->addWidget(progressBar_2, 0, 0, 1, 1);
-
-        debug = new QTextEdit(centralWidget);
-        debug->setObjectName(QStringLiteral("debug"));
-
-        gridLayout_14->addWidget(debug, 1, 0, 1, 1);
+        gridLayout->addWidget(Firma, 1, 4, 1, 1);
 
 
-        gridLayout_15->addLayout(gridLayout_14, 0, 1, 1, 1);
+        gridLayout_3->addLayout(gridLayout, 0, 1, 1, 1);
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setSpacing(6);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-        label->setAlignment(Qt::AlignCenter);
+        label_7 = new QLabel(centralWidget);
+        label_7->setObjectName(QStringLiteral("label_7"));
+        label_7->setAlignment(Qt::AlignCenter);
 
-        gridLayout_2->addWidget(label, 0, 0, 1, 1);
+        gridLayout_2->addWidget(label_7, 0, 0, 1, 1);
+
+        label_8 = new QLabel(centralWidget);
+        label_8->setObjectName(QStringLiteral("label_8"));
+        label_8->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(label_8, 0, 1, 1, 1);
+
+        label_4 = new QLabel(centralWidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(label_4, 0, 2, 1, 1);
+
+        nymerIzd = new QLineEdit(centralWidget);
+        nymerIzd->setObjectName(QStringLiteral("nymerIzd"));
+
+        gridLayout_2->addWidget(nymerIzd, 1, 0, 1, 1);
+
+        naim1 = new QLineEdit(centralWidget);
+        naim1->setObjectName(QStringLiteral("naim1"));
+
+        gridLayout_2->addWidget(naim1, 1, 1, 1, 1);
+
+        naim2 = new QLineEdit(centralWidget);
+        naim2->setObjectName(QStringLiteral("naim2"));
+
+        gridLayout_2->addWidget(naim2, 1, 2, 1, 1);
+
+
+        gridLayout_3->addLayout(gridLayout_2, 1, 1, 1, 1);
+
+        gridLayout_4 = new QGridLayout();
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        progressBar_2 = new QProgressBar(centralWidget);
+        progressBar_2->setObjectName(QStringLiteral("progressBar_2"));
+        progressBar_2->setValue(0);
+
+        gridLayout_4->addWidget(progressBar_2, 2, 1, 1, 1);
 
         comboBox = new QComboBox(centralWidget);
         comboBox->setObjectName(QStringLiteral("comboBox"));
         comboBox->setEnabled(false);
 
-        gridLayout_2->addWidget(comboBox, 1, 0, 1, 1);
+        gridLayout_4->addWidget(comboBox, 2, 0, 1, 1);
+
+        label = new QLabel(centralWidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(label, 1, 0, 1, 1);
+
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_4->addItem(verticalSpacer_3, 0, 0, 1, 1);
+
+        label_9 = new QLabel(centralWidget);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(label_9, 1, 1, 1, 1);
 
 
-        gridLayout_15->addLayout(gridLayout_2, 0, 0, 1, 1);
-
-
-        gridLayout_17->addLayout(gridLayout_15, 1, 0, 1, 1);
-
-
-        gridLayout_18->addLayout(gridLayout_17, 0, 1, 1, 1);
+        gridLayout_3->addLayout(gridLayout_4, 2, 1, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 746, 22));
+        menuBar->setGeometry(QRect(0, 0, 800, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -358,33 +272,34 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\320\237\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\321\202\320\265\320\273\321\214 \320\277\320\265\321\200\320\265\321\207\320\275\320\265\320\271", Q_NULLPTR));
         openFile->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273", Q_NULLPTR));
         docGen->setText(QApplication::translate("MainWindow", "\320\223\320\265\320\275\320\265\321\200\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265\n"
 " \320\264\320\276\320\272\321\203\320\274\320\265\320\275\321\202\320\260\321\206\320\270\320\270", Q_NULLPTR));
         label_2->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\267\321\200\320\260\320\261\320\276\321\202\320\260\320\273", Q_NULLPTR));
-        lineEdit->setText(QApplication::translate("MainWindow", "\320\230\320\262\320\260\320\275\320\276\320\262 \320\230.\320\220.", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\262\320\265\321\200\320\270\320\273", Q_NULLPTR));
-        lineEdit_2->setText(QApplication::translate("MainWindow", "\320\225\320\274\321\206\320\265\320\262 \320\230.\320\233.", Q_NULLPTR));
-        label_4->setText(QApplication::translate("MainWindow", "\320\242.\320\272\320\276\320\275\321\202\321\200", Q_NULLPTR));
-        lineEdit_3->setText(QApplication::translate("MainWindow", "\320\237\320\265\321\202\321\200\320\276\320\262 \320\227.\320\241.", Q_NULLPTR));
         label_5->setText(QApplication::translate("MainWindow", "\320\235.\320\272\320\276\320\275\321\202\321\200.", Q_NULLPTR));
-        lineEdit_4->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\201\320\272\320\260\320\273\321\214 \320\222.\320\230.", Q_NULLPTR));
         label_6->setText(QApplication::translate("MainWindow", "\320\243\321\202\320\262.", Q_NULLPTR));
-        lineEdit_5->setText(QApplication::translate("MainWindow", "\320\220\320\273\320\260\320\264\320\270\320\275 \320\222.\320\241.", Q_NULLPTR));
-        label_7->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\206\320\270\320\274\320\260\320\273\321\214\320\275\321\213\320\271 \320\275\320\276\320\274\320\265\321\200 \320\270\320\267\320\264\320\265\320\273\320\270\321\217", Q_NULLPTR));
-        lineEdit_6->setText(QApplication::translate("MainWindow", "\320\221\320\256\320\233\320\230.468714.005 \320\237\320\2553", Q_NULLPTR));
-        label_8->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265 ", Q_NULLPTR));
-        lineEdit_7->setText(QApplication::translate("MainWindow", "\320\237\320\273\320\260\321\202\320\260 \321\202\321\200\320\260\320\272\321\202\320\276\320\262\320\276\320\263\320\276 \321\203\321\201\320\270\320\273\320\270\321\202\320\265\320\273\321\217", Q_NULLPTR));
         label_10->setText(QApplication::translate("MainWindow", "\320\244\320\270\321\200\320\274\320\260-\320\270\320\267\320\263\320\276\321\202\320\276\320\262\320\270\321\202\320\265\320\273\321\214", Q_NULLPTR));
-        lineEdit_9->setText(QApplication::translate("MainWindow", "\320\244\320\223\320\243\320\237 \320\235\320\237\320\237 \302\253\320\223\320\260\320\274\320\274\320\260\302\273", Q_NULLPTR));
-        label->setText(QApplication::translate("MainWindow", "\320\250\320\260\320\261\320\273\320\276\320\275 \320\262\321\213\321\205\320\276\320\264\320\275\320\276\320\263\320\276\n"
-" \321\204\320\260\320\271\320\273\320\260", Q_NULLPTR));
+        razrab->setText(QApplication::translate("MainWindow", "\320\230\320\262\320\260\320\275\320\276\320\262 \320\230.\320\220.", Q_NULLPTR));
+        prov->setText(QApplication::translate("MainWindow", "\320\225\320\274\321\206\320\265\320\262 \320\230.\320\233.", Q_NULLPTR));
+        kontr->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\201\320\272\320\260\320\273\321\214 \320\222.\320\230.", Q_NULLPTR));
+        ytb->setText(QApplication::translate("MainWindow", "\320\220\320\273\320\260\320\264\320\270\320\275 \320\222.\320\241.", Q_NULLPTR));
+        Firma->setText(QApplication::translate("MainWindow", "\320\244\320\223\320\243\320\237 \320\235\320\237\320\237 \302\253\320\223\320\260\320\274\320\274\320\260\302\273", Q_NULLPTR));
+        label_7->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\206\320\270\320\274\320\260\320\273\321\214\320\275\321\213\320\271 \320\275\320\276\320\274\320\265\321\200 \320\270\320\267\320\264\320\265\320\273\320\270\321\217", Q_NULLPTR));
+        label_8->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265 1 ", Q_NULLPTR));
+        label_4->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265 2", Q_NULLPTR));
+        nymerIzd->setText(QApplication::translate("MainWindow", "\320\221\320\256\320\233\320\230.468714.005 \320\237\320\2553", Q_NULLPTR));
+        naim1->setText(QApplication::translate("MainWindow", "\320\237\320\273\320\260\321\202\320\260 \321\202\321\200\320\260\320\272\321\202\320\276\320\262\320\276\320\263\320\276 \321\203\321\201\320\270\320\273\320\270\321\202\320\265\320\273\321\217", Q_NULLPTR));
+        naim2->setText(QApplication::translate("MainWindow", "\320\237\320\265\321\200\320\265\321\207\320\265\320\275\321\214 \321\215\320\273\320\265\320\274\320\265\320\275\321\202\320\276\320\262", Q_NULLPTR));
         comboBox->clear();
         comboBox->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "word", Q_NULLPTR)
          << QApplication::translate("MainWindow", "excel", Q_NULLPTR)
         );
+        label->setText(QApplication::translate("MainWindow", "\320\250\320\260\320\261\320\273\320\276\320\275 \320\262\321\213\321\205\320\276\320\264\320\275\320\276\320\263\320\276\n"
+" \321\204\320\260\320\271\320\273\320\260", Q_NULLPTR));
+        label_9->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\321\206\320\265\321\201\321\201 \320\262\321\213\320\277\320\276\320\273\320\275\320\265\320\275\320\270\321\217", Q_NULLPTR));
     } // retranslateUi
 
 };

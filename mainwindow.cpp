@@ -4,7 +4,8 @@
 #include <activeexcel.h>
 #include "activeword.h"
 
-void DeviceandSpace(QList<QStringList>& varList);
+void deviceandSpace(QList<QStringList>& varList);
+QList<QStringList> transform(QStringList var);
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -41,21 +42,26 @@ void MainWindow::openFile(){
 
   ui->openFile->setEnabled(false);
   QString fileName_DATA = QFileDialog::getOpenFileName(this, tr("Open Excel File"),"", tr("(*.xlsx *.xls)"));
+  ui->debug->insertPlainText("Запуск Excel");
   ActiveExcel excel;
   QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
+  if(ex1 == NULL){
+      ui->debug->setTextColor(Qt::red);
+      ui->debug->insertPlainText("\nОшибка открытия Excel\nВыход");
+      ui->debug->setTextColor(Qt::black);
+    return;
+    }
   QVariant name = excel.sheetName();
   QAxObject* sheet = excel.documentSheetActive(name);
 
 
 
-  QStringList var, var1;
+  QStringList var;
   // 20 секунд на чтение
 
-  int proc = 0;
-  bool procUp = true;
-  ui->progressBar->setValue(0);
+  ui->debug->insertPlainText("\nЧтение таблицы");
   ui->progressBar_2->setValue(0);
-  for(int i = 2;  ; i++){
+  for(int i = 2; i < 50  ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -70,20 +76,177 @@ void MainWindow::openFile(){
 
       if(i == 1000)
         ui->progressBar_2->setValue(50);
-
-      ui->progressBar->setValue(proc);
-
-      if(proc == 100)
-        procUp = false;
-      if(proc == 0)
-        procUp = true;
-      if(procUp)
-        proc++;
-      else
-        proc--;
     }
+  ui->debug->insertPlainText("Закрытие Excel");
+  excel.documentClose(ex1);
 
-  ui->progressBar->setValue(100);
+QList<QStringList> desValue;
+desValue.clear();
+desValue = transform( var);
+deviceandSpace(desValue);
+ui->progressBar_2->setValue(60);
+ui->debug->insertPlainText("\nЗапуск Word");
+ActiveWord word;
+//QString path = "D:/projects/gp/PEZ.docx";
+//вернуть в релизной версии
+QString path = QApplication::applicationDirPath() + "/PEZ.docx";
+ui->debug->insertPlainText("\n" + path);
+
+QAxObject* doc1 = word.documentOpen(path);
+if(doc1 == NULL){
+    ui->debug->setTextColor(Qt::red);
+     ui->debug->insertPlainText("\n Такого документа не существует");
+    ui->debug->setTextColor(Qt::black);
+  return;
+  }
+
+//заполнение таблицы
+QStringList listLabel = word.tableGetLabels(1, 2);
+ui->progressBar_2->setValue(70);
+ui->debug->insertPlainText("\nЗаполнение таблицы word");
+word.tableFill(desValue,listLabel,1,2);
+ui->progressBar_2->setValue(90);
+
+
+ui->debug->insertPlainText("\nЗавершение работы");
+// поиск элементов, добавка курсива и расположение по центру
+foreach (QString var, strListNamelabel) {
+    //подчеркивание
+    QVariant a = word.selectionFindFontname(var, true, false, true, true, "GOST type B");
+    //центрирование
+    word.selectionAlign(var , false, false, true);
+    QString s = var;
+    s.remove(0,1);
+    s.remove(s.count()-1,1);
+    QString s1 = var;
+    // замена меток/
+    word.findReplaseLabel(s1, s, true);
+    s.clear();
+    s1.clear();
+  }
+
+//Подписей
+
+word.colontitulReplaseLabel(doc1, "[Разраб]", ui->lineEdit->text(), true);
+word.colontitulReplaseLabel(doc1, "[пров]", ui->lineEdit_2->text(), true);
+word.colontitulReplaseLabel(doc1, "[тконт]", ui->lineEdit_3->text(), true);
+word.colontitulReplaseLabel(doc1, "[конт]", ui->lineEdit_4->text(), true);
+word.colontitulReplaseLabel(doc1, "[утв]", ui->lineEdit_5->text(), true);
+word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->lineEdit_6->text(), true);
+word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->lineEdit_6->text(), false);
+word.colontitulReplaseLabel(doc1, "[Наим.]", ui->lineEdit_7->text(), true);
+word.colontitulReplaseLabel(doc1, "[Фирма]", ui->lineEdit_9->text(), true);
+
+word.setVisible();
+ui->progressBar_2->setValue(100);
+ui->openFile->setEnabled(true);
+}
+
+
+
+
+
+//функция будет генерить файлы в excel/ word
+void MainWindow::generate(){
+
+}
+
+//дополняет в QList пропуски и названия элементов
+void deviceandSpace(QList<QStringList>& varList){
+  QString pasteStr;
+  bool flag_a = false;
+  bool flag_c = false;
+  bool flag_d = false;
+  bool flag_hl= false;
+  bool flag_l = false;
+  bool flag_r = false;
+  bool flag_s = false;
+  bool flag_vd = false;
+  bool flag_vt = false;
+  bool flag_x = false;
+  bool flag_z = false;
+  bool flag_zq = false;
+  bool flag_f = false;
+  int flag_spaceFirst = 0;
+  bool flag_space = false; //для пропуска строки
+  QStringList var;
+  QStringList var_space;
+  var_space << "" << "" << "";
+  QList<QStringList>::iterator w;
+  for ( w = varList.begin();w < varList.end(); w++) {
+
+      //конденсаторы, резисторы и т.д.
+      if((*w)[0][0] == 'A' && flag_a == false){
+          pasteStr = "[Устройства]";
+          flag_a = true;
+        }
+      if((*w)[0][0] == 'C' && flag_c == false){
+          pasteStr = "[Конденсаторы]";
+          flag_c = true;
+        }
+      if((*w)[0][0] == 'D' && flag_d == false){
+          pasteStr = "[Микросхемы]";
+          flag_d = true;
+        }
+      if((*w)[0][0] == 'H' && (*w)[0][1] == 'L'&& flag_hl == false){
+          pasteStr = "[Светодиоды]";
+          flag_hl = true;
+        }
+      if((*w)[0][0] == 'L'&& flag_l == false){
+          pasteStr = "[Дроссели]";
+          flag_l = true;
+        }
+      if((*w)[0][0] == 'R'&& flag_r == false){
+          pasteStr = "[Резисторы]";
+          flag_r = true;
+        }
+      if((*w)[0][0] == 'S'&& flag_s == false){
+          pasteStr = "[Коммутация]";
+          flag_s = true;
+        }
+      if((*w)[0][0] == 'V' && (*w)[0][1] == 'D'&& flag_vd == false){
+          pasteStr = "[Диоды]";
+          flag_vd = true;
+        }
+      if((*w)[0][0] == 'V' && (*w)[0][1] == 'T'&& flag_vt == false){
+          pasteStr = "[Транзисторы]";
+          flag_vt = true;
+        }
+      if((*w)[0][0] == 'X'&& flag_x== false){
+          pasteStr = "[Контактные соединения]";
+          flag_x = true;
+        }
+      if((*w)[0][0] == 'Z'&& flag_z == false){
+          pasteStr = "[Фильтры]";
+          flag_z = true;
+        }
+      if((*w)[0][0] == 'Z' && (*w)[0][1] == 'Q'&& flag_zq == false){
+          pasteStr = "[Кварцевый резонатор]";
+          flag_zq = true;
+        }
+      if((*w)[0][0] == 'F' && flag_f == false){
+          pasteStr = "[Предохранители]";
+          flag_f = true;
+        }
+      //строка не пуста
+      if(pasteStr.isEmpty() == false){
+
+          w = varList.insert(w ,var_space);
+          var << "" << pasteStr << "";
+          w = varList.insert(++w ,var);
+          pasteStr.clear();
+          var.clear();
+        }
+
+
+
+
+    }
+}
+//----------------------------------------------------------
+QList<QStringList> transform(QStringList var){
+
+  QStringList var1;
   QList<QStringList> varList;
    QString prem;
   int count = 0;
@@ -135,7 +298,7 @@ prem.clear();
 
 
 // расслойка
-QList<QStringList>::iterator w, z;
+QList<QStringList>::iterator z;
 QStringList desValue1;
 QList<QStringList> desValue;
 desValue.clear();
@@ -259,148 +422,6 @@ for (var2 = desValue.begin(); var2 < desValue.end(); var2++) {
 
     }
 }
-DeviceandSpace(desValue);
-ui->progressBar_2->setValue(60);
 
-ActiveWord word;
-QAxObject* doc1 = word.documentOpen("D:/projects/gp/PEZ.docx");
-
-//заполнение таблицы
-QStringList listLabel = word.tableGetLabels(1, 2);
-ui->progressBar_2->setValue(70);
-word.tableFill(desValue,listLabel,1,2);
-ui->progressBar_2->setValue(90);
-// поиск элементов, добавка курсива и расположение по центру
-foreach (auto var, strListNamelabel) {
-    //подчеркивание
-    word.selectionFindFontname(var, true, false, true, true, "GOST type B");
-    //центрирование
-    word.selectionAlign(var , false, false, true);
-    QString s = var;
-    s.remove(0,1);
-    s.remove(s.count()-1,1);
-    QString s1 = var;
-    // замена меток/
-    word.findReplaseLabel(s1, s, true);
-    s.clear();
-    s1.clear();
-  }
-
-//Подписей
-
-word.colontitulReplaseLabel(doc1, "[Разраб]", ui->lineEdit->text(), true);
-word.colontitulReplaseLabel(doc1, "[пров]", ui->lineEdit_2->text(), true);
-word.colontitulReplaseLabel(doc1, "[тконт]", ui->lineEdit_3->text(), true);
-word.colontitulReplaseLabel(doc1, "[конт]", ui->lineEdit_4->text(), true);
-word.colontitulReplaseLabel(doc1, "[утв]", ui->lineEdit_5->text(), true);
-word.colontitulReplaseLabel(doc1, "[5]", ui->lineEdit_6->text(), true);
-word.colontitulReplaseLabel(doc1, "[5]", ui->lineEdit_6->text(), false);
-word.colontitulReplaseLabel(doc1, "[6]", ui->lineEdit_7->text(), true);
-word.colontitulReplaseLabel(doc1, "[7]", ui->lineEdit_9->text(), true);
-
-word.setVisible();
-ui->progressBar_2->setValue(100);
-ui->openFile->setEnabled(true);
-}
-
-
-
-
-
-//функция будет генерить файлы в excel/ word
-void MainWindow::generate(){
-
-}
-
-//дополняет в QList пропуски и названия элементов
-void DeviceandSpace(QList<QStringList>& varList){
-  QString pasteStr;
-  bool flag_a = false;
-  bool flag_c = false;
-  bool flag_d = false;
-  bool flag_hl= false;
-  bool flag_l = false;
-  bool flag_r = false;
-  bool flag_s = false;
-  bool flag_vd = false;
-  bool flag_vt = false;
-  bool flag_x = false;
-  bool flag_z = false;
-  bool flag_zq = false;
-  bool flag_f = false;
-  int flag_spaceFirst = 0;
-  bool flag_space = false; //для пропуска строки
-  QStringList var;
-  QStringList var_space;
-  var_space << "" << "" << "";
-  QList<QStringList>::iterator w;
-  for ( w = varList.begin();w < varList.end(); w++) {
-
-      //конденсаторы, резисторы и т.д.
-      if((*w)[0][0] == 'A' && flag_a == false){
-          pasteStr = "[Устройства]";
-          flag_a = true;
-        }
-      if((*w)[0][0] == 'C' && flag_c == false){
-          pasteStr = "[Конденсаторы]";
-          flag_c = true;
-        }
-      if((*w)[0][0] == 'D' && flag_d == false){
-          pasteStr = "[Микросхемы]";
-          flag_d = true;
-        }
-      if((*w)[0][0] == 'H' && (*w)[0][1] == 'L'&& flag_hl == false){
-          pasteStr = "[Светодиоды]";
-          flag_hl = true;
-        }
-      if((*w)[0][0] == 'L'&& flag_l == false){
-          pasteStr = "[Дроссели]";
-          flag_l = true;
-        }
-      if((*w)[0][0] == 'R'&& flag_r == false){
-          pasteStr = "[Резисторы]";
-          flag_r = true;
-        }
-      if((*w)[0][0] == 'S'&& flag_s == false){
-          pasteStr = "[Коммутация]";
-          flag_s = true;
-        }
-      if((*w)[0][0] == 'V' && (*w)[0][1] == 'D'&& flag_vd == false){
-          pasteStr = "[Диоды]";
-          flag_vd = true;
-        }
-      if((*w)[0][0] == 'V' && (*w)[0][1] == 'T'&& flag_vt == false){
-          pasteStr = "[Транзисторы]";
-          flag_vt = true;
-        }
-      if((*w)[0][0] == 'X'&& flag_x== false){
-          pasteStr = "[Контактные соединения]";
-          flag_x = true;
-        }
-      if((*w)[0][0] == 'Z'&& flag_z == false){
-          pasteStr = "[Фильтры]";
-          flag_z = true;
-        }
-      if((*w)[0][0] == 'Z' && (*w)[0][1] == 'Q'&& flag_zq == false){
-          pasteStr = "[Кварцевый резонатор]";
-          flag_zq = true;
-        }
-      if((*w)[0][0] == 'F' && flag_f == false){
-          pasteStr = "[Предохранители]";
-          flag_f = true;
-        }
-      //строка не пуста
-      if(pasteStr.isEmpty() == false){
-
-          w = varList.insert(w ,var_space);
-          var << "" << pasteStr << "";
-          w = varList.insert(++w ,var);
-          pasteStr.clear();
-          var.clear();
-        }
-
-
-
-
-    }
+return desValue;
 }

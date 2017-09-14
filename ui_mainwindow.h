@@ -24,6 +24,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -69,8 +70,8 @@ public:
     QLineEdit *lineEdit_9;
     QGridLayout *gridLayout_15;
     QGridLayout *gridLayout_14;
-    QProgressBar *progressBar;
     QProgressBar *progressBar_2;
+    QTextEdit *debug;
     QGridLayout *gridLayout_2;
     QLabel *label;
     QComboBox *comboBox;
@@ -83,6 +84,16 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(746, 277);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
+        MainWindow->setMinimumSize(QSize(746, 277));
+        MainWindow->setMaximumSize(QSize(746, 277));
+        QFont font;
+        font.setStyleStrategy(QFont::PreferAntialias);
+        MainWindow->setFont(font);
         MainWindow->setCursor(QCursor(Qt::ArrowCursor));
         MainWindow->setContextMenuPolicy(Qt::CustomContextMenu);
         centralWidget = new QWidget(MainWindow);
@@ -96,11 +107,11 @@ public:
         gridLayout_16->setObjectName(QStringLiteral("gridLayout_16"));
         openFile = new QPushButton(centralWidget);
         openFile->setObjectName(QStringLiteral("openFile"));
-        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(openFile->sizePolicy().hasHeightForWidth());
-        openFile->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(openFile->sizePolicy().hasHeightForWidth());
+        openFile->setSizePolicy(sizePolicy1);
 
         gridLayout_16->addWidget(openFile, 0, 0, 1, 1);
 
@@ -111,8 +122,8 @@ public:
         docGen = new QPushButton(centralWidget);
         docGen->setObjectName(QStringLiteral("docGen"));
         docGen->setEnabled(false);
-        sizePolicy.setHeightForWidth(docGen->sizePolicy().hasHeightForWidth());
-        docGen->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(docGen->sizePolicy().hasHeightForWidth());
+        docGen->setSizePolicy(sizePolicy1);
 
         gridLayout_16->addWidget(docGen, 2, 0, 1, 1);
 
@@ -288,17 +299,16 @@ public:
         gridLayout_14 = new QGridLayout();
         gridLayout_14->setSpacing(6);
         gridLayout_14->setObjectName(QStringLiteral("gridLayout_14"));
-        progressBar = new QProgressBar(centralWidget);
-        progressBar->setObjectName(QStringLiteral("progressBar"));
-        progressBar->setValue(0);
-
-        gridLayout_14->addWidget(progressBar, 0, 0, 1, 1);
-
         progressBar_2 = new QProgressBar(centralWidget);
         progressBar_2->setObjectName(QStringLiteral("progressBar_2"));
         progressBar_2->setValue(0);
 
-        gridLayout_14->addWidget(progressBar_2, 1, 0, 1, 1);
+        gridLayout_14->addWidget(progressBar_2, 0, 0, 1, 1);
+
+        debug = new QTextEdit(centralWidget);
+        debug->setObjectName(QStringLiteral("debug"));
+
+        gridLayout_14->addWidget(debug, 1, 0, 1, 1);
 
 
         gridLayout_15->addLayout(gridLayout_14, 0, 1, 1, 1);

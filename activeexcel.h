@@ -44,6 +44,7 @@ class ActiveExcel
   QAxObject* sheets_;           ///< Коллекция листов
   QAxObject* workSheet_;
   QAxObject* workSheets_;
+  bool flagClose;
 public:
   ActiveExcel();
   ~ActiveExcel();

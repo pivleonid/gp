@@ -96,10 +96,28 @@ public:
   \return bool успех или неудача
   */
   bool findReplaseLabel(QString oldString, QString newString, bool all);
+  /*==================================================================*/
+  /*!  \brief
+  Функция открывает доступ к колонтитулам, но не работает !?
+  \param [in] all =  true замена всех меток. false - замена одной
+  \return bool успех или неудача
+  */
   bool findReplaseLabelInColontituls(QString oldString, QString newString, bool all);
+  /*==================================================================*/
+  /*!  \brief
+  Замена меток в колонтитулах
+  \param [in] doc = указатель на созданный документ
+  \param [in] firstPage  true (замена только в на первой странице), false - на всех остальных
+  \return bool успех или неудача
+  */
+  bool colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage);
+
+
   //----------------------------------------------------------
   /*! \brief Операции с выделенной областью*/
   //----------------------------------------------------------
+
+
   /*==================================================================*/
   /*!  \brief
    Вставка всего текста из первого документа в метку второго документа
@@ -224,7 +242,7 @@ void selectionCopyAllText(bool buffer);
   QVariant tablesCount();
 
 
-  QVariant colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage);
+
 
 };
 

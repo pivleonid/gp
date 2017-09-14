@@ -4,11 +4,11 @@
 //----------------------------------------------------------
 ActiveWord::ActiveWord(){
   wordApplication_ =  new QAxObject("Word.Application");
-// Sleep(1000);
+ Sleep(1000);
   wordApplication_->setProperty("DisplayAlerts", false);
- //Sleep(1000);
+ Sleep(1000);
   wordApplication_->setProperty("Visible", false);
- //Sleep(1000);
+ Sleep(1000);
   documents_ = wordApplication_->querySubObject("Documents");
 
 }
@@ -144,6 +144,8 @@ QVariant ActiveWord:: selectionFindFontname(QString string,  bool allText, bool 
                                               bool italic , bool underline, QString fontName )
 {
   QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
+  if (wordSelection == NULL)
+    qDebug() <<"selectionFindFontname word sel == 0";
   QAxObject* findString =  wordSelection->querySubObject("Find"); // заменить в одну строчку
   findString->dynamicCall("ClearFormatting()");
   //получаем доступ к параметрам для замены
@@ -510,7 +512,7 @@ bool ActiveWord::findReplaseLabelInColontituls(QString oldString, QString newStr
 
 }
 
-QVariant ActiveWord::colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage){
+bool ActiveWord::colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage){
 
 
   QAxObject* stor = doc->querySubObject("StoryRanges");
@@ -548,7 +550,7 @@ QVariant ActiveWord::colontitulReplaseLabel( QAxObject* doc, QString oldString, 
 
   delete range;
   delete stor;
-  return param;
+  return param.toBool();
 
 
     }

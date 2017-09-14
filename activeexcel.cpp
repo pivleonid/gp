@@ -6,6 +6,7 @@ ActiveExcel::ActiveExcel()
   excelApplication_->setProperty("DisplayAlerts", false);
   excelApplication_->setProperty("Visible", false);
   worcbooks_ = excelApplication_->querySubObject( "Workbooks" );
+  flagClose = false;
 
 
 
@@ -13,8 +14,9 @@ ActiveExcel::ActiveExcel()
 
 
 ActiveExcel::~ActiveExcel(){
-  excelApplication_->dynamicCall("Quit()");
-  delete sheets_;
+  if( flagClose == false ) //ежели приложение не было закрыто
+    excelApplication_->dynamicCall("Quit()");
+
   delete worcbooks_;
   delete excelApplication_;
 }
@@ -48,6 +50,7 @@ QAxObject* ActiveExcel::documentSheetActive( QVariant sheet){
 
 
 void ActiveExcel::documentClose(QAxObject* document){
+  flagClose = true;
   document->dynamicCall("Close(wdDoNotSaveChanges)");
   delete document;
 
@@ -56,6 +59,7 @@ void ActiveExcel::documentClose(QAxObject* document){
 void ActiveExcel::documentCloseAndSave(QAxObject *document, QVariant path){
       document -> dynamicCall("SaveAs(const QVariant&)", path);
       document->dynamicCall("Close(wdDoNotSaveChanges)");
+      flagClose = true;
       delete document;
 }
 //---------------------------------------------------------------------------------

@@ -1,0 +1,1 @@
+D:\projects\gp\debug\gost.ttf

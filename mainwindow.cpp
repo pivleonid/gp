@@ -61,7 +61,7 @@ void MainWindow::openFile(){
 
   ui->debug->insertPlainText("\nЧтение таблицы");
   ui->progressBar_2->setValue(0);
-  for(int i = 2; i < 50  ; i++){
+  for(int i = 2;  ; i++){
       var << excel.sheetCellInsert(sheet, i, 2).toString();
       var << excel.sheetCellInsert(sheet, i, 3).toString();
       var << excel.sheetCellInsert(sheet, i, 4).toString();
@@ -72,19 +72,19 @@ void MainWindow::openFile(){
        break;
 
       if(i == 500)
-        ui->progressBar_2->setValue(25);
+        ui->progressBar_2->setValue(10);
 
       if(i == 1000)
-        ui->progressBar_2->setValue(50);
+        ui->progressBar_2->setValue(30);
     }
-  ui->debug->insertPlainText("Закрытие Excel");
+  ui->debug->insertPlainText("\nЗакрытие Excel");
   excel.documentClose(ex1);
 
 QList<QStringList> desValue;
 desValue.clear();
 desValue = transform( var);
 deviceandSpace(desValue);
-ui->progressBar_2->setValue(60);
+ui->progressBar_2->setValue(40);
 ui->debug->insertPlainText("\nЗапуск Word");
 ActiveWord word;
 //QString path = "D:/projects/gp/PEZ.docx";

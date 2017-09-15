@@ -8,6 +8,8 @@
 
 void deviceandSpace(QList<QStringList>& varList);
 QList<QStringList> transform(QStringList var);
+//обработка ошибок
+void mesOut(QString);
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -18,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->openFile,SIGNAL(clicked(bool)),this,SLOT(openFile()));
   connect(ui->docGen,SIGNAL(clicked(bool)), this, SLOT(generate()));
 
-  strListNamelabel << "[Устройства]" << "[Конденсаторы]"<<"[Микросхемы]"<<"[Светодиоды]"<<"[Дроссели]"<<"[Резисторы]"<<"[Коммутация]"<<"[Диоды]"<<"[Транзисторы]"<<"[Контактные соединения]"<<"[Фильтры]"<<"[Кварцевый резонатор]"<<"[Предохранители]";
+  strListNamelabel << "[Устройства]" << "[Конденсаторы]"<<"[Микросхемы]"<<"[Светодиоды]"<<"[Дроссели]"<<"[Резисторы]"<<"[Коммутация]"<<"[Диоды]"<<"[Транзисторы]"<<"[Контактные соединения]"<<"[Фильтры]"<<"[Кварцевый резонатор]";//<<"[Предохранители]";
 
 
 
@@ -100,44 +102,35 @@ void MainWindow::openFile(){
         var << data.toString();
       else{
           QMessageBox msgBox;
-          msgBox.setText("Ошибка обработки данных!");
-          msgBox.exec();
+          mesOut("Ошибка обработки данных!");
           ui->openFile->setEnabled(true);
           return;
         }
       if (excel.sheetCellInsert(sheet, data, i, 3))
         var << data.toString();
       else{
-          QMessageBox msgBox;
-          msgBox.setText("Ошибка обработки данных!");
-          msgBox.exec();
+          mesOut("Ошибка обработки данных!");
           ui->openFile->setEnabled(true);
           return;
         }
       if (excel.sheetCellInsert(sheet, data, i, 4))
         var << data.toString();
       else{
-          QMessageBox msgBox;
-          msgBox.setText("Ошибка обработки данных!");
-          msgBox.exec();
+          mesOut("Ошибка обработки данных!");
           ui->openFile->setEnabled(true);
           return;
         }
       if (excel.sheetCellInsert(sheet, data, i, 5))
         var << data.toString();
       else{
-          QMessageBox msgBox;
-          msgBox.setText("Ошибка обработки данных!");
-          msgBox.exec();
+          mesOut("Ошибка обработки данных!");
           ui->openFile->setEnabled(true);
           return;
         }
       if (excel.sheetCellInsert(sheet, data, i, 6))
         var << data.toString();
       else{
-          QMessageBox msgBox;
-          msgBox.setText("Ошибка обработки данных!");
-          msgBox.exec();
+          mesOut("Ошибка обработки данных!");
           ui->openFile->setEnabled(true);
           return;
         }
@@ -157,7 +150,7 @@ void MainWindow::openFile(){
     }
   excel.documentClose(ex1);
 
-QList<QStringList> desValue;
+
 desValue.clear();
 desValue = transform( var);
 deviceandSpace(desValue);
@@ -168,50 +161,177 @@ ui->progressBar_2->setValue(50);
 QStringList listLabel = word.tableGetLabels(1, 2);
 ui->progressBar_2->setValue(70);
 QCoreApplication::processEvents();
-word.tableFill(desValue,listLabel,1,2);
+if (word.tableFill(desValue,listLabel,1,2) < 0){
+    mesOut("Ошибка заполнения таблицы!");
+    ui->openFile->setEnabled(true);
+    word.setVisible();
+    return;
+  }
+
 ui->progressBar_2->setValue(90);
 QCoreApplication::processEvents();
+
+
+if( word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
+  mesOut("Ошибка замены метки");
+
 
 // поиск элементов, добавка курсива и расположение по центру
 foreach (QString var, strListNamelabel) {
     //подчеркивание
-    QVariant a = word.selectionFindFontname(var, true, false, true, true, "GOST type B");
+    if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
+        mesOut("Ошибка шрифта!" + var);
+        ui->openFile->setEnabled(true);
+        word.setVisible();
+        return;
+      }
     //центрирование
-    word.selectionAlign(var , false, false, true);
+    if( word.selectionAlign(var , false, false, true) < 0){
+        mesOut("Ошибка центрирования!" + var);
+        ui->openFile->setEnabled(true);
+        word.setVisible();
+        return;
+      }
     QString s = var;
     s.remove(0,1);
     s.remove(s.count()-1,1);
     QString s1 = var;
     // замена меток/
-    word.findReplaseLabel(s1, s, true);
+    if (word.findReplaseLabel(s1, s, true) == false){
+        mesOut("Ошибка замены метки!" + var);
+        ui->openFile->setEnabled(true);
+        word.setVisible();
+        return;
+      }
     s.clear();
     s1.clear();
   }
 
-//Подписей
 
-word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true);
-word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true);
-word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true);
-word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true);
-word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true);
-word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true);
-word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false);
-word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true);
-word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true);
+
 
 word.setVisible();
 ui->progressBar_2->setValue(100);
 ui->openFile->setEnabled(true);
+ui->docGen->setEnabled(true);
+
 }
 
 
 
 
+void mesOut(QString mes){
+       QMessageBox msgBox;
+          msgBox.setText(mes);
+          msgBox.exec();
+
+}
+
+
 
 //функция будет генерить файлы в excel/ word
 void MainWindow::generate(){
+  ui->progressBar_2->setValue(0);
+  QCoreApplication::processEvents();
+  ActiveWord word;
+   QString path = QApplication::applicationDirPath() + "/PEZ.docx";
+   QAxObject* doc1 = word.documentOpen(path);
+   if(doc1 == NULL){
+      QMessageBox msgBox;
+        msgBox.setText("Не найден шаблон");
+        msgBox.exec();
+        ui->openFile->setEnabled(true);
+    return;
+    }
+  //заполнение таблицы
+  QStringList listLabel = word.tableGetLabels(1, 2);
+  ui->progressBar_2->setValue(40);
+  QCoreApplication::processEvents();
+  if (word.tableFill(desValue,listLabel,1,2) < 0){
+      mesOut("Ошибка заполнения таблицы!");
+      ui->openFile->setEnabled(true);
+      word.setVisible();
+      return;
+    }
 
+  ui->progressBar_2->setValue(90);
+  QCoreApplication::processEvents();
+
+
+ //
+  if( word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+
+
+  // поиск элементов, добавка курсива и расположение по центру
+  foreach (QString var, strListNamelabel) {
+      //подчеркивание
+      if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
+          mesOut("Ошибка шрифта!" + var);
+          ui->openFile->setEnabled(true);
+          word.setVisible();
+          return;
+        }
+      //центрирование
+      if( word.selectionAlign(var , false, false, true) < 0){
+          mesOut("Ошибка центрирования!" + var);
+          ui->openFile->setEnabled(true);
+          word.setVisible();
+          return;
+        }
+      QString s = var;
+      s.remove(0,1);
+      s.remove(s.count()-1,1);
+      QString s1 = var;
+      // замена меток/
+      if (word.findReplaseLabel(s1, s, true) == false){
+          mesOut("Ошибка замены метки!" + var);
+          ui->openFile->setEnabled(true);
+          word.setVisible();
+          return;
+        }
+      s.clear();
+      s1.clear();
+    }
+  //
+
+
+
+  word.setVisible();
+  ui->progressBar_2->setValue(100);
+  ui->openFile->setEnabled(true);
 }
 
 //дополняет в QList пропуски и названия элементов

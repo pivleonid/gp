@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -58,9 +57,6 @@ public:
     QLineEdit *naim2;
     QGridLayout *gridLayout_4;
     QProgressBar *progressBar_2;
-    QComboBox *comboBox;
-    QLabel *label;
-    QSpacerItem *verticalSpacer_3;
     QLabel *label_9;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -76,7 +72,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
-        MainWindow->setMinimumSize(QSize(746, 277));
+        MainWindow->setMinimumSize(QSize(800, 277));
         MainWindow->setMaximumSize(QSize(800, 277));
         QFont font;
         font.setStyleStrategy(QFont::PreferAntialias);
@@ -224,29 +220,13 @@ public:
         progressBar_2->setObjectName(QStringLiteral("progressBar_2"));
         progressBar_2->setValue(0);
 
-        gridLayout_4->addWidget(progressBar_2, 2, 1, 1, 1);
-
-        comboBox = new QComboBox(centralWidget);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
-        comboBox->setEnabled(false);
-
-        gridLayout_4->addWidget(comboBox, 2, 0, 1, 1);
-
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-        label->setAlignment(Qt::AlignCenter);
-
-        gridLayout_4->addWidget(label, 1, 0, 1, 1);
-
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_4->addItem(verticalSpacer_3, 0, 0, 1, 1);
+        gridLayout_4->addWidget(progressBar_2, 1, 0, 1, 1);
 
         label_9 = new QLabel(centralWidget);
         label_9->setObjectName(QStringLiteral("label_9"));
         label_9->setAlignment(Qt::AlignCenter);
 
-        gridLayout_4->addWidget(label_9, 1, 1, 1, 1);
+        gridLayout_4->addWidget(label_9, 0, 0, 1, 1);
 
 
         gridLayout_3->addLayout(gridLayout_4, 2, 1, 1, 1);
@@ -292,13 +272,6 @@ public:
         nymerIzd->setText(QApplication::translate("MainWindow", "\320\221\320\256\320\233\320\230.468714.005 \320\237\320\2553", Q_NULLPTR));
         naim1->setText(QApplication::translate("MainWindow", "\320\237\320\273\320\260\321\202\320\260 \321\202\321\200\320\260\320\272\321\202\320\276\320\262\320\276\320\263\320\276 \321\203\321\201\320\270\320\273\320\270\321\202\320\265\320\273\321\217", Q_NULLPTR));
         naim2->setText(QApplication::translate("MainWindow", "\320\237\320\265\321\200\320\265\321\207\320\265\320\275\321\214 \321\215\320\273\320\265\320\274\320\265\320\275\321\202\320\276\320\262", Q_NULLPTR));
-        comboBox->clear();
-        comboBox->insertItems(0, QStringList()
-         << QApplication::translate("MainWindow", "word", Q_NULLPTR)
-         << QApplication::translate("MainWindow", "excel", Q_NULLPTR)
-        );
-        label->setText(QApplication::translate("MainWindow", "\320\250\320\260\320\261\320\273\320\276\320\275 \320\262\321\213\321\205\320\276\320\264\320\275\320\276\320\263\320\276\n"
-" \321\204\320\260\320\271\320\273\320\260", Q_NULLPTR));
         label_9->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\321\206\320\265\321\201\321\201 \320\262\321\213\320\277\320\276\320\273\320\275\320\265\320\275\320\270\321\217", Q_NULLPTR));
     } // retranslateUi
 

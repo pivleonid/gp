@@ -33,7 +33,7 @@ class ActiveWord{
   bool flagWordApp;
   bool flagdoc;
   //Внутренняя функция.
-  bool selectionFind( QString oldString = "", QString newString = ""   /*!< [in] Старая строкаи строка для замены   */
+  int selectionFind( QString oldString = "", QString newString = ""   /*!< [in] Старая строкаи строка для замены   */
       ,bool searchReg     = false                      /*!< [in] Учитывать регистр   */
       ,bool searchAllWord = false                      /*!< [in] Поиск целого слова  */
       ,bool searchForward = true                       /*!< [in] поиск вперед   */
@@ -116,7 +116,7 @@ public:
   \param [in] firstPage  true (замена только в на первой странице), false - на всех остальных
   \return bool успех или неудача
   */
-  bool colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage);
+  int colontitulReplaseLabel( QAxObject* doc, QString oldString, QString newString, bool firstPage);
 
 
   //----------------------------------------------------------
@@ -183,10 +183,10 @@ QVariant selectionFindSize(QString string, QVariant fontSize, bool allText);
   \param [in] FontName - "Times New Roman" по умолчанию
   \return тип selection
   */
-bool selectionFindFontname(QString string,  bool allText,bool bold = false,
+int selectionFindFontname(QString string,  bool allText,bool bold = false,
                                bool italic = false, bool underline = false, QString fontName = "Arial" );
 
-QVariant selectionAlign( QString string, bool left, bool right, bool center );
+int selectionAlign( QString string, bool left, bool right, bool center );
   /*==================================================================*/
   /*!  \brief
   Выделение всего текста с возмождностью копирования в буфер
@@ -227,7 +227,7 @@ void selectionCopyAllText(bool buffer);
   Возвращает количество и список !меток!  в таблице.
   Пример метки: [label]
   */
-  void tableFill(QList<QStringList> tableDat_in,/*!< [in] Таблица для вставки */
+  int tableFill(QList<QStringList> tableDat_in,/*!< [in] Таблица для вставки */
                  QStringList tableLabel,        /*!< [in] Список всех меток  */
                  int tableIndex,                /*!< [in] индекс таблицы  */
                  int tabRow                     /*!< [in] номер шаблонный строки в таблице  */

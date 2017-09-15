@@ -15,9 +15,12 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
+
 private:
   Ui::MainWindow *ui;
   QStringList strListNamelabel;
+  QList<QStringList> desValue;
+
 private slots:
   void openFile();
   void generate();

@@ -145,9 +145,15 @@ QVariant ActiveWord:: selectionFindSize(QString string, QVariant fontSize, bool 
   return selectionFind( string, string,false,false,true,true, true, 1 );
 }
 //----------------------------------------------------------
-QVariant ActiveWord:: selectionFindFontname(QString string,  bool allText, bool bold,
+bool ActiveWord:: selectionFindFontname(QString string,  bool allText, bool bold,
                                               bool italic , bool underline, QString fontName )
 {
+  if(allText)
+   bool ret = selectionFind( string, string,false,false,true,true, true, 2 );
+  bool ret = selectionFind( string, string,false,false,true,true, true, 1 );
+  if (ret == false)
+    return false;
+
   QAxObject* wordSelection = wordApplication_->querySubObject("Selection");
   if (wordSelection == NULL)
     qDebug() <<"selectionFindFontname word sel == 0";
@@ -168,9 +174,8 @@ QVariant ActiveWord:: selectionFindFontname(QString string,  bool allText, bool 
   delete replacement;
   delete findString;
   delete wordSelection;
-  if(allText)
-    return selectionFind( string, string,false,false,true,true, true, 2 );
-  return  selectionFind( string, string,false,false,true,true, true, 1 );
+  return true;
+
 }
 //----------------------------------------------------------
 QVariant ActiveWord::selectionAlign(QString string, bool left, bool right, bool center){
@@ -389,7 +394,7 @@ void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabe
   QAxObject* table = tables->querySubObject("Item(const QVariant&)", tableIndex);
   //количество добаввленных строк
   const int count = tableDat_in.count();
-  QAxObject* cell;
+
   for(int i = 1; i <= count; i++){
       if(i != 1 + start){
           if(i == count+1)
@@ -403,15 +408,22 @@ void ActiveWord::tableFill(QList<QStringList> tableDat_in, QStringList tableLabe
           if( tableDat_in[j].count() < j)
             continue;
           //b = tableDat_in[i].count();
-          cell = table->querySubObject("Cell(const QVariant& , const QVariant&)",i + start-1 , j);
+          QAxObject* cell = table->querySubObject("Cell(const QVariant& , const QVariant&)",i + start-1 , j);
           cell->querySubObject("Range")->dynamicCall("Select()");
           //если метка стоит, а замещающая строка пустая - то метка останется!
-          wordApplication_->querySubObject("Selection")->dynamicCall("Cut()");
-           wordApplication_->querySubObject("Selection")->dynamicCall("TypeText(Text)", tableDat_in[i-1][containerIndex[j-1]]);
-
+          if( i == 1){ //сделать только в первом прогоне
+            QAxObject* sel =wordApplication_->querySubObject("Selection");
+            sel->dynamicCall("Cut()");
+            delete sel;
+            delete cell;
+            continue;
+            }
+          QAxObject* sel = wordApplication_->querySubObject("Selection");
+          sel->dynamicCall("TypeText(Text)", tableDat_in[i-1][containerIndex[j-1]]);
+          delete sel;
+          delete cell;
         }
     }
-  delete cell;
   delete table;
   delete tables;
   delete act;

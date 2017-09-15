@@ -4,6 +4,7 @@
 #include <activeexcel.h>
 #include "activeword.h"
 #include <qmessagebox.h>
+#include <windows.h>
 
 void deviceandSpace(QList<QStringList>& varList);
 QList<QStringList> transform(QStringList var);
@@ -229,8 +230,6 @@ void deviceandSpace(QList<QStringList>& varList){
   bool flag_z = false;
   bool flag_zq = false;
   bool flag_f = false;
-  int flag_spaceFirst = 0;
-  bool flag_space = false; //для пропуска строки
   QStringList var;
   QStringList var_space;
   var_space << "" << "" << "";

@@ -183,7 +183,7 @@ QVariant selectionFindSize(QString string, QVariant fontSize, bool allText);
   \param [in] FontName - "Times New Roman" по умолчанию
   \return тип selection
   */
-QVariant selectionFindFontname(QString string,  bool allText,bool bold = false,
+bool selectionFindFontname(QString string,  bool allText,bool bold = false,
                                bool italic = false, bool underline = false, QString fontName = "Arial" );
 
 QVariant selectionAlign( QString string, bool left, bool right, bool center );

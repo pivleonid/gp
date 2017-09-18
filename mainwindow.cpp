@@ -5,6 +5,7 @@
 #include "activeword.h"
 #include <qmessagebox.h>
 #include <windows.h>
+#include <QTextCodec>
 
 
 
@@ -17,9 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->openFile,SIGNAL(clicked(bool)),this,SLOT(openFile()));
   connect(ui->docGen,SIGNAL(clicked(bool)), this, SLOT(generate()));
 
-  strListNamelabel << "[Устройства]" << "[Конденсаторы]"<<"[Микросхемы]"<<"[Светодиоды]"<<"[Дроссели]"<<"[Резисторы]"<<"[Коммутация]"<<"[Диоды]"<<"[Транзисторы]"<<"[Контактные соединения]"<<"[Фильтры]"<<"[Кварцевый резонатор]";//<<"[Предохранители]";
+
 
   ui->textEdit->setVisible(false);
+   connect(ui->action_2,SIGNAL(triggered(bool)), this, SLOT(openAbout()));
+
 
 
 }
@@ -37,6 +40,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::openFile(){
   ui->openFile->setEnabled(false);
+  ui->textEdit->clear();
+  ui->textEdit->setVisible(false);
   ActiveWord word;
   if(!word.wordConnect()){
       ui->openFile->setEnabled(true);
@@ -45,23 +50,24 @@ void MainWindow::openFile(){
       msgBox.exec();
       return;
     }
- // QString path = QApplication::applicationDirPath() + "/PEZ.docx";
-QString path = "D:/projects/gp/PEZ.docx";
+ QString path = QApplication::applicationDirPath() + "/PEZ.docx";
+
+  //QString path = "D:/projects/gp/PEZ.docx";
   QAxObject* doc1 = word.documentOpen(path);
   if(doc1 == NULL){
       QMessageBox msgBox;
-        msgBox.setText("Не найден шаблон");
+        msgBox.setText("Не найден word- шаблон");
         msgBox.exec();
         ui->openFile->setEnabled(true);
     return;
     }
 
-//  QString fileName_DATA = QFileDialog::getOpenFileName(this, tr("Open Excel File"),"", tr("(*.xlsx *.xls)"));
-//  if(fileName_DATA == ""){
-//      //если в диалоговом окне нажали на "отмена"
-//      ui->openFile->setEnabled(true);
-//      return;
-//    }
+  QString fileName_DATA = QFileDialog::getOpenFileName(this, tr("Open Excel File"),"", tr("(*.xlsx *.xls)"));
+  if(fileName_DATA == ""){
+      //если в диалоговом окне нажали на "отмена"
+      ui->openFile->setEnabled(true);
+      return;
+    }
 
   ActiveExcel excel;
   if(!excel.excelConnect()){
@@ -72,8 +78,8 @@ QString path = "D:/projects/gp/PEZ.docx";
       return;
     }
 
-  //QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
-  QAxObject* ex1 = excel.documentOpen("D:/projects/gp/PHASE_FPGA_MAIN_01_REFDES.xlsx");
+  QAxObject* ex1 = excel.documentOpen(QVariant(fileName_DATA));
+  //QAxObject* ex1 = excel.documentOpen("D:/projects/gp/PHASE_FPGA_MAIN_01_REFDES.xlsx");
 
   if(ex1 == NULL){
       QMessageBox msgBox;
@@ -152,7 +158,7 @@ QString path = "D:/projects/gp/PEZ.docx";
 
 desValue.clear();
 desValue = transform( var);
-QStringList errorRefDez = deviceandSpace(desValue);
+QStringList errorRefDez = deviceandSpace_v2(desValue);
 if (!errorRefDez.isEmpty()){
     ui->textEdit->setVisible(true);
     ui->textEdit->setTextColor(Qt::red);
@@ -205,16 +211,14 @@ if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) <
 foreach (QString var, strListNamelabel) {
     //подчеркивание
     if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
-        mesOut("Ошибка шрифта!" + var);
-        ui->openFile->setEnabled(true);
-        word.setVisible();
+       // mesOut("Ошибка шрифта!" + var);
+        continue;
         return;
       }
     //центрирование
     if( word.selectionAlign(var , false, false, true) < 0){
-        mesOut("Ошибка центрирования!" + var);
-        ui->openFile->setEnabled(true);
-        word.setVisible();
+       // mesOut("Ошибка центрирования!" + var);
+        continue;;
         return;
       }
     QString s = var;
@@ -223,9 +227,8 @@ foreach (QString var, strListNamelabel) {
     QString s1 = var;
     // замена меток/
     if (word.findReplaseLabel(s1, s, true) == false){
-        mesOut("Ошибка замены метки!" + var);
-        ui->openFile->setEnabled(true);
-        word.setVisible();
+        //mesOut("Ошибка замены метки!" + var);
+        continue;
         return;
       }
     s.clear();
@@ -245,224 +248,8 @@ ui->docGen->setEnabled(true);
 
 
 
-void MainWindow::mesOut(QString mes){
-       QMessageBox msgBox;
-          msgBox.setText(mes);
-          msgBox.exec();
+//-----------------------------------------------------------
 
-}
-
-
-
-//функция будет генерить файлы в excel/ word
-void MainWindow::generate(){
-  ui->progressBar_2->setValue(0);
-  QCoreApplication::processEvents();
-  ActiveWord word;
-   QString path = QApplication::applicationDirPath() + "/PEZ.docx";
-   QAxObject* doc1 = word.documentOpen(path);
-   if(doc1 == NULL){
-      QMessageBox msgBox;
-        msgBox.setText("Не найден шаблон");
-        msgBox.exec();
-        ui->openFile->setEnabled(true);
-    return;
-    }
-  //заполнение таблицы
-  QStringList listLabel = word.tableGetLabels(1, 2);
-  ui->progressBar_2->setValue(40);
-  QCoreApplication::processEvents();
-  if (word.tableFill(desValue,listLabel,1,2) < 0){
-      mesOut("Ошибка заполнения таблицы!");
-      ui->openFile->setEnabled(true);
-      word.setVisible();
-      return;
-    }
-
-  ui->progressBar_2->setValue(90);
-  QCoreApplication::processEvents();
-
-
- //
-  if( word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-
-
-  // поиск элементов, добавка курсива и расположение по центру
-  foreach (QString var, strListNamelabel) {
-      //подчеркивание
-      if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
-          mesOut("Ошибка шрифта!" + var);
-          ui->openFile->setEnabled(true);
-          word.setVisible();
-          return;
-        }
-      //центрирование
-      if( word.selectionAlign(var , false, false, true) < 0){
-          mesOut("Ошибка центрирования!" + var);
-          ui->openFile->setEnabled(true);
-          word.setVisible();
-          return;
-        }
-      QString s = var;
-      s.remove(0,1);
-      s.remove(s.count()-1,1);
-      QString s1 = var;
-      // замена меток/
-      if (word.findReplaseLabel(s1, s, true) == false){
-          mesOut("Ошибка замены метки!" + var);
-          ui->openFile->setEnabled(true);
-          word.setVisible();
-          return;
-        }
-      s.clear();
-      s1.clear();
-    }
-  //
-
-
-
-  word.setVisible();
-  ui->progressBar_2->setValue(100);
-  ui->openFile->setEnabled(true);
-}
-
-//дополняет в QList пропуски и названия элементов
-QStringList MainWindow::deviceandSpace(QList<QStringList>& varList){
-    QStringList allPrefixRename = allPrefix;
-  QString pasteStr;
-  bool flag_a = false;
-  bool flag_c = false;
-  bool flag_d = false;
-  bool flag_hl= false;
-  bool flag_l = false;
-  bool flag_r = false;
-  bool flag_s = false;
-  bool flag_vd = false;
-  bool flag_vt = false;
-  bool flag_x = false;
-  bool flag_z = false;
-  bool flag_zq = false;
-  bool flag_f = false;
-  QStringList var;
-  QStringList var_space;
-  var_space << "" << "" << "";
-  QList<QStringList>::iterator w;
-  for ( w = varList.begin();w < varList.end(); w++) {
-
-      //конденсаторы, резисторы и т.д.
-      if((*w)[0][0] == 'A' && flag_a == false){
-          pasteStr = "[Устройства]";
-          int b = allPrefixRename.indexOf("A");
-          allPrefixRename.removeAt(b);
-          flag_a = true;
-        }
-      if((*w)[0][0] == 'C' && flag_c == false){
-          pasteStr = "[Конденсаторы]";
-          int b = allPrefixRename.indexOf("C");
-          allPrefixRename.removeAt(b);
-          flag_c = true;
-        }
-      if((*w)[0][0] == 'D' && flag_d == false){
-          pasteStr = "[Микросхемы]";
-          int b = allPrefixRename.indexOf("D");
-          allPrefixRename.removeAt(b);
-          flag_d = true;
-        }
-      if((*w)[0][0] == 'H' && (*w)[0][1] == 'L'&& flag_hl == false){
-          pasteStr = "[Светодиоды]";
-          int b = allPrefixRename.indexOf("HL");
-          allPrefixRename.removeAt(b);
-          flag_hl = true;
-        }
-      if((*w)[0][0] == 'L'&& flag_l == false){
-          int b = allPrefixRename.indexOf("L");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Дроссели]";
-          flag_l = true;
-        }
-      if((*w)[0][0] == 'R'&& flag_r == false){
-          int b = allPrefixRename.indexOf("R");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Резисторы]";
-          flag_r = true;
-        }
-      if((*w)[0][0] == 'S'&& flag_s == false){
-          int b = allPrefixRename.indexOf("S");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Коммутация]";
-          flag_s = true;
-        }
-      if((*w)[0][0] == 'V' && (*w)[0][1] == 'D'&& flag_vd == false){
-          int b = allPrefixRename.indexOf("VD");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Диоды]";
-          flag_vd = true;
-        }
-      if((*w)[0][0] == 'V' && (*w)[0][1] == 'T'&& flag_vt == false){
-          int b = allPrefixRename.indexOf("VT");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Транзисторы]";
-          flag_vt = true;
-        }
-      if((*w)[0][0] == 'X'&& flag_x== false){
-          int b = allPrefixRename.indexOf("X");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Контактные соединения]";
-          flag_x = true;
-        }
-      if((*w)[0][0] == 'Z'&& flag_z == false){
-          int b = allPrefixRename.indexOf("Z");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Фильтры]";
-          flag_z = true;
-        }
-      if((*w)[0][0] == 'Z' && (*w)[0][1] == 'Q'&& flag_zq == false){
-          int b = allPrefixRename.indexOf("ZQ");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Кварцевый резонатор]";
-          flag_zq = true;
-        }
-      if((*w)[0][0] == 'F' && flag_f == false){
-          int b = allPrefixRename.indexOf("F");
-          allPrefixRename.removeAt(b);
-          pasteStr = "[Предохранители]";
-          flag_f = true;
-        }
-      //строка не пуста
-      if(pasteStr.isEmpty() == false){
-
-          w = varList.insert(w ,var_space);
-          var << "" << pasteStr << "";
-          w = varList.insert(++w ,var);
-          pasteStr.clear();
-          var.clear();
-        }
-
-
-
-
-    }
-return allPrefixRename;
-
-}
-//----------------------------------------------------------
 QList<QStringList> MainWindow::transform(QStringList var){
 
     QStringList var1;
@@ -635,6 +422,189 @@ QList<QStringList> outData;
 
         }
         return outData;
+
+}
+
+//------------------------------------------------------------------------
+
+QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
+
+    QString  str;
+    QFile file("Названия групп.txt");
+    QTextCodec *codec = QTextCodec::codecForName("CP1251");
+    if(file.open(QIODevice::ReadOnly |QIODevice::Text)){
+        while (!file.atEnd()){
+            QByteArray line = file.readLine();
+            QTextCodec *codec = QTextCodec::codecForName("CP1251");
+            str += codec->toUnicode(line);
+        }
+    }
+    else qDebug()<< "don't open file";
+    QStringList splitStr = str.split("\n");
+    QMap<QString, QString> tem;
+    foreach (auto st, splitStr) {
+        QStringList split = st.split("-");
+        tem[split[0]] = split[1];
+        strListNamelabel << split[1];
+    }
+    QStringList allPrefixRename = allPrefix;
+    QStringList var_space;
+    var_space << "" << "" << "";
+    for(QList<QStringList>::iterator it = varList.begin(); it < varList.end(); it++){
+        QString var = (*it).at(0);
+        //поиск префикса: удялю символы после "-"
+        int ind = var.indexOf("-");
+        if(ind > 0)
+            var.remove(ind, var.count());
+         var.remove(QRegExp("[^A-Za-zА-Яа-я]"));
+        //тут var == только префикс
+         int ind1 = allPrefixRename.indexOf(var);
+         if( ind1 >= 0){
+             allPrefixRename.removeAt(ind1);
+             //
+
+             //
+             it = varList.insert(it ,var_space);
+             QStringList var1;
+             var1 << "" << tem[var] << "";
+             it = varList.insert(++it ,var1);
+           }
+
+      }
+    allPrefixRename.clear();
+
+
+    foreach (QString var, tem.keys()) {
+        if(tem[var] == "")
+          allPrefixRename << var;
+      }
+
+    int i;
+    i++;
+    return allPrefixRename;
+
+}
+
+
+
+
+void MainWindow::mesOut(QString mes){
+       QMessageBox msgBox;
+          msgBox.setText(mes);
+          msgBox.exec();
+
+}
+
+
+
+//функция будет генерить файлы в excel/ word
+void MainWindow::generate(){
+
+  ui->progressBar_2->setValue(0);
+  QCoreApplication::processEvents();
+  ActiveWord word;
+  QString path = QApplication::applicationDirPath() + "/PEZ.docx";
+  QAxObject* doc1 = word.documentOpen(path);
+  if(doc1 == NULL){
+      QMessageBox msgBox;
+      msgBox.setText("Не найден шаблон");
+      msgBox.exec();
+      ui->openFile->setEnabled(true);
+      return;
+    }
+  //заполнение таблицы
+  QStringList listLabel = word.tableGetLabels(1, 2);
+  ui->progressBar_2->setValue(40);
+  QCoreApplication::processEvents();
+  if (word.tableFill(desValue,listLabel,1,2) < 0){
+      mesOut("Ошибка заполнения таблицы!");
+      ui->openFile->setEnabled(true);
+      word.setVisible();
+      return;
+    }
+
+  ui->progressBar_2->setValue(90);
+  QCoreApplication::processEvents();
+
+
+  //
+  if( word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+  if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
+    mesOut("Ошибка замены метки");
+
+
+  // поиск элементов, добавка курсива и расположение по центру
+  foreach (QString var, strListNamelabel) {
+      //подчеркивание
+      if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
+
+          continue;
+        }
+      //центрирование
+      if( word.selectionAlign(var , false, false, true) < 0){
+
+          continue;
+        }
+      QString s = var;
+      s.remove(0,1);
+      s.remove(s.count()-1,1);
+      QString s1 = var;
+      // замена меток/
+      if (word.findReplaseLabel(s1, s, true) == false){
+          continue;
+        }
+      s.clear();
+      s1.clear();
+    }
+  //
+
+
+
+  word.setVisible();
+  ui->progressBar_2->setValue(100);
+  ui->openFile->setEnabled(true);
+}
+
+
+void MainWindow::openAbout(){
+  ActiveWord word;
+  if(!word.wordConnect()){
+      ui->openFile->setEnabled(true);
+      QMessageBox msgBox;
+      msgBox.setText("Word не установлен");
+      msgBox.exec();
+      return;
+    }
+ QString path = QApplication::applicationDirPath() + "/Описание.docx";
+
+  //QString path = "D:/projects/gp/PEZ.docx";
+  QAxObject* doc1 = word.documentOpen(path);
+  if(doc1 == NULL){
+      QMessageBox msgBox;
+        msgBox.setText("Описание не найдено");
+        msgBox.exec();
+        word.setVisible();
+    return;
+    }
+   word.setVisible();
+}
+
+//---------------------------------------------------------
 
 ///
 //    foreach (QString key, mapVarLisr.keys()) {
@@ -840,7 +810,7 @@ QList<QStringList> outData;
 
 //    }
 //    return desValue;
-}
+
 
 
 //void MainWindow::deviceUpdate(QList<QStringList>& varList){
@@ -942,5 +912,126 @@ QList<QStringList> outData;
 
 //    int i = 0;
 //    i++;
+
+//}
+
+
+////дополняет в QList пропуски и названия элементов
+//QStringList MainWindow::deviceandSpace(QList<QStringList>& varList){
+//    QStringList allPrefixRename = allPrefix;
+//  QString pasteStr;
+//  bool flag_a = false;
+//  bool flag_c = false;
+//  bool flag_d = false;
+//  bool flag_hl= false;
+//  bool flag_l = false;
+//  bool flag_r = false;
+//  bool flag_s = false;
+//  bool flag_vd = false;
+//  bool flag_vt = false;
+//  bool flag_x = false;
+//  bool flag_z = false;
+//  bool flag_zq = false;
+//  bool flag_f = false;
+//  QStringList var;
+//  QStringList var_space;
+//  var_space << "" << "" << "";
+//  QList<QStringList>::iterator w;
+//  for ( w = varList.begin();w < varList.end(); w++) {
+
+//      //конденсаторы, резисторы и т.д.
+//      if((*w)[0][0] == 'A' && flag_a == false){
+//          pasteStr = "[Устройства]";
+//          int b = allPrefixRename.indexOf("A");
+//          allPrefixRename.removeAt(b);
+//          flag_a = true;
+//        }
+//      if((*w)[0][0] == 'C' && flag_c == false){
+//          pasteStr = "[Конденсаторы]";
+//          int b = allPrefixRename.indexOf("C");
+//          allPrefixRename.removeAt(b);
+//          flag_c = true;
+//        }
+//      if((*w)[0][0] == 'D' && flag_d == false){
+//          pasteStr = "[Микросхемы]";
+//          int b = allPrefixRename.indexOf("D");
+//          allPrefixRename.removeAt(b);
+//          flag_d = true;
+//        }
+//      if((*w)[0][0] == 'H' && (*w)[0][1] == 'L'&& flag_hl == false){
+//          pasteStr = "[Светодиоды]";
+//          int b = allPrefixRename.indexOf("HL");
+//          allPrefixRename.removeAt(b);
+//          flag_hl = true;
+//        }
+//      if((*w)[0][0] == 'L'&& flag_l == false){
+//          int b = allPrefixRename.indexOf("L");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Дроссели]";
+//          flag_l = true;
+//        }
+//      if((*w)[0][0] == 'R'&& flag_r == false){
+//          int b = allPrefixRename.indexOf("R");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Резисторы]";
+//          flag_r = true;
+//        }
+//      if((*w)[0][0] == 'S'&& flag_s == false){
+//          int b = allPrefixRename.indexOf("S");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Коммутация]";
+//          flag_s = true;
+//        }
+//      if((*w)[0][0] == 'V' && (*w)[0][1] == 'D'&& flag_vd == false){
+//          int b = allPrefixRename.indexOf("VD");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Диоды]";
+//          flag_vd = true;
+//        }
+//      if((*w)[0][0] == 'V' && (*w)[0][1] == 'T'&& flag_vt == false){
+//          int b = allPrefixRename.indexOf("VT");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Транзисторы]";
+//          flag_vt = true;
+//        }
+//      if((*w)[0][0] == 'X'&& flag_x== false){
+//          int b = allPrefixRename.indexOf("X");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Контактные соединения]";
+//          flag_x = true;
+//        }
+//      if((*w)[0][0] == 'Z'&& flag_z == false){
+//          int b = allPrefixRename.indexOf("Z");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Фильтры]";
+//          flag_z = true;
+//        }
+//      if((*w)[0][0] == 'Z' && (*w)[0][1] == 'Q'&& flag_zq == false){
+//          int b = allPrefixRename.indexOf("ZQ");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Кварцевый резонатор]";
+//          flag_zq = true;
+//        }
+//      if((*w)[0][0] == 'F' && flag_f == false){
+//          int b = allPrefixRename.indexOf("F");
+//          allPrefixRename.removeAt(b);
+//          pasteStr = "[Предохранители]";
+//          flag_f = true;
+//        }
+//      //строка не пуста
+//      if(pasteStr.isEmpty() == false){
+
+//          w = varList.insert(w ,var_space);
+//          var << "" << pasteStr << "";
+//          w = varList.insert(++w ,var);
+//          pasteStr.clear();
+//          var.clear();
+//        }
+
+
+
+
+//    }
+//return allPrefixRename;
 
 //}

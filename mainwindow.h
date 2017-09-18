@@ -25,12 +25,13 @@ private:
   void mesOut(QString mes);
   QStringList deviceandSpace(QList<QStringList>& varList);
   QList<QStringList> transform(QStringList var);
-  void deviceUpdate(QList<QStringList>& varList);
+  QStringList deviceandSpace_v2(QList<QStringList>& varList);
 
 
 private slots:
   void openFile();
   void generate();
+  void openAbout();
 
 };
 

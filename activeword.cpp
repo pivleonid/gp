@@ -21,10 +21,14 @@ void ActiveWord::setVisible(){
 }
 //----------------------------------------------------------
 ActiveWord::~ActiveWord(){
+
+}
+void ActiveWord::closeWordApp(){
   wordApplication_->dynamicCall("Quit()");
   delete documents_;
   delete wordApplication_;
 }
+
 //----------------------------------------------------------
 bool ActiveWord::documentActive(QAxObject *document){
   return (document->dynamicCall("Activate()").toBool());

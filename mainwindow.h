@@ -20,6 +20,13 @@ private:
   Ui::MainWindow *ui;
   QStringList strListNamelabel;
   QList<QStringList> desValue;
+   QStringList allPrefix;
+
+  void mesOut(QString mes);
+  QStringList deviceandSpace(QList<QStringList>& varList);
+  QList<QStringList> transform(QStringList var);
+  void deviceUpdate(QList<QStringList>& varList);
+
 
 private slots:
   void openFile();

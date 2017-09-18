@@ -54,6 +54,7 @@ public:
 
   /*==================================================================*/
   ~ActiveWord();
+  void closeWordApp();
    void setVisible();
   bool documentActive(QAxObject* document);
   /*==================================================================*/

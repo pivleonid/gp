@@ -257,6 +257,13 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1" rowspan="2">
+       <widget class="QTextEdit" name="textEdit">
+        <property name="cursor" stdset="0">
+         <cursorShape>ArrowCursor</cursorShape>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>

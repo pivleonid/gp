@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.0
+** Created by: Qt User Interface Compiler version 5.9.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -23,6 +23,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -58,6 +59,7 @@ public:
     QGridLayout *gridLayout_4;
     QProgressBar *progressBar_2;
     QLabel *label_9;
+    QTextEdit *textEdit;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -227,6 +229,12 @@ public:
         label_9->setAlignment(Qt::AlignCenter);
 
         gridLayout_4->addWidget(label_9, 0, 0, 1, 1);
+
+        textEdit = new QTextEdit(centralWidget);
+        textEdit->setObjectName(QStringLiteral("textEdit"));
+        textEdit->viewport()->setProperty("cursor", QVariant(QCursor(Qt::ArrowCursor)));
+
+        gridLayout_4->addWidget(textEdit, 0, 1, 2, 1);
 
 
         gridLayout_3->addLayout(gridLayout_4, 2, 1, 1, 1);

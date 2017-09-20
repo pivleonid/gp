@@ -24,11 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->action_2,SIGNAL(triggered(bool)), this, SLOT(openAbout()));
 
 
-  symbolsInTable = ui->maxSymbol->text().toInt();
-
-
-
-
 }
 
 
@@ -468,7 +463,7 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
         int ind2 = var.indexOf(".");
         if(ind2 > 0)
             var.remove(ind2, var.count());
-        int ind3 = var.indexOf(".");
+        int ind3 = var.indexOf(",");
         if(ind3 > 0)
             var.remove(ind3, var.count());
          var.remove(QRegExp("[^A-Za-zА-Яа-я]"));
@@ -499,7 +494,8 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
         QString str0 = (*it).at(0);
         QString str1 = (*it).at(1);
         QString str2 = (*it).at(2);
-        if(str1 == "" || (str1.count() < symbolsInTable))
+         symbolsInTable = ui->maxSymbol->text().toInt();
+        if(str1 == ""  || (str1.count() < symbolsInTable))
             continue;
         QStringList varLi;
         //дроблю строку на пробелы

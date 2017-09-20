@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>800</width>
-    <height>277</height>
+    <height>400</height>
    </size>
   </property>
   <property name="font">
@@ -43,7 +43,7 @@
    <string>Преобразователь перечней</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0" rowspan="3">
      <layout class="QGridLayout" name="gridLayout_16">
       <item row="0" column="0">
@@ -215,6 +215,29 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_11">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Кол-во
+символов</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QLineEdit" name="nymerIzd">
         <property name="text">
@@ -236,17 +259,35 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </item>
-    <item row="2" column="1">
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="1" column="0">
-       <widget class="QProgressBar" name="progressBar_2">
-        <property name="value">
+      <item row="1" column="3">
+       <widget class="QLineEdit" name="maxSymbol">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>35</string>
+        </property>
+        <property name="maxLength">
+         <number>2</number>
+        </property>
+        <property name="cursorPosition">
          <number>0</number>
         </property>
        </widget>
       </item>
+     </layout>
+    </item>
+    <item row="2" column="1">
+     <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
@@ -259,8 +300,18 @@
       </item>
       <item row="0" column="1" rowspan="2">
        <widget class="QTextEdit" name="textEdit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="cursor" stdset="0">
          <cursorShape>ArrowCursor</cursorShape>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QProgressBar" name="progressBar_2">
+        <property name="value">
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -269,6 +320,8 @@
    </layout>
    <zorder></zorder>
    <zorder></zorder>
+   <zorder>maxSymbol</zorder>
+   <zorder>label_11</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

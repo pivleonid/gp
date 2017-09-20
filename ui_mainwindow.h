@@ -36,7 +36,7 @@ public:
     QAction *action_2;
     QAction *actionv1_0;
     QWidget *centralWidget;
-    QGridLayout *gridLayout_3;
+    QGridLayout *gridLayout_4;
     QGridLayout *gridLayout_16;
     QPushButton *openFile;
     QSpacerItem *verticalSpacer;
@@ -56,13 +56,15 @@ public:
     QLabel *label_7;
     QLabel *label_8;
     QLabel *label_4;
+    QLabel *label_11;
     QLineEdit *nymerIzd;
     QLineEdit *naim1;
     QLineEdit *naim2;
-    QGridLayout *gridLayout_4;
-    QProgressBar *progressBar_2;
+    QLineEdit *maxSymbol;
+    QGridLayout *gridLayout_3;
     QLabel *label_9;
     QTextEdit *textEdit;
+    QProgressBar *progressBar_2;
     QMenuBar *menuBar;
     QMenu *menu;
     QToolBar *mainToolBar;
@@ -79,7 +81,7 @@ public:
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
         MainWindow->setMinimumSize(QSize(800, 277));
-        MainWindow->setMaximumSize(QSize(800, 277));
+        MainWindow->setMaximumSize(QSize(800, 400));
         QFont font;
         font.setStyleStrategy(QFont::PreferAntialias);
         MainWindow->setFont(font);
@@ -94,10 +96,10 @@ public:
         actionv1_0->setEnabled(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        gridLayout_3 = new QGridLayout(centralWidget);
-        gridLayout_3->setSpacing(6);
-        gridLayout_3->setContentsMargins(11, 11, 11, 11);
-        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
+        gridLayout_4 = new QGridLayout(centralWidget);
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setContentsMargins(11, 11, 11, 11);
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         gridLayout_16 = new QGridLayout();
         gridLayout_16->setSpacing(6);
         gridLayout_16->setObjectName(QStringLiteral("gridLayout_16"));
@@ -124,7 +126,7 @@ public:
         gridLayout_16->addWidget(docGen, 2, 0, 1, 1);
 
 
-        gridLayout_3->addLayout(gridLayout_16, 0, 0, 3, 1);
+        gridLayout_4->addLayout(gridLayout_16, 0, 0, 3, 1);
 
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
@@ -185,7 +187,7 @@ public:
         gridLayout->addWidget(Firma, 1, 4, 1, 1);
 
 
-        gridLayout_3->addLayout(gridLayout, 0, 1, 1, 1);
+        gridLayout_4->addLayout(gridLayout, 0, 1, 1, 1);
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setSpacing(6);
@@ -208,6 +210,18 @@ public:
 
         gridLayout_2->addWidget(label_4, 0, 2, 1, 1);
 
+        label_11 = new QLabel(centralWidget);
+        label_11->setObjectName(QStringLiteral("label_11"));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(label_11->sizePolicy().hasHeightForWidth());
+        label_11->setSizePolicy(sizePolicy2);
+        label_11->setMaximumSize(QSize(60, 16777215));
+        label_11->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(label_11, 0, 3, 1, 1);
+
         nymerIzd = new QLineEdit(centralWidget);
         nymerIzd->setObjectName(QStringLiteral("nymerIzd"));
 
@@ -223,34 +237,47 @@ public:
 
         gridLayout_2->addWidget(naim2, 1, 2, 1, 1);
 
+        maxSymbol = new QLineEdit(centralWidget);
+        maxSymbol->setObjectName(QStringLiteral("maxSymbol"));
+        sizePolicy.setHeightForWidth(maxSymbol->sizePolicy().hasHeightForWidth());
+        maxSymbol->setSizePolicy(sizePolicy);
+        maxSymbol->setMaximumSize(QSize(60, 16777215));
+        maxSymbol->setMaxLength(2);
+        maxSymbol->setCursorPosition(0);
 
-        gridLayout_3->addLayout(gridLayout_2, 1, 1, 1, 1);
+        gridLayout_2->addWidget(maxSymbol, 1, 3, 1, 1);
 
-        gridLayout_4 = new QGridLayout();
-        gridLayout_4->setSpacing(6);
-        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
-        progressBar_2 = new QProgressBar(centralWidget);
-        progressBar_2->setObjectName(QStringLiteral("progressBar_2"));
-        progressBar_2->setValue(0);
 
-        gridLayout_4->addWidget(progressBar_2, 1, 0, 1, 1);
+        gridLayout_4->addLayout(gridLayout_2, 1, 1, 1, 1);
 
+        gridLayout_3 = new QGridLayout();
+        gridLayout_3->setSpacing(6);
+        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         label_9 = new QLabel(centralWidget);
         label_9->setObjectName(QStringLiteral("label_9"));
         label_9->setAlignment(Qt::AlignCenter);
 
-        gridLayout_4->addWidget(label_9, 0, 0, 1, 1);
+        gridLayout_3->addWidget(label_9, 0, 0, 1, 1);
 
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
+        textEdit->setEnabled(true);
         textEdit->viewport()->setProperty("cursor", QVariant(QCursor(Qt::ArrowCursor)));
 
-        gridLayout_4->addWidget(textEdit, 0, 1, 2, 1);
+        gridLayout_3->addWidget(textEdit, 0, 1, 2, 1);
+
+        progressBar_2 = new QProgressBar(centralWidget);
+        progressBar_2->setObjectName(QStringLiteral("progressBar_2"));
+        progressBar_2->setValue(0);
+
+        gridLayout_3->addWidget(progressBar_2, 1, 0, 1, 1);
 
 
-        gridLayout_3->addLayout(gridLayout_4, 2, 1, 1, 1);
+        gridLayout_4->addLayout(gridLayout_3, 2, 1, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
+        maxSymbol->raise();
+        label_11->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 800, 26));
@@ -296,9 +323,12 @@ public:
         label_7->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\206\320\270\320\274\320\260\320\273\321\214\320\275\321\213\320\271 \320\275\320\276\320\274\320\265\321\200 \320\270\320\267\320\264\320\265\320\273\320\270\321\217", Q_NULLPTR));
         label_8->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265 1 ", Q_NULLPTR));
         label_4->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265 2", Q_NULLPTR));
+        label_11->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\273-\320\262\320\276\n"
+"\321\201\320\270\320\274\320\262\320\276\320\273\320\276\320\262", Q_NULLPTR));
         nymerIzd->setText(QApplication::translate("MainWindow", "\320\221\320\256\320\233\320\230.468714.005 \320\237\320\2553", Q_NULLPTR));
         naim1->setText(QApplication::translate("MainWindow", "\320\237\320\273\320\260\321\202\320\260 \321\202\321\200\320\260\320\272\321\202\320\276\320\262\320\276\320\263\320\276 \321\203\321\201\320\270\320\273\320\270\321\202\320\265\320\273\321\217", Q_NULLPTR));
         naim2->setText(QApplication::translate("MainWindow", "\320\237\320\265\321\200\320\265\321\207\320\265\320\275\321\214 \321\215\320\273\320\265\320\274\320\265\320\275\321\202\320\276\320\262", Q_NULLPTR));
+        maxSymbol->setText(QApplication::translate("MainWindow", "35", Q_NULLPTR));
         label_9->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\321\206\320\265\321\201\321\201 \320\262\321\213\320\277\320\276\320\273\320\275\320\265\320\275\320\270\321\217", Q_NULLPTR));
         menu->setTitle(QApplication::translate("MainWindow", "\320\241\320\277\321\200\320\260\320\262\320\272\320\260", Q_NULLPTR));
     } // retranslateUi

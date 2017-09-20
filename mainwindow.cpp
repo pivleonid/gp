@@ -21,7 +21,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
   ui->textEdit->setVisible(false);
-   connect(ui->action_2,SIGNAL(triggered(bool)), this, SLOT(openAbout()));
+  connect(ui->action_2,SIGNAL(triggered(bool)), this, SLOT(openAbout()));
+
+
+  symbolsInTable = ui->maxSymbol->text().toInt();
+
 
 
 
@@ -102,7 +106,7 @@ void MainWindow::openFile(){
 
   ui->progressBar_2->setValue(0);
   ///ЧТЕНИЕ ДАННЫХ!!!
-  for(int i = 2;   ; i++){
+  for(int i = 2;  i< 500 ; i++){
       if (excel.sheetCellInsert(sheet, data, i, 2))
         var << data.toString();
       else{
@@ -394,7 +398,11 @@ QList<QStringList> outData;
                 //stringSplit содержит первый и последний эл-т
                 //добавляю символ "-"
                 for(QStringList::iterator vS = stringSplit.begin(); vS < stringSplit.end() - 1; vS++){
-                    (*vS).append("-");
+                    if( (*(vS + 1)).toInt() - (*vS).toInt() == 1 ){
+                       (*vS).append(", ");
+                        continue;
+                    }
+                    (*vS).append("...");
 
                 }
                 //добавляю ключ префикс
@@ -429,6 +437,10 @@ QList<QStringList> outData;
 
 QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
 
+
+
+    //----------------------------------------
+
     QString  str;
     QFile file("Названия групп.txt");
     QTextCodec *codec = QTextCodec::codecForName("CP1251");
@@ -452,18 +464,18 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
     var_space << "" << "" << "";
     for(QList<QStringList>::iterator it = varList.begin(); it < varList.end(); it++){
         QString var = (*it).at(0);
-        //поиск префикса: удялю символы после "-"
-        int ind = var.indexOf("-");
-        if(ind > 0)
-            var.remove(ind, var.count());
+        //поиск префикса: удялю символы после "," и "."
+        int ind2 = var.indexOf(".");
+        if(ind2 > 0)
+            var.remove(ind2, var.count());
+        int ind3 = var.indexOf(".");
+        if(ind3 > 0)
+            var.remove(ind3, var.count());
          var.remove(QRegExp("[^A-Za-zА-Яа-я]"));
         //тут var == только префикс
          int ind1 = allPrefixRename.indexOf(var);
          if( ind1 >= 0){
              allPrefixRename.removeAt(ind1);
-             //
-
-             //
              it = varList.insert(it ,var_space);
              QStringList var1;
              var1 << "" << tem[var] << "";
@@ -481,6 +493,74 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
 
     int i;
     i++;
+   //-------------------------------------------------------------
+    //Перенос строки с описанием
+    for(QList<QStringList>::iterator it = varList.begin(); it < varList.end(); it++){
+        QString str0 = (*it).at(0);
+        QString str1 = (*it).at(1);
+        QString str2 = (*it).at(2);
+        if(str1 == "" || (str1.count() < symbolsInTable))
+            continue;
+        QStringList varLi;
+        //дроблю строку на пробелы
+        varLi = str1.split(" ");
+        QString out1, out2, out3;
+        //соединяю до 32 символа
+        foreach (auto var, varLi) {
+            if(out2.count() + var.count() > symbolsInTable){
+                out3 += " "+var;
+                continue;
+            }
+            if(out1.count() + var.count() > symbolsInTable){
+                out2 += " "+var;
+                continue;
+            }
+
+            out1 += " "+var;
+        }
+        QStringList varLiSpace1, varLiSpace2, varLiSpace3;
+        if(!out1.isEmpty())
+            varLiSpace1 << str0 << out1 << str2;
+        if(!out2.isEmpty())
+            varLiSpace2 << "" << out2 << "";
+        if(!out3.isEmpty())
+            varLiSpace3 << "" << out3 << "";
+
+        it = varList.erase(it);
+        it--;
+        //не забыть про удаление эл-та
+         if(!varLiSpace1.isEmpty())
+            it = varList.insert(it+1, varLiSpace1);
+         if(!varLiSpace2.isEmpty())
+            it = varList.insert(it+1, varLiSpace2);
+         if(!varLiSpace3.isEmpty())
+            it = varList.insert(it+1, varLiSpace3);
+        int k =0;
+        k++;
+    }
+    //расставляю пробельные строки, согласно желанию шаркова
+
+    int count = varList.count();
+    if(count < 24) //24 последняя строка первого листа
+         return allPrefixRename;
+    for(int i = 23; i < varList.count(); i = i + 28 ){
+        QString s = varList[i][0];
+        if(s == ""){
+            varList.insert(--i, var_space);
+            varList.insert(i, var_space);
+            i++;
+            continue;
+        }
+        varList.insert(i, var_space);
+    }
+    //Заполняю документ пустой таблицей до конца
+    count = varList.count();
+    double z = floor((count - 24)/28);
+    int x = count - ( 24 + z * 28);
+    int lineAdd = 28 - x;
+    for (int i = 0; i < lineAdd; i++)
+        varList.append(var_space);
+
     return allPrefixRename;
 
 }

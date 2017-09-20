@@ -26,6 +26,7 @@ private:
   QStringList deviceandSpace(QList<QStringList>& varList);
   QList<QStringList> transform(QStringList var);
   QStringList deviceandSpace_v2(QList<QStringList>& varList);
+  int symbolsInTable;
 
 
 private slots:

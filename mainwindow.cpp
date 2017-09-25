@@ -6,7 +6,7 @@
 #include <qmessagebox.h>
 #include <windows.h>
 #include <QTextCodec>
-
+#include <QSettings>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -24,6 +24,31 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->action_2,SIGNAL(triggered(bool)), this, SLOT(openAbout()));
 
 
+
+  QSettings settings( "gp.conf", QSettings::IniFormat );
+
+     settings.beginGroup( "LableName" );
+    QVariant text = settings.value("Razrab");
+    ui->razrab->setText( text.toString());
+    text = settings.value("Prov");
+    ui->prov->setText( text.toString());
+    text = settings.value("Kontr");
+    ui->kontr->setText( text.toString());
+    text = settings.value("Ytb");
+    ui->ytb->setText( text.toString());
+    text = settings.value("Firma");
+    ui->Firma->setText( text.toString());
+    text = settings.value("nymerIzd");
+    ui->nymerIzd->setText( text.toString());
+    text = settings.value("naim1");
+    ui->naim1->setText( text.toString());
+    text = settings.value("naim2");
+    ui->naim2->setText( text.toString());
+    text = settings.value("maxSymbol");
+    ui->maxSymbol->setText( text.toString());
+
+    settings.endGroup();
+
 }
 
 
@@ -31,6 +56,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    QSettings settings( "gp.conf", QSettings::IniFormat );
+       settings.beginGroup( "LableName" );
+       settings.setValue( "Razrab", ui->razrab->text() );
+       settings.setValue( "Prov", ui->prov->text() );
+       settings.setValue( "Kontr", ui->kontr->text() );
+       settings.setValue( "Ytb", ui->ytb->text() );
+       settings.setValue( "Firma", ui->Firma->text() );
+       settings.setValue( "nymerIzd", ui->nymerIzd->text() );
+       settings.setValue( "naim1", ui->naim1->text() );
+       settings.setValue( "naim2", ui->naim2->text() );
+       settings.setValue( "maxSymbol", ui->maxSymbol->text() );
+       settings.endGroup();
 
   delete ui;
 }
@@ -101,7 +138,7 @@ void MainWindow::openFile(){
 
   ui->progressBar_2->setValue(0);
   ///ЧТЕНИЕ ДАННЫХ!!!
-  for(int i = 2;  i< 500 ; i++){
+  for(int i = 2;  ; i++){
       if (excel.sheetCellInsert(sheet, data, i, 2))
         var << data.toString();
       else{
@@ -494,7 +531,12 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
         QString str0 = (*it).at(0);
         QString str1 = (*it).at(1);
         QString str2 = (*it).at(2);
+        //сколько символов в строке word
          symbolsInTable = ui->maxSymbol->text().toInt();
+         if(symbolsInTable < 30)
+             symbolsInTable = 30;
+         if(symbolsInTable > 40)
+             symbolsInTable = 40;
         if(str1 == ""  || (str1.count() < symbolsInTable))
             continue;
         QStringList varLi;
@@ -557,6 +599,23 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
     for (int i = 0; i < lineAdd; i++)
         varList.append(var_space);
 
+    // надо заполнить поле "Примечание" -  импорт
+    QList<QStringList> import;
+    QStringList importList;
+    foreach (auto var, varList) {
+        if( var.at(0) == ""){
+            importList << var.at(0) << var.at(1) << var.at(2) << "";
+            import.append(importList);
+        }
+        else{
+            importList << var.at(0) << var.at(1) << var.at(2) << "Импорт";
+            import.append(importList);
+        }
+
+        importList.clear();
+    }
+    varList.clear();
+    varList = import;
     return allPrefixRename;
 
 }

@@ -707,7 +707,9 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		activeword.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtWidgets/qmessagebox.h \
 		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/QTextCodec \
-		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/qtextcodec.h
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/qtextcodec.h \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/QSettings \
+		C:/Qt/Qt5.9.0/5.9/mingw53_32/include/QtCore/qsettings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o mainwindow.cpp
 
 release/moc_mainwindow.o: release/moc_mainwindow.cpp 

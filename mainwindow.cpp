@@ -24,30 +24,32 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->action_2,SIGNAL(triggered(bool)), this, SLOT(openAbout()));
 
 
-
+  QFile file("gp.conf");
+  if(file.size() == 0)
+    return;
   QSettings settings( "gp.conf", QSettings::IniFormat );
+  settings.beginGroup( "LableName" );
+  QVariant text = settings.value("Razrab");
+  ui->razrab->setText( text.toString());
+  text = settings.value("Prov");
+  ui->prov->setText( text.toString());
+  text = settings.value("Kontr");
+  ui->kontr->setText( text.toString());
+  text = settings.value("Ytb");
+  ui->ytb->setText( text.toString());
+  text = settings.value("Firma");
+  ui->Firma->setText( text.toString());
+  text = settings.value("nymerIzd");
+  ui->nymerIzd->setText( text.toString());
+  text = settings.value("naim1");
+  ui->naim1->setText( text.toString());
+  text = settings.value("naim2");
+  ui->naim2->setText( text.toString());
+  text = settings.value("maxSymbol");
+  ui->maxSymbol->setText( text.toString());
+  settings.endGroup();
 
-     settings.beginGroup( "LableName" );
-    QVariant text = settings.value("Razrab");
-    ui->razrab->setText( text.toString());
-    text = settings.value("Prov");
-    ui->prov->setText( text.toString());
-    text = settings.value("Kontr");
-    ui->kontr->setText( text.toString());
-    text = settings.value("Ytb");
-    ui->ytb->setText( text.toString());
-    text = settings.value("Firma");
-    ui->Firma->setText( text.toString());
-    text = settings.value("nymerIzd");
-    ui->nymerIzd->setText( text.toString());
-    text = settings.value("naim1");
-    ui->naim1->setText( text.toString());
-    text = settings.value("naim2");
-    ui->naim2->setText( text.toString());
-    text = settings.value("maxSymbol");
-    ui->maxSymbol->setText( text.toString());
 
-    settings.endGroup();
 
 }
 
@@ -138,7 +140,7 @@ void MainWindow::openFile(){
 
   ui->progressBar_2->setValue(0);
   ///ЧТЕНИЕ ДАННЫХ!!!
-  for(int i = 2;  ; i++){
+  for(int i = 2; i < 300 ; i++){
       if (excel.sheetCellInsert(sheet, data, i, 2))
         var << data.toString();
       else{
@@ -198,7 +200,7 @@ QStringList errorRefDez = deviceandSpace_v2(desValue);
 if (!errorRefDez.isEmpty()){
     ui->textEdit->setVisible(true);
     ui->textEdit->setTextColor(Qt::red);
-    ui->textEdit->insertPlainText("В базе не найдено название группы видов эл-тов со следующими RefDez:");
+    ui->textEdit->insertPlainText("Элементы со следующими RefDez отображены в разделе \"Прочие\":");
     ui->textEdit->setTextColor(Qt::black);
     foreach (auto var, errorRefDez) {
         ui->textEdit->insertPlainText("\n" + var);
@@ -242,20 +244,19 @@ if( word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true) <
 if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
   mesOut("Ошибка замены метки");
 
-
 // поиск элементов, добавка курсива и расположение по центру
 foreach (QString var, strListNamelabel) {
     //подчеркивание
     if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
        // mesOut("Ошибка шрифта!" + var);
-        continue;
-        return;
+      //  continue;
+      //  return;
       }
     //центрирование
     if( word.selectionAlign(var , false, false, true) < 0){
        // mesOut("Ошибка центрирования!" + var);
-        continue;;
-        return;
+      //  continue;
+      //  return;
       }
     QString s = var;
     s.remove(0,1);
@@ -264,15 +265,15 @@ foreach (QString var, strListNamelabel) {
     // замена меток/
     if (word.findReplaseLabel(s1, s, true) == false){
         //mesOut("Ошибка замены метки!" + var);
-        continue;
-        return;
+     //   continue;
+      //  return;
       }
     s.clear();
     s1.clear();
   }
 
 
-
+word.tableSizeRowsHight(1, 2, 25, 0.86);
 
 word.setVisible();
 ui->progressBar_2->setValue(100);
@@ -492,7 +493,7 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
         strListNamelabel << split[1];
     }
     QStringList allPrefixRename = allPrefix;
-    QStringList var_space;
+    QStringList var_space, allPrefixRenameOut;
     var_space << "" << "" << "";
     for(QList<QStringList>::iterator it = varList.begin(); it < varList.end(); it++){
         QString var = (*it).at(0);
@@ -510,21 +511,21 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
              allPrefixRename.removeAt(ind1);
              it = varList.insert(it ,var_space);
              QStringList var1;
+             //Если префикса нет в "Названиях групп"- вставить "прочие"
+             if(tem[var] == ""){
+                 tem[var] = "[Прочие]";
+                 allPrefixRenameOut << var;
+             }
              var1 << "" << tem[var] << "";
              it = varList.insert(++it ,var1);
            }
 
       }
     allPrefixRename.clear();
+    strListNamelabel << "[Прочие]";
 
 
-    foreach (QString var, tem.keys()) {
-        if(tem[var] == "")
-          allPrefixRename << var;
-      }
 
-    int i;
-    i++;
    //-------------------------------------------------------------
     //Перенос строки с описанием
     for(QList<QStringList>::iterator it = varList.begin(); it < varList.end(); it++){
@@ -579,9 +580,9 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
     //расставляю пробельные строки, согласно желанию шаркова
 
     int count = varList.count();
-    if(count < 24) //24 последняя строка первого листа
-         return allPrefixRename;
-    for(int i = 23; i < varList.count(); i = i + 28 ){
+    if(count < 26) //24 последняя строка первого листа
+         return allPrefixRenameOut;
+    for(int i = 25; i < varList.count(); i = i + 30 ){
         QString s = varList[i][0];
         if(s == ""){
             varList.insert(--i, var_space);
@@ -593,9 +594,9 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
     }
     //Заполняю документ пустой таблицей до конца
     count = varList.count();
-    double z = floor((count - 24)/28);
-    int x = count - ( 24 + z * 28);
-    int lineAdd = 28 - x;
+    double z = floor((count - 26)/30);
+    int x = count - ( 26 + z * 30);
+    int lineAdd = 30 - x;
     for (int i = 0; i < lineAdd; i++)
         varList.append(var_space);
 
@@ -616,7 +617,7 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
     }
     varList.clear();
     varList = import;
-    return allPrefixRename;
+    return allPrefixRenameOut;
 
 }
 
@@ -661,8 +662,7 @@ void MainWindow::generate(){
   ui->progressBar_2->setValue(90);
   QCoreApplication::processEvents();
 
-
-  //
+//
   if( word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true) < 0)
     mesOut("Ошибка замены метки");
   if( word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true) < 0)
@@ -682,18 +682,19 @@ void MainWindow::generate(){
   if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
     mesOut("Ошибка замены метки");
 
-
   // поиск элементов, добавка курсива и расположение по центру
   foreach (QString var, strListNamelabel) {
       //подчеркивание
       if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
-
-          continue;
+         // mesOut("Ошибка шрифта!" + var);
+        //  continue;
+        //  return;
         }
       //центрирование
       if( word.selectionAlign(var , false, false, true) < 0){
-
-          continue;
+         // mesOut("Ошибка центрирования!" + var);
+        //  continue;
+        //  return;
         }
       QString s = var;
       s.remove(0,1);
@@ -701,14 +702,17 @@ void MainWindow::generate(){
       QString s1 = var;
       // замена меток/
       if (word.findReplaseLabel(s1, s, true) == false){
-          continue;
+          //mesOut("Ошибка замены метки!" + var);
+       //   continue;
+        //  return;
         }
       s.clear();
       s1.clear();
     }
-  //
 
 
+
+    word.tableSizeRowsHight(1, 2, 25, 0.86);
 
   word.setVisible();
   ui->progressBar_2->setValue(100);

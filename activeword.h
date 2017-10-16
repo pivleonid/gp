@@ -249,6 +249,8 @@ void selectionCopyAllText(bool buffer);
   QVariant tablesCount();
 
 
+  void tableSizeRowsHight( int tableIndex, int start, int countRows, float height);
+
 
 
 };

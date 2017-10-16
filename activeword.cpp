@@ -596,7 +596,24 @@ int ActiveWord::colontitulReplaseLabel( QAxObject* doc, QString oldString, QStri
     }
 
 
+void ActiveWord::tableSizeRowsHight( int tableIndex, int start, int countRows, float height){
 
+  QAxObject* act = wordApplication_->querySubObject("ActiveDocument");
+  QAxObject* tables = act->querySubObject("Tables");
+  QAxObject* table = tables->querySubObject("Item(const QVariant&)", tableIndex);
+  QAxObject* rows = table->querySubObject("Rows");
+  QVariant count = rows->dynamicCall("Count");
+  for(int i = start; i <= count.toInt() && i <= countRows; i++){
+      QAxObject* row = rows->querySubObject("Item(const QVariant&)", i);
+      QVariant h = wordApplication_->dynamicCall( "CentimetersToPoints(const QVariant&)", QVariant(height));
+      row->dynamicCall("SetHeight(const QVariant&, const QVariant&, const QVariant&)" , h, 1);
+      delete row;
+  }
+  delete rows;
+  delete table;
+  delete tables;
+  delete act;
+}
 
 
 

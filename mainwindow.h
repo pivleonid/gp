@@ -19,7 +19,6 @@ public:
 private:
   Ui::MainWindow *ui;
   QString pathPEZ; //Сам шаблон
-  QString pathData; //Путь до шаблона
   QStringList strListNamelabel;
   QList<QStringList> desValue;
    QStringList allPrefix;

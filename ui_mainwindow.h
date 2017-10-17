@@ -418,8 +418,6 @@ public:
         gridLayout_12->addLayout(horizontalLayout_6, 3, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
-        pathSave_2->raise();
-        nymerIzd->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 800, 26));
@@ -448,13 +446,13 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\320\237\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\321\202\320\265\320\273\321\214 \320\277\320\265\321\200\320\265\321\207\320\275\320\265\320\271", Q_NULLPTR));
         action_2->setText(QApplication::translate("MainWindow", "\320\236\320\277\320\270\321\201\320\260\320\275\320\270\320\265", Q_NULLPTR));
-        actionv1_0->setText(QApplication::translate("MainWindow", "v1.0", Q_NULLPTR));
+        actionv1_0->setText(QApplication::translate("MainWindow", "v2.0", Q_NULLPTR));
         openFile->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 \321\204\320\260\320\271\320\273", Q_NULLPTR));
-        label->setText(QApplication::translate("MainWindow", "123", Q_NULLPTR));
+        label->setText(QString());
         pathSave->setText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\272 \321\201\320\276\321\205\321\200\320\260\320\275\320\265\320\275\320\275\320\276\320\274\321\203 \321\204\320\260\320\271\320\273\321\203", Q_NULLPTR));
-        pathSave_2->setText(QApplication::translate("MainWindow", "123", Q_NULLPTR));
+        pathSave_2->setText(QString());
         label_12->setText(QApplication::translate("MainWindow", "\320\230\320\274\321\217 \320\263\320\265\320\275\320\265\321\200\320\270\321\200\321\203\320\265\320\274\320\276\320\263\320\276 \321\204\320\260\320\271\320\273\320\260:", Q_NULLPTR));
-        lineEdit->setText(QApplication::translate("MainWindow", "\320\221\320\256\320\233\320\230.48435.006", Q_NULLPTR));
+        lineEdit->setText(QString());
         label_2->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\267\321\200\320\260\320\261\320\276\321\202\320\260\320\273:", Q_NULLPTR));
         razrab->setText(QApplication::translate("MainWindow", "\320\230\320\262\320\260\320\275\320\276\320\262 \320\230.\320\220.", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\262\320\265\321\200\320\270\320\273:", Q_NULLPTR));

@@ -47,6 +47,12 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->naim2->setText( text.toString());
   text = settings.value("maxSymbol");
   ui->maxSymbol->setText( text.toString());
+  text = settings.value("nameFile");
+  ui->lineEdit->setText( text.toString());
+  text = settings.value("text1");
+  ui->label->setText( text.toString());
+  text = settings.value("text2");
+  ui->pathSave_2->setText( text.toString());
   settings.endGroup();
 
 
@@ -69,6 +75,10 @@ MainWindow::~MainWindow()
        settings.setValue( "naim1", ui->naim1->text() );
        settings.setValue( "naim2", ui->naim2->text() );
        settings.setValue( "maxSymbol", ui->maxSymbol->text() );
+       settings.setValue( "nameFile", ui->lineEdit->text() );
+       settings.setValue( "text1", ui->label->text() );
+       settings.setValue( "text2", ui->pathSave_2->text() );
+
        settings.endGroup();
 
   delete ui;
@@ -149,7 +159,7 @@ void MainWindow::generate(){
 
     ui->progressBar_2->setValue(0);
     ///ЧТЕНИЕ ДАННЫХ!!!
-    for(int i = 2; i < 300 ; i++){
+    for(int i = 2;  ; i++){
         if (excel.sheetCellInsert(sheet, data, i, 2))
           var << data.toString();
         else{
@@ -198,96 +208,96 @@ void MainWindow::generate(){
         if(i == 1000){
             ui->progressBar_2->setValue(40);
             QCoreApplication::processEvents();
-          }
-      }
-   excel.documentClose(ex1);
+        }
+    }
+    excel.documentClose(ex1);
 
 
-  desValue.clear();
-  desValue = transform( var);
-  QStringList errorRefDez = deviceandSpace_v2(desValue);
-  if (!errorRefDez.isEmpty()){
-      ui->textEdit->setVisible(true);
-      ui->textEdit->setTextColor(Qt::red);
-      ui->textEdit->insertPlainText("Элементы со следующими RefDez отображены в разделе \"Прочие\":");
-      ui->textEdit->setTextColor(Qt::black);
-      foreach (auto var, errorRefDez) {
-          ui->textEdit->insertPlainText("\n" + var);
+    desValue.clear();
+    desValue = transform( var);
+    QStringList errorRefDez = deviceandSpace_v2(desValue);
+    if (!errorRefDez.isEmpty()){
+        ui->textEdit->setVisible(true);
+        ui->textEdit->setTextColor(Qt::red);
+        ui->textEdit->insertPlainText("Элементы со следующими RefDez отображены в разделе \"Прочие\":");
+        ui->textEdit->setTextColor(Qt::black);
+        foreach (auto var, errorRefDez) {
+            ui->textEdit->insertPlainText("\n" + var);
 
-      }
-  }
-  ui->progressBar_2->setValue(50);
+        }
+    }
+    ui->progressBar_2->setValue(50);
 
 
-  //заполнение таблицы
-  QStringList listLabel = word.tableGetLabels(1, 2);
-  ui->progressBar_2->setValue(70);
-  QCoreApplication::processEvents();
-  if (word.tableFill(desValue,listLabel,1,2) < 0){
-      mesOut("Ошибка заполнения таблицы!");
-      ui->openFile->setEnabled(true);
-      word.setVisible();
-      return;
+    //заполнение таблицы
+    QStringList listLabel = word.tableGetLabels(1, 2);
+    ui->progressBar_2->setValue(70);
+    QCoreApplication::processEvents();
+    if (word.tableFill(desValue,listLabel,1,2) < 0){
+        mesOut("Ошибка заполнения таблицы!");
+        ui->openFile->setEnabled(true);
+        word.setVisible();
+        return;
     }
 
-  ui->progressBar_2->setValue(90);
-  QCoreApplication::processEvents();
+    ui->progressBar_2->setValue(90);
+    QCoreApplication::processEvents();
 
 
-  if( word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true) < 0)
-    mesOut("Ошибка замены метки");
-  if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
-    mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[Разраб]", ui->razrab->text(), true) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[пров]", ui->prov->text(), true) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[Наим.1]", ui->naim1->text(), true) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[конт]", ui->kontr->text(), true) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[утв]", ui->ytb->text(), true) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), true) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[Дец.Номер изд.]", ui->nymerIzd->text(), false) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[Наим.2]", ui->naim2->text(), true) < 0)
+        mesOut("Ошибка замены метки");
+    if( word.colontitulReplaseLabel(doc1, "[Фирма]", ui->Firma->text(), true) < 0)
+        mesOut("Ошибка замены метки");
 
-  // поиск элементов, добавка курсива и расположение по центру
-  foreach (QString var, strListNamelabel) {
-      //подчеркивание
-      if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
-         // mesOut("Ошибка шрифта!" + var);
-        //  continue;
-        //  return;
+    // поиск элементов, добавка курсива и расположение по центру
+    foreach (QString var, strListNamelabel) {
+        //подчеркивание
+        if (word.selectionFindFontname(var, true, false, true, true, "GOST type B") < 0){
+            // mesOut("Ошибка шрифта!" + var);
+            //  continue;
+            //  return;
         }
-      //центрирование
-      if( word.selectionAlign(var , false, false, true) < 0){
-         // mesOut("Ошибка центрирования!" + var);
-        //  continue;
-        //  return;
+        //центрирование
+        if( word.selectionAlign(var , false, false, true) < 0){
+            // mesOut("Ошибка центрирования!" + var);
+            //  continue;
+            //  return;
         }
-      QString s = var;
-      s.remove(0,1);
-      s.remove(s.count()-1,1);
-      QString s1 = var;
-      // замена меток/
-      if (word.findReplaseLabel(s1, s, true) == false){
-          //mesOut("Ошибка замены метки!" + var);
-       //   continue;
-        //  return;
+        QString s = var;
+        s.remove(0,1);
+        s.remove(s.count()-1,1);
+        QString s1 = var;
+        // замена меток/
+        if (word.findReplaseLabel(s1, s, true) == false){
+            //mesOut("Ошибка замены метки!" + var);
+            //   continue;
+            //  return;
         }
-      s.clear();
-      s1.clear();
+        s.clear();
+        s1.clear();
     }
 
 
-  word.tableSizeRowsHight(1, 2, 25, 0.86);
-  word.documentSave(doc1, pathData+"/", ui->lineEdit->text(), "docx" );
-  word.setVisible();
-  ui->progressBar_2->setValue(100);
-  ui->openFile->setEnabled(true);
-  ui->pathSave->setEnabled(true);
+    word.tableSizeRowsHight(1, 2, 25, 0.86);
+    word.documentSave(doc1, ui->pathSave_2->text() + "/", ui->lineEdit->text(), "docx" );
+    word.setVisible();
+    ui->progressBar_2->setValue(100);
+    ui->openFile->setEnabled(true);
+    ui->pathSave->setEnabled(true);
 }
 
 
@@ -348,128 +358,134 @@ QList<QStringList> MainWindow::transform(QStringList var){
     ///varList содержит по два элемента- 1 название 2 описание
 
     //--начало формирования Всех префиксов
-   allPrefix.clear();
-        foreach (auto var, varList) {
-            allPrefix << var.at(0);
-        }
-        for (QStringList::iterator var = allPrefix.begin(); var < allPrefix.end(); var++) {
-            (*var).remove(QRegExp("[^A-Za-zА-Яа-я]"));
-        }
-        //Удаляю дубликаты
-        for (QStringList::iterator var = allPrefix.begin(); var < allPrefix.end() -1;var++) {
-            if(*var == *(var+1) ){
-                var = allPrefix.erase(var );
-                if(var != allPrefix.begin())
-                    var--;
-            }
-        }
-        //--Конец формирования Всех префиксов
-//--Формирование QMap
-        QMap<QString, QList<QStringList> > mapVarLisr;
-        foreach (auto var, allPrefix) {
-            foreach (auto var1, varList) {
-                QString name = var1.at(0);
-                name = name.remove(QRegExp("[^A-Za-zА-Яа-я]"));
-                QString number = var1.at(0);
-                number = number.remove(QRegExp("[A-Za-zА-Яа-я]"));
-                 QString detaSheet = var1.at(1);
-                 QStringList dataPre;
-                 dataPre<< number << detaSheet;
-//                QList<int, QString> qVarList;
-//                qVarList << number.toInt() << var1.at(1);
-                if( var == name)
-                    mapVarLisr[var] << dataPre;
-            }
-        }
-       // allPrefix.clear();
-//mapVarLisr по каждому ключу хранится QStringList
-        QMap<QString, QList<QStringList>> bz;
-        foreach (QString key, mapVarLisr.keys()) {
-            bz[key];
-       }
+    allPrefix.clear();
+    foreach (auto var, varList) {
+        allPrefix << var.at(0);
+    }
+    for (QStringList::iterator var = allPrefix.begin(); var < allPrefix.end(); var++) {
+        (*var).remove(QRegExp("[^A-Za-zА-Яа-я]"));
+    }
+    //Удаляю дубликаты
+    for (QStringList::iterator var = allPrefix.begin(); var < allPrefix.end()-1;var++) {
+        for (QStringList::iterator var1 = var + 1; var1 < allPrefix.end();var1++) {
+            if(*var1 == *var ){
+                var1 = allPrefix.erase(var1 );
+                var1--;
 
-        foreach (QString key, mapVarLisr.keys()) {
-            foreach (QString key1, bz.keys()) {
-                if( key == key1){
-                    QList<QStringList> a;
-                    a = mapVarLisr[key];
-                    for (QList<QStringList>::iterator a_it = a.begin(); a_it < a.end(); a_it++) {
-                        if(a_it == a.begin()){
-                         //   *a_it << QString::number(1);
-                            bz[key] << *a_it;
-                            continue;
-                        }
-                        //если описание эл-та == описанию предыдущего
-                        if( (*a_it).at(1) == (*(a_it-1)).at(1)){
-                      //      int num = (*(a_it-1)).at(2).toInt();
-                       //     num++;
-                       //     bz[key][bz[key].size()-1][2].clear();
-                            bz[key][bz[key].size()-1][0] += "-"+(*a_it).at(0);
-                       //     bz[key][bz[key].size()-1][2].append(QString::number(num));
-                            continue;
-                        }
-                        //ежели не равно
-                    //    *a_it << QString::number(1);
+            }
+
+
+
+        }
+    }
+    //--Конец формирования Всех префиксов
+    //--Формирование QMap
+    QMap<QString, QList<QStringList> > mapVarLisr;
+    foreach (auto var, allPrefix) {
+        foreach (auto var1, varList) {
+            QString name = var1.at(0);
+            name = name.remove(QRegExp("[^A-Za-zА-Яа-я]"));
+            QString number = var1.at(0);
+            number = number.remove(QRegExp("[A-Za-zА-Яа-я]"));
+            QString detaSheet = var1.at(1);
+            QStringList dataPre;
+            dataPre<< number << detaSheet;
+            //                QList<int, QString> qVarList;
+            //                qVarList << number.toInt() << var1.at(1);
+            if( var == name)
+                mapVarLisr[var] << dataPre;
+        }
+    }
+    // allPrefix.clear();
+    //mapVarLisr по каждому ключу хранится QStringList
+    QMap<QString, QList<QStringList>> bz;
+    foreach (QString key, mapVarLisr.keys()) {
+        bz[key];
+    }
+
+    foreach (QString key, mapVarLisr.keys()) {
+        foreach (QString key1, bz.keys()) {
+            if( key == key1){
+                QList<QStringList> a;
+                a = mapVarLisr[key];
+                for (QList<QStringList>::iterator a_it = a.begin(); a_it < a.end(); a_it++) {
+                    if(a_it == a.begin()){
+                        //   *a_it << QString::number(1);
                         bz[key] << *a_it;
-
+                        continue;
                     }
+                    //если описание эл-та == описанию предыдущего
+                    if( (*a_it).at(1) == (*(a_it-1)).at(1)){
+                        //      int num = (*(a_it-1)).at(2).toInt();
+                        //     num++;
+                        //     bz[key][bz[key].size()-1][2].clear();
+                        bz[key][bz[key].size()-1][0] += "-"+(*a_it).at(0);
+                        //     bz[key][bz[key].size()-1][2].append(QString::number(num));
+                        continue;
+                    }
+                    //ежели не равно
+                    //    *a_it << QString::number(1);
+                    bz[key] << *a_it;
+
                 }
             }
         }
-//В bz["C"][3][0] = "6-7-8-9-10"; bz["C"][3][1] = "GRM115"
-QList<QStringList> outData;
-        foreach (QString key, bz.keys()) {
-            QList<QStringList> b;
-            b = bz[key];
-            //b содержит все элементы по ключу
-            foreach (auto vB, b) {
-                //vB это QStringList, [0] = "6-7-8-9-10"; [1] = "GRM115"
-                QStringList stringSplit = vB[0].split("-");
-                int numb = stringSplit.count();
-                for(QStringList::iterator vS = stringSplit.begin(); vS < stringSplit.end(); vS++){
-                    if(vS == stringSplit.begin())
-                        continue;
-                    if(vS == stringSplit.end()-1)
-                        continue;
-                    //Очищаю промежутки
-                    vS = stringSplit.erase(vS);
-                    vS--;
+    }
+    //В bz["C"][3][0] = "6-7-8-9-10"; bz["C"][3][1] = "GRM115"
+    QList<QStringList> outData;
+    foreach (QString key, bz.keys()) {
+        QList<QStringList> b;
+        b = bz[key];
+        //b содержит все элементы по ключу
+        foreach (auto vB, b) {
+            //vB это QStringList, [0] = "6-7-8-9-10"; [1] = "GRM115"
+            QStringList stringSplit = vB[0].split("-");
+            int numb = stringSplit.count();
+            for(QStringList::iterator vS = stringSplit.begin(); vS < stringSplit.end(); vS++){
+                if(vS == stringSplit.begin())
+                    continue;
+                if(vS == stringSplit.end()-1)
+                    continue;
+                //Очищаю промежутки
+                vS = stringSplit.erase(vS);
+                vS--;
+            }
+            //stringSplit содержит первый и последний эл-т
+            //добавляю символ "-"
+            for(QStringList::iterator vS = stringSplit.begin(); vS < stringSplit.end() - 1; vS++){
+                if( (*(vS + 1)).toInt() - (*vS).toInt() == 1 ){
+                    (*vS).append(", ");
+                    continue;
                 }
-                //stringSplit содержит первый и последний эл-т
-                //добавляю символ "-"
-                for(QStringList::iterator vS = stringSplit.begin(); vS < stringSplit.end() - 1; vS++){
-                    if( (*(vS + 1)).toInt() - (*vS).toInt() == 1 ){
-                       (*vS).append(", ");
-                        continue;
-                    }
-                    (*vS).append("...");
+                (*vS).append("...");
 
-                }
-                //добавляю ключ префикс
-                for(QStringList::iterator vS = stringSplit.begin(); vS < stringSplit.end() ; vS++){
-                    (*vS).prepend(key);
-                }
-                //Объединить в одну ячейку
-                //добавить vB[1] - описание
-                QString unionStr;
-                 QStringList out;
-                int cont = stringSplit.count();
-                if(cont == 1){
-                    unionStr = stringSplit[0];
-                    out << unionStr << vB[1] << QString::number(numb);
-                }
-                if(cont == 2){
-                    unionStr = stringSplit[0] + stringSplit[1];
+            }
+            //добавляю ключ префикс
+            for(QStringList::iterator vS = stringSplit.begin(); vS < stringSplit.end() ; vS++){
+                (*vS).prepend(key);
+            }
+            //Объединить в одну ячейку
+            //добавить vB[1] - описание
+            QString unionStr;
+            QStringList out;
+            int cont = stringSplit.count();
+            if(cont == 1){
+                unionStr = stringSplit[0];
                 out << unionStr << vB[1] << QString::number(numb);
-                }
-                outData << out;
-                out.clear();
-                int i= 0;
-                i++;
             }
+            if(cont == 2){
+                unionStr = stringSplit[0] + stringSplit[1];
+                out << unionStr << vB[1] << QString::number(numb);
+            }
+            outData << out;
+            out.clear();
 
         }
-        return outData;
+
+    }
+    int i= 0;
+    i++;
+    return outData;
 
 }
 
@@ -530,9 +546,71 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
       }
     allPrefixRename.clear();
     strListNamelabel << "[Прочие]";
+    //Все прочие в одном месте--
+    QList<QStringList> proch, noProch;
+    QStringList proch1, proch2;
+    bool flag = false;
+    noProch = varList;
+    proch2 << "" << "[Прочие]" << "";
+    for (QList<QStringList>::iterator var = varList.begin(); var < varList.end(); var++) {
+        proch1 << (*var).at(0) << (*var).at(1) << (*var).at(2);
+
+        if( proch1 == proch2)
+            flag = true;
+        //Если флаг стоит и строка пуста - значит будет след. группа
+        QString a = (*var).at(0);
+        QString a1 = (*var).at(1);
+        QString a2 = (*var).at(2);
+        //Флаг стоит и строка не нулевая
+        if((flag == true) && ( (a != a1) && (a != a2) && (a != "") )  ) {
+               proch << proch1;
+        }
+        if((flag == true) && ( (a == a1) && (a == a2) && (a == "") )  ) {
+              flag = false;
+        }
+
+        proch1.clear();
+    }
+    //Здесь  proch == {
+    //                  "CAGE4" "adadasd" "1"
+    //                  "CAGE5" "adasdasd" "1" }
+    //--Удаляю прочие и элементы в исходном списке
+     proch1.clear();
+    for (QList<QStringList>::iterator var = varList.begin(); var < varList.end(); ) {
+        proch1 << (*var).at(0) << (*var).at(1) << (*var).at(2);
+        if( proch1 == proch2){
+            flag = true;
+            var = varList.erase(var);// перехожу сразу на след элемент для удаления
+        }
+        //Если флаг стоит и строка пуста - значит будет след. группа
+        QString a = (*var).at(0);
+        QString a1 = (*var).at(1);
+        QString a2 = (*var).at(2);
+        //Флаг стоит и строка не нулевая
+        if((flag == true) && ( (a != a1) && (a != a2) && (a != "") )  ) {
+            if(var < varList.end() - 1)
+               var = varList.erase(var); //var++ уже сделан
+            qDebug() << *var;
+            continue;
+
+        }
+        if((flag == true) && ( (a == a1) && (a == a2) && (a == "") )  ) {
+              flag = false;
+              if(var < varList.end() - 1)
+              var = varList.erase(var); //удаляю пустую строчку
+              qDebug() << *var;
+               continue;
+        }
+
+        proch1.clear();
+        var++;
+
+    }
 
 
+    varList<< var_space<< proch2<<proch;
 
+    //
    //-------------------------------------------------------------
     //Перенос строки с описанием
     for(QList<QStringList>::iterator it = varList.begin(); it < varList.end(); it++){
@@ -565,12 +643,18 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
             out1 += " "+var;
         }
         QStringList varLiSpace1, varLiSpace2, varLiSpace3;
-        if(!out1.isEmpty())
-            varLiSpace1 << str0 << out1 << str2;
-        if(!out2.isEmpty())
+        if(!out3.isEmpty()){
+            varLiSpace3 << "" << out3 << str2;
             varLiSpace2 << "" << out2 << "";
-        if(!out3.isEmpty())
-            varLiSpace3 << "" << out3 << "";
+            varLiSpace1 << str0 << out1 << "";
+        }
+        else if(!out2.isEmpty()){
+            varLiSpace2 << "" << out2 << str2;
+            varLiSpace1 << str0 << out1 << "";
+        }
+            else if(!out1.isEmpty()){
+                varLiSpace1 << str0 << out1 << str2;
+            }
 
         it = varList.erase(it);
         it--;
@@ -611,15 +695,20 @@ QStringList MainWindow::deviceandSpace_v2(QList<QStringList>& varList){
     QList<QStringList> import;
     QStringList importList;
     foreach (auto var, varList) {
-        if( var.at(0) == ""){
-            importList << var.at(0) << var.at(1) << var.at(2) << "";
-            import.append(importList);
-        }
-        else{
+        if(var.at(0) != "" && var.at(1) != "" && var.at(2) != ""){
             importList << var.at(0) << var.at(1) << var.at(2) << "Импорт";
             import.append(importList);
+            importList.clear();
+            continue;
         }
-
+        if( var.at(0) == ""  &&  var.at(1) != "" && var.at(2) != ""){
+            importList << "" << var.at(1) << var.at(2) << "Импорт";
+            import.append(importList);
+            importList.clear();
+            continue;
+        }
+        importList << var.at(0) << var.at(1) << var.at(2) << "";
+        import.append(importList);
         importList.clear();
     }
     varList.clear();
@@ -666,7 +755,7 @@ void MainWindow::openAbout(){
 //------------------------------------------------------------------------
 
 void MainWindow::pathSave(){
-     pathData = QFileDialog::getExistingDirectory(this, tr("Выберите папку для сохранения"),QApplication::applicationDirPath());
+     QString pathData = QFileDialog::getExistingDirectory(this, tr("Выберите папку для сохранения"),QApplication::applicationDirPath());
       ui->pathSave_2->clear();
      ui->pathSave_2->setText(pathData);
 }

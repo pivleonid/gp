@@ -218,15 +218,11 @@ void selectionCopyAllText(bool buffer);
   QStringList tableGetLabels(int tableIndex, /*!< [in] индекс таблицы  */
                              int tabRow      /*!< [in] номер шаблонный строки в таблице  */
                              );
+
+
   /*==================================================================*/
   /*!  \brief
-  Возвращает количество и список меток в таблице.
-  */
-  //QStringList tableGetLabels(int tableIndex);
-  /*==================================================================*/
-  /*!  \brief
-  Возвращает количество и список !меток!  в таблице.
-  Пример метки: [label]
+  Вставляет таблицу по меткам
   */
   int tableFill(QList<QStringList> tableDat_in,/*!< [in] Таблица для вставки */
                  QStringList tableLabel,        /*!< [in] Список всех меток  */
@@ -248,8 +244,15 @@ void selectionCopyAllText(bool buffer);
 
   QVariant tablesCount();
 
-
-  void tableSizeRowsHight( int tableIndex, int start, int countRows, float height);
+  /*==================================================================*/
+  /*!  \brief
+  Для изменения высоты выбранных строк в таблице
+  */
+  void tableSizeRowsHight( int tableIndex,    /*!< [in] Таблица для вставки */
+                           int startRows,     /*!< [in] Индекс начала номера строки */
+                           int endRows,       /*!< [in] Конец строки */
+                           float height       /*!< [in] Высота */
+                           );
 
 
 

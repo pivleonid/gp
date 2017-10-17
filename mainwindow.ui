@@ -77,7 +77,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="text">
-         <string>123</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -104,7 +104,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="text">
-         <string>123</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -124,7 +124,7 @@
       <item>
        <widget class="QLineEdit" name="lineEdit">
         <property name="text">
-         <string>БЮЛИ.48435.006</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -448,13 +448,6 @@
     </item>
    </layout>
    <zorder></zorder>
-   <zorder>horizontalSpacer_3</zorder>
-   <zorder>horizontalSpacer_5</zorder>
-   <zorder>pathSave_2</zorder>
-   <zorder>verticalSpacer</zorder>
-   <zorder>horizontalSpacer</zorder>
-   <zorder>horizontalSpacer_2</zorder>
-   <zorder>nymerIzd</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -501,7 +494,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>v1.0</string>
+    <string>v2.0</string>
    </property>
   </action>
  </widget>
